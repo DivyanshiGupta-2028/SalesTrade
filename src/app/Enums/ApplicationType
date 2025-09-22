@@ -1,0 +1,4 @@
+export enum ApplicationType {
+  Exchange = "Exchange",
+  Invoice = "Invoice",
+} 

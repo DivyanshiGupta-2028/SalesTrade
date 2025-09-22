@@ -1,0 +1,25 @@
+.client-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    mat-form-field {
+      flex: 1 1 48%;
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
+}

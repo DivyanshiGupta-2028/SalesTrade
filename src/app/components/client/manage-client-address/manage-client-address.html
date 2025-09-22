@@ -1,0 +1,252 @@
+
+<div class="address-form-container">
+
+  <div class="form-header">
+    <h2 class="form-title">
+      <i class="fas fa-user-plus"></i>
+      {{ isEditMode ? 'Edit Address' : 'Add New Address' }}
+    </h2>
+    <div class="form-subtitle">
+      {{ isEditMode ? 'Update Address information' : 'Enter address details' }}
+    </div>
+  </div>
+  <div *ngIf="roleService.hasRole('Admin')">
+  Only for Admins
+</div>
+  <form [formGroup]="addressForm" (ngSubmit)="onSubmit()" class="address-form">
+    <div class="form-grid">
+      <div class="form-section">
+          <h3 class="section-title">
+            <i class="fas fa-map-marker-alt"></i>
+             Address Information
+          </h3>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="clientAddressId" class="form-label required">Address Type</label>
+              <select
+              id="clientAddressId"
+              formControlName="clientAddressId"
+              class="form-select"
+              [class.is-invalid]="isFieldInvalid('clientAddressId')"
+              [disabled]="isClientAddressLoading">
+              <option value="">{{ isClientAddressLoading ? 'Loading clientAddress...' : 'Select Client Address' }}</option>
+              <option *ngFor="let add of clientAddress" [value]="add.clientAddressId">
+                {{ add.clientAddressName }}
+              </option>
+              </select>
+              <div class="invalid-feedback">
+              {{ getFieldError('clientAddressId') }}
+            </div>
+              <div *ngIf="isClientAddressLoading" class="loading-indicator">
+              <i class="fas fa-spinner fa-spin"></i> Loading Client Address...</div>
+              <!-- <small class="text-muted">Client Address count: {{ clientAddress.length }}</small> -->
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="addressLine1" class="form-label required">Address Line 1</label>
+              <input
+                type="text"
+                id="addressLine1"
+                pattern="[a-zA-Z0-9]+" 
+                title="Only alphanumeric characters are allowed"
+                formControlName="addressLine1"
+                class="form-control"
+                [class.is-invalid]="isFieldInvalid('addressLine1')"
+                placeholder="Enter Address Line 1">
+              <div class="invalid-feedback">
+                {{ getFieldError('addressLine1') }}
+              </div>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="addressLine2" class="form-label required">Address Line 2</label>
+              <input
+                type="text"
+                pattern="[a-zA-Z0-9]+" 
+                title="Only alphanumeric characters are allowed"
+                id="addressLine2"
+                formControlName="addressLine2"
+                class="form-control"
+                [class.is-invalid]="isFieldInvalid('addressLine2')"
+                placeholder="Enter Address Line 2">
+              <div class="invalid-feedback">
+                {{ getFieldError('addressLine2') }}
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="addressLine3" class="form-label required">Address Line 3</label>
+              <input
+                type="text"
+                pattern="[a-zA-Z0-9]+" 
+                title="Only alphanumeric characters are allowed"
+                id="addressLine3"
+                formControlName="addressLine3"
+                class="form-control"
+                [class.is-invalid]="isFieldInvalid('addressLine3')"
+                placeholder="Enter Address Line 3">
+              <div class="invalid-feedback">
+                {{ getFieldError('addressLine3') }}
+              </div>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="addressLine4" class="form-label">Address Line 4</label>
+              <input
+                type="text"
+                id="addressLine4"
+                formControlName="addressLine4"
+                class="form-control"
+                [class.is-invalid]="isFieldInvalid('addressLine4')"
+                placeholder="Enter address line 4">
+              <div class="invalid-feedback">
+                {{ getFieldError('addressLine4') }}
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="country" class="form-label required">Country</label>
+              <select
+                id="country"
+                formControlName="country"
+                class="form-select"
+                [class.is-invalid]="isFieldInvalid('country')"
+                [disabled]="isCountriesLoading">
+                <option value="">{{ isCountriesLoading ? 'Loading countries...' : 'Select Country' }}</option>
+
+                <option *ngFor="let country of countryOptions" [value]="country.value">
+                  {{ country.label }}
+                </option>
+              </select>
+              <div class="invalid-feedback">
+                {{ getFieldError('country') }}
+              </div>
+            </div>
+
+
+            <div class="form-group col-md-6">
+              <label for="state" class="form-label required">State/Province</label>
+              <select
+                id="state"
+                formControlName="state"
+                class="form-select"
+                [class.is-invalid]="isFieldInvalid('address.state')"
+                [disabled]="isStatesLoading || !selectedCountries">
+                <option value="">
+                  {{ isStatesLoading ? 'Loading states...' : (!selectedCountries ? 'Select country first' : 'Select State') }}
+                </option>
+                <option *ngFor="let state of stateOptions" [value]="state.value">
+                  {{ state.label }}
+                </option>
+                <option value="Other">Other</option>
+              </select>
+              <div class="invalid-feedback">
+                {{ getFieldError('address.state') }}
+              </div>
+              <!-- <small class="text-muted">States count: {{ stateOptions.length }} | Selected Country: {{ selectedCountries }}</small> -->
+            </div>
+            <div class="form-row" *ngIf="addressForm.get('state')?.value === 'Other'">
+  <div class="form-group col-md-12">
+    <label for="otherState" class="form-label required">Specify Other State</label>
+    <input
+      id="otherState"
+      type="text"
+      pattern="[a-zA-Z]+" 
+      title="Only alphabet characters are allowed"
+      formControlName="otherState"
+      class="form-control"
+      [class.is-invalid]="isFieldInvalid('otherState')"
+      placeholder="Enter other position title" />
+    <div class="invalid-feedback">
+      {{ getFieldError('otherState') }}
+    </div>
+  </div>
+</div>
+
+            <div class="form-group col-md-6">
+              <label for="pincode" class="form-label required">PIN/ZIP Code</label>
+              <input
+                type="text"
+                pattern="[0-9]+" 
+              title="Only numeric characters are allowed"
+                id="pincode"
+                formControlName="pincode"
+                class="form-control"
+                [class.is-invalid]="isFieldInvalid('pincode')"
+                placeholder="Enter PIN or ZIP code">
+              <div class="invalid-feedback">
+                {{ getFieldError('pincode') }}
+              </div>
+            </div>
+
+
+            <div class="form-group col-md-6">
+              <label for="latitude" class="form-label required">Latitude</label>
+              <input
+                type="number"
+                id="latitude"
+                formControlName="latitude"
+                class="form-control"
+                [class.is-invalid]="isFieldInvalid('latitude')"
+                placeholder="Latitude">
+              <div class="invalid-feedback">
+                {{ getFieldError('latitude') }}
+              </div>
+            </div>
+
+
+            <div class="form-group col-md-6">
+              <label for="longitude" class="form-label required">Longitude</label>
+              <input
+                type="number"
+                id="longitude"
+                formControlName="longitude"
+                class="form-control"
+                [class.is-invalid]="isFieldInvalid('longitude')"
+                placeholder="Longitude">
+              <div class="invalid-feedback">
+                {{ getFieldError('longitude') }}
+              </div>
+            </div>
+          </div>
+      </div>
+
+
+
+      <div class="form-actions">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="onCancelClick()"
+          [disabled]="isLoading">
+          <i class="fas fa-times"></i>
+          Cancel
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-outline-primary"
+          (click)="onReset()"
+          [disabled]="isLoading">
+          <i class="fas fa-undo"></i>
+          Reset
+        </button>
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="addressForm.invalid || isLoading">
+          <i class="fas fa-spinner fa-spin" *ngIf="isLoading"></i>
+          <i class="fas fa-save" *ngIf="!isLoading"></i>
+          {{ isLoading ? 'Saving...' : (isEditMode ? 'Update Address' : 'Save Address') }}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

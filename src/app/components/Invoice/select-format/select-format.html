@@ -1,0 +1,15 @@
+
+
+<div class="modal-wrapper">
+<h2>Select Invoice Format</h2>
+<select [(ngModel)]="selectedFormatId" class="form-control">
+  <option *ngFor="let format of formats" [value]="format.id">
+    {{ format.formatName }} {{ format.isDefault ? '(Default)' : '' }}
+  </option>
+</select>
+
+<div class="actions">
+  <button (click)="confirmSelection()">✅ Confirm</button>
+  <button (click)="cancel()">❌ Cancel</button>
+</div>
+</div>

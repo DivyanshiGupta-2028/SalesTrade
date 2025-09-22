@@ -1,0 +1,323 @@
+<div class="custom-stepper" [formGroup]="form">
+  <div class="container py-3 w-50">
+    <div class="contact-form-container">
+      <div class="form-header mb-4">
+        <h2 class="form-title text-center">
+          <i class="fas fa-user-plus"></i>
+           Business Details
+        </h2>
+        <div class="form-subtitle"></div>
+      </div>
+
+      <div class="form-grid">
+        <!-- Step 1: Client Info -->
+        <div class="form-section" *ngIf="currentStep === 1" formGroupName="step1">
+          <table class="table table-borderless p-0 mb-3 w-auto">
+            <tbody>
+              <tr *ngFor="let license of licenses$ | async">
+                <td><h5><b>Licensed Company Name: {{ license.companyName }}</b></h5></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="mb-3">
+            <label class="form-label" for="businessName">Business Name</label>
+            <input type="text" class="form-control form-control-sm" placeholder="Business Name" formControlName="businessName" />
+            <div *ngIf="form.get('step1.businessName')?.touched && form.get('step1.businessName')?.hasError('required')" class="text-danger small mt-1">
+              Business Name is required.
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="legalName">Legal Name</label>
+            <input type="text" class="form-control form-control-sm" placeholder="Legal Name" formControlName="legalName" />
+            <div *ngIf="form.get('step1.legalName')?.touched && form.get('step1.legalName')?.hasError('required')" class="text-danger small mt-1">
+              Legal Name is required.
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="businessType">Business Type</label>
+            <select id="businessType" formControlName="businessType" class="form-select form-select-sm">
+              <option value="">-- Select --</option>
+              <option value="Incorporated Company">Incorporated Company</option>
+              <option value="Individual">Individual</option>
+              <option value="Partnership">Partnership</option>
+              <option value="Sole Trader">Sole Trader</option>
+              <option value="Non Profit">Non Profit</option>
+            </select>
+            <div *ngIf="form.get('step1.businessType')?.touched && form.get('step1.businessType')?.hasError('required')" class="text-danger small mt-1">
+              Business Type is required.
+            </div>
+          </div>
+
+          <div class="mb-3 position-relative">
+            <label class="form-label" for="referingClientName">Referring Client Name</label>
+            <input type="text" class="form-control form-control-sm" placeholder="Referring Client Name"
+               formControlName="referingClientName"
+               (input)="onClientInput()"
+               (keydown)="onKeyDown($event)" />
+            <div *ngIf="form.get('step1.referingClientName')?.touched && form.get('step1.referingClientName')?.hasError('invalidClientName')" 
+     class="text-danger small mt-1">
+  Please select a valid client from the suggestions.
+</div>
+
+            <ul *ngIf="referringClients.length > 0" class="list-group position-absolute w-100" style="z-index: 1000;">
+              <li *ngFor="let client of referringClients; let i = index" 
+                  [class.active]="i === highlightedIndex"
+                  class="list-group-item list-group-item-action p-1"
+                  (click)="selectClient(client)">
+                {{ client.referingClientName }}
+              </li>
+            </ul>
+          </div>
+
+          <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-primary btn-sm" (click)="nextStep()">Next</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <!-- Step 2: Business Details -->
+        <div class="form-section" *ngIf="currentStep === 2" formGroupName="step2">
+          <table class="table table-borderless p-0 mb-3 w-auto">
+            <tbody>
+              <tr *ngFor="let license of licenses$ | async">
+                <td><h5><b>Licensed Company Name: {{ license.companyName }}</b></h5></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="mb-3">
+            <label class="form-label" for="taxReferenceGeneral">General Tax Ref</label>
+            <input type="text" class="form-control form-control-sm" placeholder="General Tax Ref" formControlName="taxReferenceGeneral" />
+            <div *ngIf="form.get('step2.taxReferenceGeneral')?.touched && form.get('step2.taxReferenceGeneral')?.hasError('required')" class="text-danger small mt-1">
+              General Tax Ref is required.
+            </div>
+          </div>
+  
+          <div class="mb-3">
+            <label class="form-label" for="taxReferenceSales">Sales Tax Ref</label>
+            <input type="text" class="form-control form-control-sm" placeholder="Sales Tax Ref" formControlName="taxReferenceSales" />
+            <div *ngIf="form.get('step2.taxReferenceSales')?.touched && form.get('step2.taxReferenceSales')?.hasError('required')" class="text-danger small mt-1">
+              Sales Tax Ref is required.
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="kyc">KYC</label>
+            <input type="text" class="form-control form-control-sm" placeholder="KYC" formControlName="kyc" />
+            <div *ngIf="form.get('step2.kyc')?.touched && form.get('step2.kyc')?.hasError('required')" class="text-danger small mt-1">
+              KYC is required.
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="cashRevenue">Cash Revenue</label>
+            <input 
+  type="text" 
+  class="form-control form-control-sm"
+  placeholder="Cash Revenue"
+  formControlName="cashRevenue"
+  inputmode="numeric"
+  pattern="[0-9]*"
+  (keypress)="allowOnlyNumbers($event)" 
+/>
+            <div *ngIf="form.get('step2.cashRevenue')?.touched && form.get('step2.cashRevenue')?.hasError('required')" class="text-danger small mt-1">
+              Cash Revenue is required.
+            </div>
+            <div *ngIf="form.get('step2.cashRevenue')?.hasError('pattern')" class="text-danger small mt-1">
+              Only numbers are allowed.
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="total12MonthIncome">12-Month Income</label>
+            <input type="number" class="form-control form-control-sm" placeholder="12-Month Income" formControlName="total12MonthIncome" inputmode="numeric"
+  pattern="[0-9]*"
+  (keypress)="allowOnlyNumbers($event)"  />
+            <div *ngIf="form.get('step2.total12MonthIncome')?.touched && form.get('step2.total12MonthIncome')?.hasError('required')" class="text-danger small mt-1">
+              12-Month Income is required.
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="numberOfEmployee">No. of Employees</label>
+            <input type="number" class="form-control form-control-sm" placeholder="No. of Employees" formControlName="numberOfEmployee" inputmode="numeric"
+  pattern="[0-9]*"
+  (keypress)="allowOnlyNumbers($event)" />
+            <div *ngIf="form.get('step2.numberOfEmployee')?.touched && form.get('step2.numberOfEmployee')?.hasError('required')" class="text-danger small mt-1">
+              Number of Employees is required.
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-secondary btn-sm" (click)="prevStep()">Back</button>
+            <button type="button" class="btn btn-primary btn-sm" (click)="nextStep()">Next</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <!-- Step 3: Profile -->
+        <div class="form-section" *ngIf="currentStep === 3" formGroupName="step3">
+          <table class="table table-borderless p-0 mb-3 w-auto">
+            <tbody>
+              <tr *ngFor="let license of licenses$ | async">
+                <td><h5><b>Licensed Company Name: {{ license.companyName }}</b></h5></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="mb-3 position-relative">
+            <label class="form-label" for="website">Website</label>
+            <input type="text" class="form-control form-control-sm" placeholder="Website" formControlName="website" (input)="onWebsiteInput()" />
+            <ul *ngIf="suggestedWebsites.length > 0" class="list-group position-absolute w-100" style="z-index: 1000;">
+              <li *ngFor="let site of suggestedWebsites" class="list-group-item list-group-item-action p-1" (click)="step3.get('website')?.setValue(site)">
+                {{ site }}
+              </li>
+            </ul>
+            <div *ngIf="form.get('step3.website')?.touched && form.get('step3.website')?.hasError('required')" class="text-danger small mt-1">
+              Website is required.
+            </div>
+            <div *ngIf="form.get('step3.website')?.hasError('pattern')" class="text-danger small mt-1">
+              Must be a valid URL (http:// or https://).
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="profileDescription">Profile Description</label>
+            <textarea class="form-control form-control-sm" placeholder="Profile Description"
+                      formControlName="profileDescription"
+                      (input)="updateWordCount()"></textarea>
+            <small class="text-muted">{{ profileDescriptionWordCount }}/500 words</small>
+            <div *ngIf="form.get('step3.profileDescription')?.touched && form.get('step3.profileDescription')?.hasError('required')" class="text-danger small mt-1">
+              Profile Description is required.
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-secondary btn-sm" (click)="prevStep()">Back</button>
+            <button type="button" class="btn btn-primary btn-sm" (click)="nextStep()">Next</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <!-- Step 4: Dates -->
+        <div class="form-section" *ngIf="currentStep === 4" formGroupName="step4">
+          <table class="table table-borderless p-0 mb-3 w-auto">
+            <tbody>
+              <tr *ngFor="let license of licenses$ | async">
+                <td><h5><b>Licensed Company Name: {{ license.companyName }}</b></h5></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Business Start Date -->
+<div class="mb-3">
+  <label class="form-label">Business Start Date</label>
+  <input type="date" class="form-control form-control-sm" formControlName="businessStartDate" />
+  <div *ngIf="form.get('step4.businessStartDate')?.touched && form.get('step4.businessStartDate')?.hasError('required')" class="text-danger small mt-1">
+    Business Start Date is required.
+  </div>
+  <div *ngIf="form.get('step4.businessStartDate')?.hasError('afterLastRenewed')" class="text-danger small mt-1">
+    Business Start Date must be earlier than Last Renewed Date.
+  </div>
+</div>
+
+<!-- Last Renewed Date -->
+<div class="mb-3">
+  <label class="form-label">Last Renewed Date</label>
+  <input type="date" class="form-control form-control-sm" formControlName="lastRenewedDate" />
+  <div *ngIf="form.get('step4.lastRenewedDate')?.touched && form.get('step4.lastRenewedDate')?.hasError('required')" class="text-danger small mt-1">
+    Last Renewed Date is required.
+  </div>
+  <div *ngIf="form.get('step4.lastRenewedDate')?.hasError('afterRenewal')" class="text-danger small mt-1">
+    Last Renewed Date must be earlier than Date Renewal.
+  </div>
+</div>
+
+<!-- Date Renewal -->
+<div class="mb-3">
+  <label class="form-label">Date Renewal</label>
+  <input type="date" class="form-control form-control-sm" formControlName="dateRenewal" />
+  <div *ngIf="form.get('step4.dateRenewal')?.touched && form.get('step4.dateRenewal')?.hasError('required')" class="text-danger small mt-1">
+    Date Renewal is required.
+  </div>
+</div>
+
+
+
+
+
+
+          <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-secondary btn-sm" (click)="prevStep()">Back</button>
+            <button type="button" class="btn btn-primary btn-sm" (click)="nextStep()">Next</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <!-- Step 5: Settings -->
+        <div class="form-section" *ngIf="currentStep === 5" formGroupName="step5">
+          <table class="table table-borderless p-0 mb-3 w-auto">
+            <tbody>
+              <tr *ngFor="let license of licenses$ | async">
+                <td><h5><b>Licensed Company Name: {{ license.companyName }}</b></h5></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="form-check">
+            <mat-checkbox formControlName="currentStatus"></mat-checkbox>
+            <label class="form-check-label ms-2">Current Status</label>
+          </div>
+          <div class="form-check">
+            <mat-checkbox formControlName="isLegalDocumentationHeld"></mat-checkbox>
+            <label class="form-check-label ms-2">Legal Documentation</label>
+          </div>
+          <div class="form-check">
+            <mat-checkbox formControlName="isTaxReportingExempt"></mat-checkbox>
+            <label class="form-check-label ms-2">Tax Exempt</label>
+          </div>
+          <div class="form-check">
+            <mat-checkbox formControlName="canSendMessages"></mat-checkbox>
+            <label class="form-check-label ms-2">Can Send Messages</label>
+          </div>
+          <div class="form-check">
+            <mat-checkbox formControlName="canReceiveMessages"></mat-checkbox>
+            <label class="form-check-label ms-2">Can Receive Messages</label>
+          </div>
+          <div class="form-check">
+            <mat-checkbox formControlName="isListedInDirectory"></mat-checkbox>
+            <label class="form-check-label ms-2">Listed in Directory</label>
+          </div>
+          <div class="form-check">
+            <mat-checkbox formControlName="isListedOnWebsite"></mat-checkbox>
+            <label class="form-check-label ms-2">Listed on Website</label>
+          </div>
+          <div class="form-check">
+            <mat-checkbox formControlName="isActive"></mat-checkbox>
+            <label class="form-check-label ms-2">Active</label>
+          </div>
+          <div class="form-check">
+            <mat-checkbox formControlName="isLicenseMember"></mat-checkbox>
+            <label class="form-check-label ms-2">License Member</label>
+          </div>
+          <div class="form-check mb-3">
+            <mat-checkbox formControlName="hasPermissionToUseInvoiceSystem"></mat-checkbox>
+            <label class="form-check-label ms-2">Invoice System Access</label>
+          </div>
+
+          <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-secondary btn-sm" (click)="prevStep()">Back</button>
+            <button type="button" class="btn btn-primary btn-sm" (click)="submitForm()">Save and Continue</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

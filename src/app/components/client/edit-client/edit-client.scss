@@ -1,0 +1,73 @@
+.edit-client-wrapper {
+      padding: 20px;
+      min-width: 500px;
+    }
+
+    .header {
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .header h3 {
+      margin: 0;
+      color: #333;
+    }
+
+    .loading-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px;
+    }
+
+    .loading-container p {
+      margin-top: 16px;
+      color: #666;
+    }
+
+    .client-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .full-width {
+      width: 100%;
+    }
+
+    .row {
+      display: flex;
+      gap: 16px;
+    }
+
+    .half-width {
+      flex: 1;
+    }
+
+    .button-container {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+
+    .save-button {
+      position: relative;
+    }
+
+    .button-spinner {
+      position: absolute;
+      left: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .note {
+      font-size: 12px;
+      color: #666;
+    }
+
+    ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+      margin-top: 4px;
+    }

@@ -1,0 +1,72 @@
+<div class="address-container">
+  <div class="header">
+    <h2>Client Address Management</h2>
+
+    <button class="add-btn" (click)="addAddress()">
+      <i class="icon-plus"></i>
+      Add New Address
+    </button>
+  </div>
+
+  <div class="loading-container" *ngIf="loading">
+    <div class="loading-spinner"></div>
+    <p>Loading addresses...</p>
+  </div>
+
+  <div class="address-content" *ngIf="!loading">
+    <div class="table-container">
+      <table class="address-table">
+        <thead>
+          <tr>
+            <th>Client ID</th>
+              <th> Address Type</th>
+            <th> Address Line 1</th>
+            <th> Address Line 2</th>
+            <th> Address Line 3</th>
+            <th> Address Line 4</th>
+
+            <th>Country</th>
+            <th>State</th>
+            <th>Pincode</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+         <tr *ngFor="let address of addresses; trackBy: trackByClientId">
+
+  <td>{{ address.exchangeClientId }}</td>
+    <td>{{ getAddressTypeName(address.clientAddressId) }}</td>
+  <td>{{ address.addressLine1 }}</td>
+  <td>{{ address.addressLine2 }}</td>
+  <td>{{ address.addressLine3 }}</td>
+  <td>{{ address.addressLine4 }}</td>
+
+  <td>{{ address.countryName }}</td>
+  <td>{{ address.state }}</td>
+  <td>{{ address.pincode }}</td>
+  <td>{{ address.latitude }}</td>
+  <td>{{ address.longitude }}</td>
+  <td class="actions-cell">
+    <button class="edit-btn" (click)="editAddress(address)" title="Edit Address">
+      <i class="icon-edit"></i>
+      Edit
+    </button>
+    <button class="delete-btn" (click)="deleteAddress(address)"title="Delete Address">
+      <i class="icon-delete"></i>Delete</button>
+  </td>
+</tr>
+
+        </tbody>
+      </table>
+    </div>
+
+    <div class="no-data" *ngIf="addresses.length === 0">
+      <div class="no-data-icon">📍</div>
+      <h3>No addresses found</h3>
+      <p>Start by adding your first client address</p>
+      <button class="add-btn primary" (click)="addAddress()">Add Address</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,144 @@
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
+  <div class="form-row">
+                      <tr *ngFor="let license of licenses$ | async">
+          <td><h5><b>License Parent Name:
+              {{ license.companyName }}</b></h5>
+          </td>
+</tr>
+    <div class="form-group col-md-12">
+      <label for="hasPermissionLicense" class="form-label required">Has Permission To License</label>
+      <input
+        type="checkbox"
+        id="hasPermissionLicense"
+        formControlName="hasPermissionLicense"
+        class="form-checkbox"
+        [class.is-invalid]="isFieldInvalid('hasPermissionLicense')"
+      />
+      <div class="invalid-feedback">
+        {{ getFieldError('hasPermissionLicense') }}
+      </div>
+    </div>
+  </div>
+  <div class="form-row" *ngIf="form.get('hasPermissionLicense')?.value">
+    <div class="form-group col-md-12">
+      <label for="urlLicense" class="form-label required">URL</label>
+      <input
+        id="urlLicense"
+        type="url"
+        formControlName="urlLicense"
+        class="form-control"
+        [class.is-invalid]="isFieldInvalid('urlLicense')"
+        placeholder="Enter URL"
+      />
+      <div class="invalid-feedback">
+        {{ getFieldError('urlLicense') }}
+      </div>
+    </div>
+
+
+    <!-- <div class="form-row">
+        <div class="form-group col-md-4">
+              <label for="roleExchange" class="form-label required">Role</label>
+              <select
+                id="roleExchange"
+                formControlName="roleExchange"
+                class="form-select"
+                [class.is-invalid]="isFieldInvalid('roleExchange')"
+                [disabled]="isRolesLoading">
+                <option value="">{{ isRolesLoading ? 'Loading roles...' : 'Select Role' }}</option>
+                <option *ngFor="let role of roles" [value]="role.id">
+                  {{ role.name }}
+                </option>
+              </select>
+              <div class="invalid-feedback">
+                {{ getFieldError('roleExchange') }}
+              </div>
+            </div>
+              </div> -->
+                  <!-- <div class="form-row">
+        <div class="form-group col-md-4">
+              <label for="applicationType1" class="form-label required">Role</label>
+              <select
+                id="applicationType1"
+                formControlName="applicationType1"
+                class="form-select"
+                [class.is-invalid]="isFieldInvalid('applicationType1')"
+                [disabled]="isRolesLoading">
+                <option value="">{{ isRolesLoading ? 'Loading roles...' : 'Select Role' }}</option>
+                <option *ngFor="let app of appTypes" [value]="app.id">
+                  {{ app.name }}
+                </option>
+              </select>
+              <div class="invalid-feedback">
+                {{ getFieldError('applicationType1') }}
+              </div>
+            </div>
+              </div> -->
+  </div>
+    <div class="form-group col-md-12">
+      <label for="hasPermissionInvoice" class="form-label required">Has Permission To Invoice</label>
+      <input
+        type="checkbox"
+        id="hasPermissionInvoice"
+        formControlName="hasPermissionInvoice"
+        class="form-checkbox"
+        [class.is-invalid]="isFieldInvalid('hasPermissionInvoice')"
+      />
+      <div class="invalid-feedback">
+        {{ getFieldError('hasPermissionInvoice') }}
+      </div>
+    </div>
+
+  <div class="form-row" *ngIf="form.get('hasPermissionInvoice')?.value">
+    <div class="form-group col-md-12">
+      <label for="urlInvoice" class="form-label required">URL</label>
+      <input
+        id="urlInvoice"
+        type="url"
+        formControlName="urlInvoice"
+        class="form-control"
+        [class.is-invalid]="isFieldInvalid('urlInvoice')"
+        placeholder="Enter URL"
+      />
+      <div class="invalid-feedback">
+        {{ getFieldError('urlInvoice') }}
+      </div>
+    </div>
+     <!-- <div class="form-group col-md-4">
+              <label for="applicationType2" class="form-label required">Role</label>
+              <select
+                id="applicationType2"
+                formControlName="applicationType2"
+                class="form-select"
+                [class.is-invalid]="isFieldInvalid('applicationType2')"
+                [disabled]="isRolesLoading">
+                <option value="">{{ isRolesLoading ? 'Loading roles...' : 'Select Role' }}</option>
+                <option *ngFor="let app of appTypes" [value]="app.id">
+                {{ app.name }}
+              </option>
+              </select>
+              <div class="invalid-feedback">
+                {{ getFieldError('applicationType2') }}
+              </div>
+            </div> -->
+            <!--<div class="form-group col-md-4">
+              <label for="roleInvoice" class="form-label required">Role</label>
+              <select
+                id="roleInvoice"
+                formControlName="roleInvoice"
+                class="form-select"
+                [class.is-invalid]="isFieldInvalid('roleInvoice')"
+                [disabled]="isRolesLoading">
+                <option value="">{{ isRolesLoading ? 'Loading roles...' : 'Select Role' }}</option>
+                <option *ngFor="let role of roles" [value]="role.id">
+                {{ role.name }}
+              </option>
+              </select>
+              <div class="invalid-feedback">
+                {{ getFieldError('roleInvoice') }}
+              </div>
+            </div> -->
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>

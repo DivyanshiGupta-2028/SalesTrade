@@ -1,0 +1,80 @@
+<div class="update-container">
+  <h2>🛠 Edit Invoice Format</h2>
+
+  <form (ngSubmit)="updateFormat()">
+    <div class="form-block">
+      <label>Format Name</label>
+      <input [(ngModel)]="formatData.formatName" name="formatName" required />
+    </div>
+
+    <div class="form-block">
+      <label>Invoice Pattern</label>
+      <input [(ngModel)]="formatData.invoiceNumberPattern" name="pattern" required />
+    </div>
+
+    <div class="form-block">
+      <label>Currency</label>
+      <select [(ngModel)]="formatData.defaultCurrency" name="currency">
+        <option value="USD">USD</option>
+        <option value="INR">INR</option>
+        <option value="EUR">EUR</option>
+        <option value="GBP">GBP</option>
+      <option value="JPY">JPY</option>
+      <option value="AUD">AUD</option>
+      </select>
+    </div>
+   <div class="section">
+  <h4>Tax Details</h4>
+  <div class="form-row">
+    <div class="form-group">
+      <label for="taxDetailsParsed.cgst">CGST (%) :</label>
+      <input type="number"
+       id="taxDetailsParsed.cgst"
+       [(ngModel)]="formatData.taxDetailsParsed!.cgst"
+       name="taxDetailsParsed.cgst"
+       placeholder="Enter CGST %" />
+    </div>
+
+    <div class="form-group">
+      <label for="taxDetailsParsed.sgst">SGST (%) :</label>
+      <input type="number" id="taxDetailsParsed.sgst" [(ngModel)]="formatData.taxDetailsParsed!.sgst" name="taxDetailsParsed.sgst" placeholder="Enter SGST %" />
+    </div>
+
+    <div class="form-group">
+      <label for="taxDetailsParsed.igst">IGST (%) :</label>
+      <input type="number" id="taxDetailsParsed.igst" [(ngModel)]="formatData.taxDetailsParsed!.igst" name="taxDetailsParsed.igst" placeholder="Enter IGST %" />
+    </div>
+  </div>
+   </div>
+
+<div class="section">
+  <h4>Item Columns</h4>
+  <div class="item-columns">
+    <div class="column-row" *ngFor="let col of formatData.itemColumnsParsed; let i = index">
+      <input [(ngModel)]="col.key" name="colKey{{i}}" placeholder="Key" class="form-control" />
+
+
+      <label *ngIf="i < 4" class="visibility-checkbox">
+        <input type="checkbox" [(ngModel)]="col.visible" name="colVisible{{i}}" />
+        Show
+      </label>
+
+
+      <button *ngIf="i >= 4" type="button" (click)="formatData.itemColumnsParsed?.splice(i, 1)">
+        🗑
+      </button>
+    </div>
+  </div>
+
+
+  <button
+    class="add-column"
+    type="button"
+    (click)="formatData.itemColumnsParsed?.push({ key: '', visible: true })">
+    + Add Column
+  </button>
+</div>
+
+    <button type="submit">💾 Update Format</button>
+  </form>
+</div>

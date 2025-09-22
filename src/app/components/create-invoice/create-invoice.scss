@@ -1,0 +1,155 @@
+
+/* Paste your full CSS here (you already shared this part above) */
+@font-face {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-style: normal;
+  font-weight: normal;
+  src: url(http://themes.googleusercontent.com/static/fonts/opensans/v8/cJZKeOuBrn4kERxqtaUH3aCWcynf_cDxXwCLxiixG1c.ttf) format("truetype");
+}
+.invoice-wrapper {
+  width: 800px;
+  max-width: 100%;
+  margin: 40px auto;
+  padding: 20px;
+  background: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #111010;
+  height: 1100px; /* Example fixed height */
+}
+
+
+.borderTop {
+  border-top: 1px solid #000;
+}
+
+/* rest of your CSS */
+
+body {
+  font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+/* Utility */
+.borderTop { border-top: 1px solid #000; }
+.borderBottom { border-bottom: 1px solid #000; }
+.border2 { border-width: 2px; }
+  .boldText {
+     font-weight: bold;
+  }
+
+  .borderLine {
+    border-bottom: 1px solid #000;
+    margin-top: 5px;
+  }
+.textCenter { text-align: center; }
+.textLeft { text-align: left; }
+.textRight { text-align: right; }
+.leftfloat { float: left; }
+.rightfloat { float: right; }
+.margin0 { margin: 10px; }
+
+.section50 {
+  width: 50%;
+  max-width: 50%;
+  display: inline-block;
+  float: left;
+}
+
+.flexBox {
+  display: block;
+  width: 100%;
+  text-align: justify;
+}
+
+.fontSize15 { font-size: 15px; line-height: 15px; }
+.fontSize14 { font-size: 14px; line-height: 14px; }
+.fontSize12 { font-size: 12px; line-height: 14px; }
+.fontSize11 { font-size: 11px; line-height: 12px; }
+.fontSize10 { font-size: 10px; line-height: 12px; }
+.fontSize9  { font-size: 9px;  line-height: 14px; }
+
+.padding5 { padding-top: 5px; padding-bottom: 5px; }
+.padding10 { margin-top: 10px; margin-bottom: 10px; }
+.width50 { width: 50%; }
+
+/* Tables */
+.tbl_brdr table {
+  width: 100%;
+  border: none;
+  border-collapse: collapse;
+  vertical-align: middle;
+}
+
+.topDetailsTable,
+.topDetailsTable td {
+  width: 100%;
+  border: none;
+  border-collapse: collapse;
+  padding: 0;
+  color: #4E4D4D;
+}
+
+.headingTable {
+  width: 100%;
+  border: none;
+  border-collapse: collapse;
+  padding: 4px 0px;
+}
+
+.pageLogo {
+  width: 50px;
+  height: 50px;
+}
+
+.tbl_brdr td.valueString::first-letter {
+  text-transform: capitalize;
+}
+
+.bankDetailTable,
+.bankDetailTable th,
+.bankDetailTable td {
+  padding: 5px 4px;
+}
+
+.tableNote,
+.tableNote td {
+  padding: 7px 0px 0px;
+}
+
+.amountDetailTable,
+.amountDetailTable th,
+.amountDetailTable td {
+  border: 1px solid #F1F3F5;
+  background-color: #F8F9FA;
+  padding: 5px 4px;
+}
+
+.amountDetailTable tr td {
+  color: #11181C;
+}
+
+.blankTable,
+.blankTable th {
+  padding: 0px;
+  border: none;
+  border-collapse: collapse;
+}
+
+.headingTable2 {
+  border-collapse: collapse;
+  padding: 4px 0px;
+}
+
+.innerTable,
+.innerTable tr td {
+  padding: 4px 5px 4px 0;
+}
+
+.innerTableLeft,
+.innerTableLeft td {
+  padding-left: -6px;
+}
+
+.topDetailsTableOld,
+.topDetailsTableOld td {
+  padding: 4px 0;
+}

@@ -1,0 +1,28 @@
+<div class="modal-wrapper">
+  <div class="modal-header">
+    <h2>Select Client or Create new client</h2>
+    <button mat-icon-button (click)="closeDialog()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="modal-search">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-icon matPrefix>search</mat-icon>
+      <input matInput placeholder="Search" [(ngModel)]="searchTerm">
+    </mat-form-field>
+  </div>
+
+  <div class="client-list">
+    <div class="client-item" *ngFor="let client of clients" (click)="selectClient(client.id)">
+      <div class="avatar"></div>
+      <div class="client-info">
+        <div class="client-name">{{ client.name }}</div>
+        <div class="client-email">{{ client.email }}</div>
+      </div>
+      <div class="client-org">{{ client.company_Name  }}</div>
+    </div>
+  </div>
+
+  <button class="create-button" (click)="openAddClientDialog()">Create New Client</button>
+</div>

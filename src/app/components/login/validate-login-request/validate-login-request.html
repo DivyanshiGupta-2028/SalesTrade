@@ -1,0 +1,65 @@
+<div class="login-page-container">
+  <div class="login-form-box">
+    <img class="login-logo" src="logo.png" alt="Logo" />
+    <h4 class="login-title">Welcome to Sanskriti IT Solutions!</h4>
+    <p class="login-subtitle">Please sign-in to your account...</p>
+
+     <form [formGroup]="usernameForm" (ngSubmit)="onSubmit()">
+      <!-- <div class="form-group">
+        <label for="username">Email or Username</label>
+        <input
+          id="username"
+          type="text"
+          class="form-control"
+          formControlName="username"
+          [class.is-invalid]="usernameForm.get('username')?.invalid && (usernameForm.get('username')?.touched || usernameForm.get('username')?.dirty)"
+          placeholder="Enter your email or username"
+        />
+        <div class="invalid-feedback">
+          *ngIf="usernameForm.get('username')?.invalid && (usernameForm.get('username')?.touched || usernameForm.get('username')?.dirty)">
+          Username is required and should have at least 3 characters.</div>
+      </div>
+
+      <div class="form-group checkbox-row">
+        <input type="checkbox" id="rememberMe" formControlName="rememberMe" />
+        <label for="rememberMe">Remember Me</label>
+      </div>
+
+      <div class="form-group">
+        <button type="submit" class="btn-submit">Next</button>
+      </div> -->
+
+
+      <div class="form-group">
+  <label for="username">Email or Username</label>
+  <input
+    id="username"
+    type="text"
+    class="form-control"
+    formControlName="username"
+    [class.is-invalid]="usernameForm.get('username')?.invalid && (usernameForm.get('username')?.touched || usernameForm.get('username')?.dirty)"
+    placeholder="Enter your email or username"
+  />
+  <div class="invalid-feedback"
+    *ngIf="usernameForm.get('username')?.invalid && (usernameForm.get('username')?.touched || usernameForm.get('username')?.dirty)">
+    Username is required and should have at least 3 characters.</div>
+</div>
+
+<!-- Show your custom error message here -->
+<div *ngIf="showError" class="alert alert-danger mt-2">
+  {{ errorMessage }}
+</div>
+<div class="form-group checkbox-row">
+        <input type="checkbox" id="rememberMe" formControlName="rememberMe" />
+        <label for="rememberMe">Remember Me</label>
+      </div>
+
+      <div class="form-group">
+        <button type="submit" class="btn-submit">Next</button>
+      </div>
+
+    </form>
+
+
+  </div>
+</div>

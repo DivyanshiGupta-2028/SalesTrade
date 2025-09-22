@@ -1,0 +1,549 @@
+$info-color: #72b817;
+$info-hover: #2bbd17;
+$danger-color: #dc3545;
+$danger-hover: #c82333;
+
+@mixin button-base {
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+
+.address-container {
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8fafc;
+  min-height: 100vh;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    h2 {
+      margin: 0;
+      color: #1f2937;
+      font-size: 28px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .add-btn {
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        background: linear-gradient(135deg, #2563eb, #1e40af);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+
+      .icon-plus {
+        font-size: 16px;
+      }
+    }
+  }
+
+  .loading-container {
+    text-align: center;
+    padding: 80px 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid #e5e7eb;
+      border-top: 4px solid #3b82f6;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    p {
+      color: #6b7280;
+      font-size: 16px;
+      margin: 0;
+    }
+  }
+
+  .address-content {
+    .table-container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      overflow-x: auto;
+
+      .address-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+        min-width: 1200px; 
+
+        thead {
+          background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+
+          th {
+            padding: 18px 16px;
+            text-align: left;
+            font-weight: 700;
+            color: #374151;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #e5e7eb;
+            white-space: nowrap;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+          }
+        }
+
+        tbody {
+          tr {
+            transition: all 0.2s ease;
+
+            &:hover {
+              background-color: #f9fafb;
+              transform: scale(1.001);
+            }
+
+            &:nth-child(even) {
+              background-color: #fafbfc;
+            }
+          }
+
+          td {
+            padding: 16px;
+            border-bottom: 1px solid #f3f4f6;
+            vertical-align: top;
+            max-width: 200px; // Prevent cells from getting too wide
+          }
+        }
+
+        .client-id {
+          font-weight: 700;
+          color: #1f2937;
+          font-size: 16px;
+          text-align: center;
+          background: linear-gradient(135deg, #eff6ff, #dbeafe);
+          border-radius: 6px;
+          margin: 4px;
+          padding: 8px 12px !important;
+          min-width: 80px;
+        }
+
+        .address-cell {
+          max-width: 220px;
+          word-wrap: break-word;
+          line-height: 1.5;
+
+          .address-details {
+            .address-field {
+              margin-bottom: 6px;
+              font-size: 12px;
+              line-height: 1.4;
+
+              &:last-child {
+                margin-bottom: 0;
+              }
+
+              .field-label {
+                font-weight: 600;
+                color: #4b5563;
+                margin-right: 6px;
+                display: inline-block;
+                min-width: 60px;
+                font-size: 11px;
+                text-transform: uppercase;
+                letter-spacing: 0.3px;
+              }
+
+              .field-value {
+                color: #1f2937;
+                font-weight: 500;
+              }
+            }
+          }
+
+          .no-data-text {
+            color: #9ca3af;
+            font-style: italic;
+            font-size: 13px;
+            text-align: center;
+            padding: 20px 0;
+            display: block;
+          }
+        }
+
+
+        .actions-cell {
+          //text-align: center;
+          min-width: 40px;
+//            .edit-btn {
+//           background: linear-gradient(135deg, #10b981, #059669);
+//             color: white;
+//             box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
+//            }
+
+//           .edit-btn .delete-btn {
+            
+//             border: none;
+//             padding: 5px 8px;
+//             //border-radius: 4px;
+//             cursor: pointer;
+//             font-size: 10px;
+//             font-weight: 500;
+//             transition: all 0.3s ease;
+//             display: flex;
+//             //align-items: center;
+//             gap: 4px;
+//           }
+//           .edit-btn{
+
+//             &:hover {
+//               transform: translateY(-1px);
+//               box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+//               background: linear-gradient(135deg, #059669, #047857);
+//             }
+
+//             &:active {
+//               transform: translateY(0);
+//             }
+
+//             .icon-edit {
+//               font-size: 10px;
+//             }
+//           }
+//           .delete-btn {
+//             background: $danger-color;
+//             color: white;
+//             box-shadow: $danger-hover;
+//           }
+
+//           .delete-btn {
+//            // background: $danger-color;
+//             // color: white;
+//             // border: none;
+//             // padding: 6px 10px;
+//             // border-radius: 4px;
+//             // cursor: pointer;
+//             // font-size: 10px;
+//             // font-weight: 600;
+//             // transition: all 0.3s ease;
+//             // display: inline-flex;
+//             // align-items: center;
+//             // gap: 4px;
+            
+
+//             &:hover {
+//               transform: translateY(-1px);
+//               box-shadow: $danger-hover;
+//               background: $danger-color;
+//             }
+
+//             &:active {
+//               transform: translateY(0);
+//             }
+
+//             .icon-edit {
+//               font-size: 10px;
+//             }
+//           }
+
+// //   &:hover {
+// //     
+// //   }
+.edit-btn, .delete-btn {
+  @include button-base;
+  padding: 6px 12px;
+  margin-right: 8px;
+  font-size: 12px;
+}
+
+.edit-btn {
+  background: $info-color;
+  color: white;
+
+  &:hover {
+    background: $info-hover;
+  }
+}
+
+.delete-btn {
+  background: $danger-color;
+  color: white;
+
+  &:hover {
+    background: $danger-hover;
+  }
+}
+
+// // }
+        }
+      }
+    }
+
+    .no-data {
+      text-align: center;
+      padding: 80px 20px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      color: #6b7280;
+
+      .no-data-icon {
+        font-size: 64px;
+        margin-bottom: 20px;
+        opacity: 0.7;
+      }
+
+      h3 {
+        margin: 0 0 12px 0;
+        color: #374151;
+        font-size: 24px;
+        font-weight: 600;
+      }
+
+      p {
+        margin: 0 0 24px 0;
+        font-size: 16px;
+        color: #6b7280;
+      }
+
+      .add-btn.primary {
+        background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        padding: 14px 28px;
+        font-size: 16px;
+        border-radius: 8px;
+
+        &:hover {
+          background: linear-gradient(135deg, #7c3aed, #6d28d9);
+        }
+      }
+    }
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  // Responsive design
+  @media (max-width: 1400px) {
+    .address-content .table-container .address-table {
+      min-width: 1000px;
+
+      .address-cell {
+        max-width: 180px;
+
+        .address-details .address-field {
+          font-size: 11px;
+
+          .field-label {
+            min-width: 50px;
+            font-size: 10px;
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 1200px) {
+    padding: 16px;
+
+    .header h2 {
+      font-size: 24px;
+    }
+
+    .address-content .table-container .address-table {
+      min-width: 900px;
+      font-size: 12px;
+
+      thead th {
+        padding: 14px 12px;
+        font-size: 11px;
+      }
+
+      tbody td {
+        padding: 12px;
+      }
+
+      .address-cell {
+        max-width: 160px;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 12px;
+
+    .header {
+      flex-direction: column;
+      gap: 16px;
+      padding: 16px;
+
+      h2 {
+        font-size: 20px;
+      }
+
+      .add-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    .address-content .table-container {
+      border-radius: 8px;
+
+      .address-table {
+        min-width: 800px;
+        font-size: 11px;
+
+        thead th {
+          padding: 12px 8px;
+          font-size: 10px;
+        }
+
+        tbody td {
+          padding: 10px 8px;
+        }
+
+        .address-cell {
+          max-width: 140px;
+
+          .address-details .address-field {
+            font-size: 10px;
+            margin-bottom: 4px;
+
+            .field-label {
+              min-width: 40px;
+              font-size: 9px;
+            }
+          }
+        }
+
+        .client-id {
+          font-size: 14px;
+          padding: 6px 8px !important;
+        }
+
+         .actions-cell .edit-btn.delete-btn {
+          @include button-base;
+            padding: 6px 12px;
+  margin-right: 8px;
+  font-size: 10px;
+      }
+    }
+  }
+@media (max-width: 480px) {
+  .address-container {
+    padding: 10px;
+
+    .header {
+      padding: 12px;
+      h2 {
+        font-size: 18px;
+        text-align: center;
+      }
+
+      .add-btn {
+        width: 100%;
+        font-size: 13px;
+        padding: 10px 16px;
+      }
+    }
+
+    .address-content .table-container .address-table {
+      min-width: 700px; // allow horizontal scroll
+      font-size: 10px;
+
+      thead th {
+        font-size: 9px;
+        padding: 10px 6px;
+      }
+
+      tbody td {
+        padding: 8px 6px;
+      }
+
+      .address-cell {
+        max-width: 120px;
+
+        .address-details .address-field {
+          font-size: 9px;
+
+          .field-label {
+            font-size: 8px;
+            min-width: 36px;
+          }
+        }
+      }
+
+      .client-id {
+        font-size: 12px;
+        padding: 6px 6px !important;
+      }
+
+      .actions-cell {
+        .edit-btn {
+          padding: 6px 10px;
+          font-size: 10px;
+          gap: 4px;
+
+          .icon-edit {
+            font-size: 8px;
+          }
+        }
+      }
+    }
+
+    .no-data {
+      padding: 40px 10px;
+
+      h3 {
+        font-size: 18px;
+      }
+
+      p {
+        font-size: 14px;
+      }
+
+      .add-btn.primary {
+        width: 100%;
+        font-size: 14px;
+        padding: 12px 16px;
+      }
+    }
+  }
+}
+
+}
+}

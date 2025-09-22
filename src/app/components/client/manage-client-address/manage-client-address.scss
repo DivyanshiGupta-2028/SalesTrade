@@ -1,0 +1,400 @@
+// Variables
+$primary-color: #2563eb;
+$primary-hover: #1d4ed8;
+$secondary-color: #64748b;
+$success-color: #059669;
+$danger-color: #dc2626;
+$warning-color: #d97706;
+
+$text-primary: #1e293b;
+$text-secondary: #64748b;
+$text-muted: #94a3b8;
+
+$border-color: #e2e8f0;
+$border-focus: #3b82f6;
+$bg-white: #ffffff;
+$bg-gray-50: #f8fafc;
+$bg-gray-100: #f1f5f9;
+
+$border-radius: 8px;
+$border-radius-sm: 6px;
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$transition: all 0.2s ease-in-out;
+
+// Base form container
+.address-form-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: $bg-white;
+  border-radius: $border-radius;
+  box-shadow: $shadow-md;
+  border: 1px solid $border-color;
+
+  .form-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid $border-color;
+
+    .form-title {
+      font-size: 1.875rem;
+      font-weight: 600;
+      color: $text-primary;
+      margin: 0 0 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+
+      i {
+        color: $primary-color;
+        font-size: 1.5rem;
+      }
+    }
+
+    .form-subtitle {
+      font-size: 1rem;
+      color: $text-secondary;
+      margin: 0;
+      font-weight: 400;
+    }
+  }
+
+  .address-form {
+    .form-grid {
+      display: grid;
+      gap: 2rem;
+
+      .form-section {
+        background: $bg-gray-50;
+        border-radius: $border-radius;
+        padding: 1.5rem;
+        border: 1px solid $border-color;
+
+        .section-title {
+          font-size: 1.125rem;
+          font-weight: 600;
+          color: $text-primary;
+          margin: 0 0 1.5rem;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding-bottom: 0.75rem;
+          border-bottom: 1px solid $border-color;
+
+          i {
+            color: $primary-color;
+            font-size: 1rem;
+          }
+        }
+
+        .form-row {
+          display: grid;
+          gap: 1rem;
+          margin-bottom: 1rem;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+
+          // Grid layouts for different column counts
+          &.cols-2 {
+            grid-template-columns: repeat(2, 1fr);
+          }
+
+          &.cols-3 {
+            grid-template-columns: repeat(3, 1fr);
+          }
+
+          // Default 2 columns for form rows with 2 items
+          &:has(.col-md-6) {
+            grid-template-columns: repeat(2, 1fr);
+          }
+
+          // 3 columns for country/state/pincode row
+          &:has(.col-md-4) {
+            grid-template-columns: repeat(3, 1fr);
+          }
+
+          // Single column for full-width items
+          &:has(.col-md-12) {
+            grid-template-columns: 1fr;
+          }
+        }
+
+        .form-group {
+          display: flex;
+          flex-direction: column;
+
+          .form-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: $text-primary;
+            margin-bottom: 0.5rem;
+
+            &.required::after {
+              content: ' *';
+              color: $danger-color;
+              font-weight: 600;
+            }
+          }
+
+          .form-control,
+          .form-select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid $border-color;
+            border-radius: $border-radius-sm;
+            font-size: 0.875rem;
+            background-color: $bg-white;
+            transition: $transition;
+            color: $text-primary;
+
+            &::placeholder {
+              color: $text-muted;
+            }
+
+            &:focus {
+              outline: none;
+              border-color: $border-focus;
+              box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            }
+
+            &:disabled {
+              background-color: $bg-gray-100;
+              color: $text-muted;
+              cursor: not-allowed;
+            }
+
+            &.is-invalid {
+              border-color: $danger-color;
+              background-color: rgba(248, 113, 113, 0.05);
+
+              &:focus {
+                border-color: $danger-color;
+                box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+              }
+            }
+          }
+
+          .form-select {
+            cursor: pointer;
+
+            &:disabled {
+              cursor: not-allowed;
+            }
+          }
+
+          .invalid-feedback {
+            display: block;
+            margin-top: 0.25rem;
+            font-size: 0.75rem;
+            color: $danger-color;
+            font-weight: 500;
+          }
+        }
+      }
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid $border-color;
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: $border-radius-sm;
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: $transition;
+        text-decoration: none;
+        min-width: 120px;
+        justify-content: center;
+
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+
+        &.btn-primary {
+          background-color: $primary-color;
+          color: white;
+
+          &:hover:not(:disabled) {
+            background-color: $primary-hover;
+          }
+
+          &:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+          }
+        }
+
+        &.btn-secondary {
+          background-color: $secondary-color;
+          color: white;
+
+          &:hover:not(:disabled) {
+            background-color: #475569;
+          }
+
+          &:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(100, 116, 139, 0.2);
+          }
+        }
+
+        &.btn-outline-primary {
+          background-color: transparent;
+          color: $primary-color;
+          border: 1px solid $primary-color;
+
+          &:hover:not(:disabled) {
+            background-color: $primary-color;
+            color: white;
+          }
+
+          &:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+          }
+        }
+
+        // Loading state
+        .fa-spinner {
+          animation: spin 1s linear infinite;
+        }
+      }
+    }
+  }
+}
+
+// Utility animations
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Responsive Design
+@media (max-width: 1024px) {
+  .address-form-container {
+    max-width: 100%;
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .address-form-container {
+    margin: 0.5rem;
+    padding: 1rem;
+
+    .form-header {
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+
+      .form-title {
+        font-size: 1.5rem;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+    }
+
+    .address-form {
+      .form-grid {
+        gap: 1.5rem;
+
+        .form-section {
+          padding: 1rem;
+
+          .form-row {
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+
+            // Override all column layouts for mobile
+            &.cols-2,
+            &.cols-3,
+            &:has(.col-md-4),
+            &:has(.col-md-6) {
+              grid-template-columns: 1fr;
+            }
+          }
+        }
+      }
+
+      .form-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+
+        .btn {
+          width: 100%;
+          min-width: auto;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .address-form-container {
+    margin: 0.25rem;
+    padding: 0.75rem;
+
+    .form-header {
+      .form-title {
+        font-size: 1.25rem;
+      }
+
+      .form-subtitle {
+        font-size: 0.875rem;
+      }
+    }
+
+    .address-form {
+      .form-grid {
+        gap: 1rem;
+
+        .form-section {
+          padding: 0.75rem;
+
+          .section-title {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Print styles
+@media print {
+  .address-form-container {
+    box-shadow: none;
+    border: 1px solid #000;
+
+    .form-actions {
+      display: none;
+    }
+
+    .form-section {
+      background: transparent;
+      border: 1px solid #000;
+    }
+  }
+}

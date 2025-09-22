@@ -1,0 +1,7 @@
+<ul class="custom-tab-nav">
+  <li [class.active]="selectedTabIndex === 0" (click)="onTabChange(0)">Summary</li>
+  <li [class.active]="selectedTabIndex === 1" (click)="onTabChange(1)">Contacts</li>
+  <li [class.active]="selectedTabIndex === 2" (click)="onTabChange(2)">Addresses</li>
+</ul>
+
+<router-outlet></router-outlet>

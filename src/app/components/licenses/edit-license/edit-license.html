@@ -1,0 +1,372 @@
+<!-- <div class="row">
+  <h2 class="mt-4 mb-3 text-center">Edit Exchange</h2>
+  <div class="col-lg-6 mx-auto add-list-container">
+    <form [formGroup]="exchangeForm" (ngSubmit)="onSubmit()">
+
+      <div class="mb-3">
+        <label for="exchangeParentId">Parent Exchange</label>
+        <input id="exchangeParentId"
+               class="form-control"
+               [value]="(parentExchangeName$ | async) || 'No Parent Exchange'"
+               disabled />
+      </div>
+
+      <div class="mb-3">
+        <label for="exchangeName">Exchange Name</label>
+        <input id="exchangeName"
+               class="form-control"
+               formControlName="exchangeName"
+               type="text"
+               placeholder="Enter exchange name" />
+      </div>
+
+      <div class="mb-3">
+        <label for="currency">Currency</label>
+        <select id="currency" class="form-select" formControlName="currency">
+          <option value="" disabled>Select Currency</option>
+          <option *ngFor="let item of (currencies$ | async)" [value]="item.currencyId">
+            {{ item.currencyId }}
+          </option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="localization">Localization</label>
+        <select id="localization" class="form-select" formControlName="localization">
+          <option value="" disabled>Select Localization</option>
+          <option *ngFor="let item of (currencies$ | async)" [value]="item.currencyLocale">
+            {{ item.currencyLocale }}
+          </option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="country">Country</label>
+        <select id="country" class="form-select" formControlName="country">
+          <option value="" disabled>Select Country</option>
+          <option *ngFor="let item of (countries$ | async)" [value]="item.countryName">
+            {{ item.countryName }}
+          </option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="language">Language</label>
+        <select id="language" class="form-select" formControlName="language">
+          <option value="" disabled>Select Language</option>
+          <option *ngFor="let item of (languages$ | async)" [value]="item.languageName">
+            {{ item.languageName }}
+          </option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="exchangeOwnerId">Exchange Owner ID</label>
+        <input id="exchangeOwnerId"
+               class="form-control"
+               formControlName="exchangeOwnerId"
+               type="text"
+               placeholder="Enter exchange owner ID" />
+      </div>
+
+      <div class="mb-3">
+        <label for="referencePrefix">Reference Prefix</label>
+        <input id="referencePrefix"
+               class="form-control"
+               formControlName="referencePrefix"
+               type="text"
+               placeholder="Enter reference prefix" />
+      </div>
+
+      <div class="mb-3 form-check">
+        <label for="isActive">Is Active</label>
+        <input id="isActive"
+               class="form-check-input"
+               formControlName="isActive"
+               type="checkbox" />
+      </div>
+
+      <button type="submit" class="btn btn-primary">Update Exchange</button>
+    </form>
+  </div>
+</div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="container my-5">
+  <h2 class="text-center mb-4">Modify Company</h2>
+
+  <form [formGroup]="licenseForm" (ngSubmit)="onSubmit()" class="w-75 mx-auto">
+
+
+  <h4 class="mb-3">Company Information</h4>
+    <div class="row">
+      <div class="col-md-6">
+
+         <div class="mb-3">
+        <label for="licenseParentId">Parent License Company</label>
+        <input id="licenseParentId"
+               class="form-control"
+               [value]="(parentLicenseName$ | async) || 'No Parent License'"
+               disabled />
+      </div>
+
+
+        <div class="mb-3">
+          <label for="licenseType" class="form-label">License Type</label>
+          <select id="licenseType" class="form-select" formControlName="licenseType">
+            <option value="">Select</option>
+            <option value="free">Free</option>
+            <option value="standard">Standard</option>
+            <option value="premium">Premium</option>
+            <option value="custom-configurable">Custom-Configurable</option>
+          </select>
+          
+        </div>
+
+        
+
+        <div class="mb-3">
+          <label for="startDate" class="form-label">Start Date</label>
+          <input type="date" id="startDate" class="form-control" formControlName="startDate" />
+          
+        </div>
+
+
+        <div class="mb-3">
+           <label for="currency" class="form-label">Currency</label>
+          <select id="currency" class="form-select" formControlName="currency">
+            <option value="">Select</option>
+            <option *ngFor="let currency of (currencies$ | async)" [value]="currency.currencyId">
+              {{ currency.currencyId }}
+            </option>
+          </select>
+         
+       
+        </div>
+
+        <div class="mb-3">
+          <label for="language" class="form-label">Language</label>
+          <select id="language" class="form-select" formControlName="language">
+            <option value="">Select</option>
+            <option *ngFor="let language of (languages$ | async)" [value]="language.languageName">
+              {{ language.languageName }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-check mb-3 mt-4">
+  <input type="checkbox" id="isActive" class="form-check-input" formControlName="isActive" />
+  <label for="isActive" class="form-check-label">Is Active</label>
+</div>
+
+
+
+      </div>
+
+      <div class="col-md-6">
+
+        <div class="mb-3">
+           <label for="companyName" class="form-label">Company Name</label>
+          <input type="text" id="companyName" class="form-control" formControlName="companyName" />
+          
+        </div>
+
+
+        <div class="mb-3">
+          <label for="licenseDuration" class="form-label">License Duration</label>
+          <select id="licenseDuration" class="form-select" formControlName="licenseDuration">
+            <option value="">Select</option>
+            <option value="trial">Trial</option>
+            <option value="monthly">Monthly</option>
+            <option value="quaterly">Quaterly</option>
+            <option value="yealy">Yearly</option>
+            <option value="2year">Two-Yearly</option>
+          </select>
+        </div>
+
+
+        
+
+        <div class="mb-3">
+           <label for="endDate" class="form-label">End Date</label>
+          <input type="date" id="endDate" class="form-control" formControlName="endDate" />
+         
+         
+        </div>
+
+        <div class="mb-3">
+          <label for="localization" class="form-label">Localization</label>
+          <select id="localization" class="form-select" formControlName="localization">
+            <option value="">Select</option>
+            <option *ngFor="let currency of (currencies$ | async)" [value]="currency.currencyLocale">
+              {{ currency.currencyLocale }}
+            </option>
+          </select>
+        </div>
+
+       
+        <div class="mb-3">
+          <label for="referencePrefix" class="form-label">Reference Prefix</label>
+          <input type="text" id="referencePrefix" class="form-control" formControlName="referencePrefix" />
+        </div>
+
+        <div class="mb-3">
+          <label for="renewal" class="form-label">Renewal</label>
+          <select id="renewal" class="form-select" formControlName="renewal">
+            <option value="">Select</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    
+
+    <!-- Address Section -->
+    <h4 class="mt-4 mb-3">Address Information</h4>
+    <div class="row">
+      <div class="col-md-6">
+        <!-- Address Line 1 -->
+        <div class="mb-3">
+          <label for="addressLine1" class="form-label">Address Line 1</label>
+          <input type="text" id="addressLine1" formControlName="addressLine1" class="form-control"
+            placeholder="Enter Address Line 1" />
+        </div>
+
+        <!-- Address Line 2 -->
+        <div class="mb-3">
+           <label for="addressLine3" class="form-label">Address Line 3</label>
+          <input type="text" id="addressLine3" formControlName="addressLine3" class="form-control"
+            placeholder="Enter Address Line 3" />
+        </div>
+
+        <!-- Country -->
+        <div class="mb-3">
+          <label for="country" class="form-label">Country</label>
+          <select id="country" formControlName="country" class="form-select">
+            <option value="">Select Country</option>
+            <option *ngFor="let country of countryOptions" [value]="country.value">
+              {{ country.label }}
+            </option>
+          </select>
+        </div>
+
+        <!-- State -->
+        <div class="mb-3">
+          <label for="pincode" class="form-label">PIN/ZIP Code</label>
+          <input type="text" id="pincode" formControlName="pincode" class="form-control" placeholder="Enter PIN/ZIP" />
+        </div>
+  <!-- Latitude -->
+        <div class="mb-3">
+          <label for="latitude" class="form-label">Latitude</label>
+          <input type="number" id="latitude" formControlName="latitude" class="form-control" placeholder="Latitude" />
+        </div>
+
+
+      </div>
+
+      <div class="col-md-6">
+        <!-- Address Line 3 -->
+        <div class="mb-3">
+       
+
+              <label for="addressLine2" class="form-label">Address Line 2</label>
+          <input type="text" id="addressLine2" formControlName="addressLine2" class="form-control"
+            placeholder="Enter Address Line 2" />
+        </div>
+
+        <!-- Address Line 4 -->
+        <div class="mb-3">
+          <label for="addressLine4" class="form-label">Address Line 4</label>
+          <input type="text" id="addressLine4" formControlName="addressLine4" class="form-control"
+            placeholder="Enter Address Line 4" />
+        </div>
+
+        <!-- Pincode -->
+        <div class="mb-3">
+        
+           <label for="state" class="form-label">State/Province</label>
+          <select id="state" formControlName="state" class="form-select">
+            <option value="">Select State</option>
+            <option *ngFor="let state of stateOptions" [value]="state.value">
+              {{ state.label }}
+            </option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <!-- Other State -->
+        <div *ngIf="licenseForm.get('state')?.value === 'Other'" class="mb-3">
+          <label for="otherState" class="form-label">Specify Other State</label>
+          <input type="text" id="otherState" formControlName="otherState" class="form-control"
+            placeholder="Enter Other State" />
+        </div>
+
+      
+
+        <!-- Longitude -->
+        <div class="mb-3">
+          <label for="longitude" class="form-label">Longitude</label>
+          <input type="number" id="longitude" formControlName="longitude" class="form-control" placeholder="Longitude" />
+        </div>
+      </div>
+      <!-- ✅ Longitude ke niche Is Active checkbox -->
+
+    </div>
+
+    <!-- Active + Save -->
+    <!-- Save button -->
+<div class="row mt-4">
+  <div class="col-12 text-end">
+    <button type="submit" class="btn btn-primary px-5">Modify and Continue</button>
+  </div>
+</div>
+
+
+  </form>
+</div>

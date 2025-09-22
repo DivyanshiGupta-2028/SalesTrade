@@ -1,0 +1,40 @@
+<div class="format-list-container">
+  <button class="add-format-btn" (click)="onAddClick()">➕ Add Invoice Format</button>
+
+  <h2>📋 Available Invoice Formats</h2>
+
+  <ul class="format-list">
+    <li *ngFor="let format of formats" class="format-item">
+      <div class="format-header">
+       <div>
+          <strong class="format-name">{{ format.formatName }}</strong> :
+          <span class="format-pattern">{{ format.invoiceNumberPattern }}</span>
+        </div>
+        <div class="action-buttons">
+          <button class="edit-btn" (click)="onEditFormat(format)">✏️ Edit</button>
+          <button class="delete-btn" (click)="onDeleteFormat(format.id)">🗑 Delete</button>
+        </div>
+      </div>
+
+      <div class="details">
+        <div class="detail-block">
+          <strong>Tax Details:</strong>
+          <ul>
+            <li *ngIf="format.taxDetailsParsed">CGST: {{ format.taxDetailsParsed.cgst }}%</li>
+            <li *ngIf="format.taxDetailsParsed">SGST: {{ format.taxDetailsParsed.sgst }}%</li>
+            <li *ngIf="format.taxDetailsParsed">IGST: {{ format.taxDetailsParsed.igst }}%</li>
+          </ul>
+        </div>
+
+        <div class="detail-block">
+          <strong>Item Columns:</strong>
+          <ul>
+            <li *ngFor="let col of format.itemColumnsParsed">
+              • <code>{{ col.key }}</code>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>

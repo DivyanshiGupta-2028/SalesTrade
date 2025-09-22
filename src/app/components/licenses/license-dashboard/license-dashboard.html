@@ -1,0 +1,105 @@
+<div class="dashboard-container container">
+
+  <!-- Summary Cards -->
+<div class="row text-center mb-5">
+  <div class="col-md-3 mb-5">
+    <div class="card text-white p-4 shadow rounded d-flex align-items-center justify-content-center" 
+         style="background-color: #28a745; min-height: 200px; margin-top: 60px;">
+      <h1 style="font-size: 3rem; font-weight: 700; letter-spacing: 1px; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">
+        {{ dasboardCards?.totalCompanies }}
+      </h1>
+      <!-- <p style="font-size: 1.4rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+        <a [routerLink]="['/license-summary']" class="text-decoration-none"style="color: white">Companies On Board</a>
+        
+      </p> -->
+      <p style="font-size: 1.4rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+    <a [routerLink]="['/license-list']"  class="text-decoration-none" style="color: white">
+        Companies On Board
+    </a>
+</p>
+
+    </div>
+  </div>
+
+  <div class="col-md-3 mb-5">
+    <div class="card text-white p-4 shadow rounded d-flex align-items-center justify-content-center" 
+         style="background-color: #ffc107; min-height: 200px; margin-top: 60px;">
+      <h1 style="font-size: 3rem; font-weight: 700; letter-spacing: 1px; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">
+        {{ dasboardCards?.activeLicenses }}
+      </h1>
+      <p style="font-size: 1.4rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+        <a [routerLink]="['/license-list']" [queryParams]="{ param: 'currently active' }"class="text-decoration-none"style="color: white">Active Licences</a>
+
+
+      </p>
+    </div>
+  </div>
+
+  <div class="col-md-3 mb-5">
+    <div class="card text-white p-4 shadow rounded d-flex align-items-center justify-content-center" 
+         style="background-color: #fd7e14; min-height: 200px; margin-top: 60px;">
+      <h1 style="font-size: 3rem; font-weight: 700; letter-spacing: 1px; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">
+        {{ dasboardCards?.upcomingRenewals }}
+      </h1>
+      <p style="font-size: 1.4rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+        <a [routerLink]="['/license-list']" [queryParams]="{ param: 'upcoming renewals' }"class="text-decoration-none"style="color: white">Upcoming Renewals</a>
+        
+      </p>
+    </div>
+  </div>
+
+  <div class="col-md-3 mb-5">
+    <div class="card text-white p-4 shadow rounded d-flex align-items-center justify-content-center" 
+         style="background-color: #dc3545; min-height: 200px; margin-top: 60px;">
+      <h1 style="font-size: 3rem; font-weight: 700; letter-spacing: 1px; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">
+        {{ dasboardCards?.expiredLicenses }}
+      </h1>
+      <p style="font-size: 1.4rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+        <a [routerLink]="['/license-list']" [queryParams]="{ param: 'currently not active' }"class="text-decoration-none"style="color: white"> Expired Licences</a>
+       
+      </p>
+    </div>
+  </div>
+</div>
+
+
+  <!-- Charts Row -->
+<div class="row mb-6">
+  <!-- License Management Chart -->
+  <div class="col-md-4 mb-4 d-flex justify-content-center">
+    <div class="card shadow rounded w-100" style="max-width: 90%;">
+      <div class="card-header bg-light text-center">
+        <h5 style="font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin: 0;">
+          License Management
+        </h5>
+      </div>
+      <div class="card-body d-flex justify-content-center align-items-center" style="padding: 20px;">
+        <canvas
+          baseChart
+          [data]="licenseChartData"
+          [options]="licenseChartOptions"
+          type="doughnut">
+        </canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Companies Added Chart -->
+  <div class="col-md-8 mb-4 d-flex justify-content-center">
+    <div class="card shadow rounded w-100" style="max-width: 95%;">
+      <div class="card-header bg-light text-center">
+        <h5 style="font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin: 0;">
+          Companies Added (Monthly)
+        </h5>
+      </div>
+      <div class="card-body d-flex justify-content-center align-items-center" style="padding: 20px;">
+        <canvas
+          baseChart
+          [data]="lineData"
+          [options]="lineOptions"
+          type="line">
+        </canvas>
+      </div>
+    </div>
+  </div>
+</div>

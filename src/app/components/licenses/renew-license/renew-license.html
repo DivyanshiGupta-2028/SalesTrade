@@ -1,0 +1,53 @@
+  <div class="dialog-box">
+ <form [formGroup]="renewForm" (ngSubmit)="upgradeLicense()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="renewLicenseModalLabel">Renew License</h5>
+           
+          <button type="button" class="btn-close" (click)="closed.emit()" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-0">
+          <label class="form-label">Company Name: <b>{{ renewForm.get('companyName')?.value }}</b></label>
+          </div>
+          <div class="mb-3">
+          <label for="licenseType" class="form-label">License Type</label>
+          <select id="licenseType" class="form-select" formControlName="licenseType">
+            <option value="">Select</option>
+            <option value="free">Free</option>
+            <option value="standard">Standard</option>
+            <option value="premium">Premium</option>
+            <option value="custom-configurable">Custom-Configurable</option>
+          </select>
+          </div>
+          <div class="mb-3">
+          <label for="licenseDuration" class="form-label">License Duration</label>
+          <select id="licenseDuration" class="form-select" formControlName="licenseDuration">
+            <option value="">Select</option>
+            <option value="trial">Trial</option>
+            <option value="monthly">Monthly</option>
+            <option value="quaterly">Quaterly</option>
+            <option value="yealy">Yearly</option>
+            <option value="2year">Two-Yearly</option>
+          </select>
+        </div>
+          <div class="mb-3">
+            <label for="startDate" class="form-label">Start Date</label>
+            <input type="date" class="form-control" id="startDate" formControlName="startDate"  />
+          </div>
+          <div class="mb-3">
+            <label for="endDate" class="form-label">End Date</label>
+            <input type="date" class="form-control" id="endDate" formControlName="endDate" />
+          </div>
+          <div class="form-check mb-3">
+            <input type="checkbox" id="isActive" class="form-check-input" formControlName="isActive" />
+            <label for="isActive" class="form-check-label">Is Active</label>
+          </div>
+          <div class="modal-footer  align-items-end">
+            <button type="submit" class="btn btn-success btn-sm" [disabled]="renewForm.invalid" (click)="upgradeLicense()">Renew License</button>
+          </div>
+        </div>
+      </div>
+    </form>
+</div>
+

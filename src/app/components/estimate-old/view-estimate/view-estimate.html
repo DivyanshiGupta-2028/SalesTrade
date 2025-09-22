@@ -1,0 +1,53 @@
+<div class="estimates-wrapper">
+  <!-- Tabs -->
+  <div class="top-bar">
+    <div class="tabs">
+      <span [class.active]="activeTab === 'all'" (click)="switchTab('all')">All Estimates</span>
+      <span [class.active]="activeTab === 'due'" (click)="switchTab('due')">Payment Due</span>
+      <span [class.active]="activeTab === 'paid'" (click)="switchTab('paid')">Paid by Client</span>
+    </div>
+
+    <div class="actions">
+      <button class="btn export-btn">Export Report</button>
+      <button class="btn icon-btn"><i class="fas fa-search"></i></button>
+      <button class="btn icon-btn"><i class="fas fa-filter"></i> Filter</button>
+    </div>
+  </div>
+
+  <!-- Table -->
+<div class="table-wrapper">
+  <table class="estimates-table">
+    <thead>
+      <tr>
+        <th>#No.</th>
+        <th>Client Name</th>
+        <th>Amount</th>
+        <th>BDE</th>
+        <th>Date</th>
+        <th>Status</th>
+        <th>...</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let est of filteredEstimates">
+        <td>{{ est.id }}</td>
+        <td>{{ est.client_Name }}</td>
+        <td>{{ est.estimate_Amount }}</td>
+        <td>{{ est.member_Name }}</td>
+        <td>{{ est.invoice_Date | date: 'shortDate' }}</td>
+       <td>
+  <span [ngClass]="{
+    'status-pill': true,
+    'pending': est.payment_Status?.toLowerCase() === 'pending',
+    'done': est.payment_Status?.toLowerCase() === 'payment done'
+  }">
+    {{ est.payment_Status }}
+  </span>
+</td>
+
+        <td>⋮</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>

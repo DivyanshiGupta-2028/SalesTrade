@@ -1,0 +1,50 @@
+public static class DateHelper
+{
+public static string FormatDateTime(DateTime date, string cultureCode, int? formatType = null)
+    {
+        CultureInfo culture;
+ 
+        try
+        {
+            culture = new CultureInfo(cultureCode);
+        }
+        catch
+        {
+            culture = new CultureInfo("en-IN"); // fallback to Indian English
+        }
+ 
+        string format;
+ 
+        if (formatType == null)
+        {
+            // Use the culture’s standard short date pattern (no time)
+            format = culture.DateTimeFormat.ShortDatePattern;
+        }
+        else
+        {
+            switch (formatType.Value)
+            {
+                case 1: // ISO style
+                    format = "yyyy-MM-dd";
+                    break;
+                case 2: // With month abbreviation
+                    format = "dd-MMM-yyyy";
+                    break;
+                case 3: // With 24-hour time
+                    format = "dd-MM-yyyy HH:mm";
+                    break;
+                case 4: // With 12-hour time and AM/PM
+                    format = "MM/dd/yyyy hh:mm tt";
+                    break;
+                case 5: // Long date with weekday
+                    format = "dddd, dd MMMM yyyy";
+                    break;
+                default:
+                    format = culture.DateTimeFormat.ShortDatePattern;
+                    break;
+            }
+        }
+ 
+        return date.ToString(format, culture);
+    }
+}

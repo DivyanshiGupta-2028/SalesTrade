@@ -1,0 +1,171 @@
+.expenses-wrapper {
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+}
+
+.tabs-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+
+  .tabs span {
+    margin-right: 20px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #4b2ec3;
+    position: relative;
+  }
+
+  .tabs .active {
+    border-bottom: 2px solid #4b2ec3;
+    padding-bottom: 4px;
+  }
+
+  .add-btn {
+    border: 1px solid #4b2ec3;
+    color: #4b2ec3;
+    background: transparent;
+    border-radius: 4px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-weight: 500;
+
+    &:hover {
+      background: #4b2ec3;
+      color: #fff;
+    }
+  }
+}
+
+.search-bar {
+  display: flex;
+  margin-bottom: 15px;
+
+  input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px 0 0 4px;
+  }
+
+  button {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-left: none;
+    border-radius: 0 4px 4px 0;
+    background: #f5f5f5;
+  }
+}
+
+.expenses-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th, td {
+    padding: 12px;
+    text-align: left;
+  }
+
+  thead {
+    background-color: #fafafa;
+    font-weight: 600;
+  }
+
+  .empty-row {
+    text-align: center;
+    color: #888;
+  }
+
+  tbody tr {
+    border-top: 1px solid #eee;
+  }
+}
+.tag-pill {
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid #4b2ec3;
+      color: #4b2ec3;
+      font-size: 12px;
+    }
+@media (max-width: 768px) {
+  .expenses-wrapper {
+    padding: 16px;
+
+    .tabs-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+
+      .tabs {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+
+        span {
+          font-size: 14px;
+        }
+      }
+
+      .add-btn {
+        align-self: flex-end;
+        padding: 6px 12px;
+        font-size: 14px;
+      }
+    }
+
+    .search-bar {
+      flex-direction: column;
+      gap: 8px;
+
+      input {
+        width: 100%;
+        border-radius: 4px;
+      }
+
+      button {
+        width: 100%;
+        border-radius: 4px;
+        border-left: 1px solid #ccc;
+      }
+    }
+
+    .expenses-table {
+      display: block;
+      width: 100%;
+      overflow-x: auto;
+
+      thead, tbody, tr, th, td {
+        white-space: nowrap;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .expenses-wrapper {
+    .tabs-header .tabs span {
+      font-size: 13px;
+    }
+
+    .search-bar input,
+    .search-bar button {
+      font-size: 13px;
+    }
+
+    .expenses-table {
+      font-size: 13px;
+
+      .tag-pill {
+        font-size: 11px;
+        padding: 3px 8px;
+      }
+    }
+  }
+}
+.table-container {
+  overflow-x: auto;
+  width: 100%;
+}

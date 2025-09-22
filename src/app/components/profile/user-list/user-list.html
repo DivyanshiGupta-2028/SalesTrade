@@ -1,0 +1,86 @@
+<div class="row">
+    <div class="d-flex justify-content-between align-items-center my-4">
+      <app-user-bar-control
+        [title]="pageTitle"
+        [subtitle]="pageSubtitle"
+        [showBackButton]="showBackFlag"
+       [showSubtitle] = false>
+      </app-user-bar-control>
+
+      <!-- <button class="btn btn-primary"  (click)="openAddUserModal()">
+        <i class="bi bi-plus-lg"></i> Add User
+      </button> -->
+<button class="btn btn-primary" (click)="openAddUserModal()">
+  <i class="bi bi-plus-lg"></i> Add User
+</button>
+
+
+
+    </div>
+
+</div>
+
+
+
+  <div class="row">
+    <div class="col-12">
+        <table id="example" class="table table-striped table-bordered w-100">
+          <thead class="table-light">
+            <tr>
+              <th> Name</th>
+              <th>Email</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of users$ | async">
+              
+              <td>
+                <a [routerLink]="['/view-user']" [queryParams]="{ userId: user.id }" class="text-decoration-none">
+                 {{ user.firstName }} {{ user.lastName }}
+                </a>
+              </td>
+              <td>{{ user.email }}</td>
+
+             <td>
+  <div class="dropdown">
+    <button 
+      class="btn btn-primary btn-sm dropdown-toggle" 
+      type="button" 
+      data-bs-toggle="dropdown" 
+      aria-expanded="false">
+      Actions
+    </button>
+    <ul class="dropdown-menu">
+      <li>
+        <button 
+  class="dropdown-item text-primary" 
+  (click)="viewDetails(user.id)">
+  View Licenses
+</button>
+      </li>
+      <li>
+        <button 
+          class="dropdown-item text-danger" 
+          (click)="confirmDelete(user.id!)">
+          Delete
+        </button>
+      </li>
+    </ul>
+  </div>
+ </td>
+
+            </tr>
+          </tbody>
+    <app-add-profile 
+   *ngIf="showAddProfile"
+   class="modal-overlay"
+   (closed)="closeAddProfile()">
+</app-add-profile>
+
+        </table>
+
+       
+      
+      </div> 
+    </div>

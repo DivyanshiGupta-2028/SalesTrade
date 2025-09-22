@@ -1,0 +1,51 @@
+<div class="client-list-wrapper">
+
+  <div class="header">
+      <h2>License Clients</h2>
+<div class="button-container">
+ <button class="add-button"  (click)="goToAddClient()">
+      <i class="icon-plus"></i>
+       + Add License Client
+    </button>
+</div>
+  </div>
+  <div class="table-container" *ngIf="licenseClients.length > 0">
+    <table class="client-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Business Name</th>
+          <th>Business Type</th>
+          <th>Legal Name</th>
+          <th>Client Reference</th>
+          <th>Business Type</th>
+          <th>Tax Reference General</th>
+          <th>Status</th>
+          <th>Website</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let client of licenseClients; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>
+            <a [routerLink]="['/client', client.licenseClientId]">
+              {{ client.businessName }}
+            </a>
+          </td>
+          <td>{{ client.businessType }}</td>
+          <td>{{ client.legalName }}</td>
+          <td>{{ client.clientReference }}</td>
+          <td>{{ client.businessType }}</td>
+          <td>{{ client.taxReferenceGeneral }}</td>
+          <td>{{ client.currentStatus }}</td>
+          <td>{{ client.website || '-' }}</td>
+          <td>
+            <button (click)="goToEditClient(client.licenseClientId)">Edit</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p *ngIf="licenseClients.length === 0" class="empty-state">No clients found.</p>
+</div>

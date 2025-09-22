@@ -1,0 +1,506 @@
+<div class="row">
+    <div class="d-flex justify-content-between align-items-center my-4">
+      <app-user-bar-control
+        [title]="pageTitle"
+        [subtitle]="pageSubtitle"
+        [showBackButton]="showBackFlag"
+       [showSubtitle] = false>
+      </app-user-bar-control>
+    </div>
+      <div >
+  <!-- <h2 class="text-center ">Add New Company</h2> -->
+<div class="card shadow-sm border p-4">
+  <div class="custom-stepper" [formGroup]="form">
+    <div class="container py-3">
+
+      <!-- Step 1 -->
+      <div *ngIf="currentStep === 1" formGroupName="step1">
+        <h4 class="mb-3">Company Information</h4>
+        <div class="row">
+
+          <div class="col-md-4 mb-3">
+            <label for="licenseParentId" class="form-label">Parent License Company</label>
+            <select id="licenseParentId" class="form-select" formControlName="licenseParentId">
+              <option value="">Select</option>
+              <option *ngFor="let license of (licenses$ | async)" [value]="license.licenseId">
+                {{ license.companyName }}
+              </option>
+            </select>
+            <div *ngIf="isFieldInvalid('step1.licenseParentId')" class="text-danger small mt-1">
+              This field is required.
+            </div>
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="companyName" class="form-label">Company Name</label>
+            <input type="text" id="companyName" class="form-control" formControlName="companyName" />
+            <div *ngIf="isFieldInvalid('step1.companyName')" class="text-danger small mt-1">
+              This field is required.
+            </div>
+          </div>
+
+        </div>
+
+        <button class="btn btn-primary btn-sm" (click)="nextStep()">Next</button>
+      </div>
+
+      <!-- Step 2 -->
+      <div *ngIf="currentStep === 2" formGroupName="step2">
+        <h4 class="mb-3">License Details</h4>
+        <div class="row">
+
+          <div class="col-md-3 mb-3">
+            <label for="licenseType" class="form-label">License Type</label>
+            <select id="licenseType" class="form-select" formControlName="licenseType">
+              <option value="">Select</option>
+              <option value="free">Free</option>
+              <option value="standard">Standard</option>
+              <option value="premium">Premium</option>
+              <option value="custom-configurable">Custom-Configurable</option>
+            </select>
+            <div *ngIf="isFieldInvalid('step2.licenseType')" class="text-danger small mt-1">
+              This field is required.
+            </div>
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label for="licenseDuration" class="form-label">License Duration</label>
+            <select id="licenseDuration" class="form-select" formControlName="licenseDuration">
+              <option value="">Select</option>
+              <option value="trial">Trial</option>
+              <option value="monthly">Monthly</option>
+              <option value="quaterly">Quarterly</option>
+              <option value="yearly">Yearly</option>
+              <option value="2year">Two-Yearly</option>
+            </select>
+            <div *ngIf="isFieldInvalid('step2.licenseDuration')" class="text-danger small mt-1">
+              This field is required.
+            </div>
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label for="startDate" class="form-label">Start Date</label>
+            <input type="date" id="startDate" class="form-control" formControlName="startDate" />
+            <div *ngIf="isFieldInvalid('step2.startDate')" class="text-danger small mt-1">
+              Start Date is required.
+            </div>
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label for="endDate" class="form-label">End Date</label>
+            <input type="date" id="endDate" class="form-control" formControlName="endDate" />
+            <div *ngIf="isFieldInvalid('step2.endDate')" class="text-danger small mt-1">
+              End Date is required.
+            </div>
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label for="renewal" class="form-label">Renewal</label>
+            <select id="renewal" class="form-select" formControlName="renewal">
+              <option value="">Select</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+          </div>
+
+        </div>
+
+        <button class="btn btn-secondary btn-sm" (click)="prevStep()">Back</button>
+        <button class="btn btn-primary btn-sm" (click)="nextStep()">Next</button>
+      </div>
+
+      <!-- Step 3 -->
+      <div *ngIf="currentStep === 3" formGroupName="step3">
+        <h4 class="mb-3">Localization</h4>
+        <div class="row">
+
+          <div class="col-md-3 mb-3">
+            <label for="currency" class="form-label">Currency</label>
+            <select id="currency" class="form-select" formControlName="currency">
+              <option value="">Select</option>
+              <option *ngFor="let currency of (currencies$ | async)" [value]="currency.currencyId">
+                {{ currency.currencyId }}
+              </option>
+            </select>
+            <div *ngIf="isFieldInvalid('step3.currency')" class="text-danger small mt-1">
+              This field is required.
+            </div>
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label for="language" class="form-label">Language</label>
+            <select id="language" class="form-select" formControlName="language">
+              <option value="">Select</option>
+              <option *ngFor="let language of (languages$ | async)" [value]="language.languageName">
+                {{ language.languageName }}
+              </option>
+            </select>
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label for="localization" class="form-label">Localization</label>
+            <select id="localization" class="form-select" formControlName="localization">
+              <option value="">Select</option>
+              <option *ngFor="let currency of (currencies$ | async)" [value]="currency.currencyLocale">
+                {{ currency.currencyLocale }}
+              </option>
+            </select>
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label for="referencePrefix" class="form-label">Reference Prefix</label>
+            <input type="text" id="referencePrefix" class="form-control" formControlName="referencePrefix" />
+            <div *ngIf="isFieldInvalid('step3.referencePrefix')" class="text-danger small mt-1">
+              This field is required.
+            </div>
+          </div>
+
+          <div class="col-md-3 mb-3 d-flex align-items-center">
+            <div class="form-check">
+              <input type="checkbox" id="isActive" class="form-check-input" formControlName="isActive" />
+              <label for="isActive" class="form-check-label">Is Active</label>
+            </div>
+          </div>
+
+        </div>
+
+        <button class="btn btn-secondary btn-sm" (click)="prevStep()">Back</button>
+        <button class="btn btn-primary btn-sm" (click)="nextStep()">Next</button>
+      </div>
+
+      <!-- Step 4 -->
+      <div *ngIf="currentStep === 4" formGroupName="step4">
+        <h4 class="mb-3">Address Information</h4>
+        <div class="row">
+
+          <div class="col-md-3 mb-3">
+            <label for="addressLine1" class="form-label">Address Line 1</label>
+            <input type="text" id="addressLine1" formControlName="addressLine1" class="form-control"
+              placeholder="Enter Address Line 1" />
+            <div *ngIf="isFieldInvalid('step4.addressLine1')" class="text-danger small mt-1">This field is required.</div>
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label for="addressLine2" class="form-label">Address Line 2</label>
+            <input type="text" id="addressLine2" formControlName="addressLine2" class="form-control"
+              placeholder="Enter Address Line 2" />
+            <div *ngIf="isFieldInvalid('step4.addressLine2')" class="text-danger small mt-1">This field is required.</div>
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label for="addressLine3" class="form-label">Address Line 3</label>
+            <input type="text" id="addressLine3" formControlName="addressLine3" class="form-control"
+              placeholder="Enter Address Line 3" />
+            <div *ngIf="isFieldInvalid('step4.addressLine3')" class="text-danger small mt-1">This field is required.</div>
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label for="addressLine4" class="form-label">Address Line 4</label>
+            <input type="text" id="addressLine4" formControlName="addressLine4" class="form-control"
+              placeholder="Enter Address Line 4" />
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label for="country" class="form-label">Country</label>
+            <select id="country" formControlName="country" class="form-select">
+              <option value="">Select Country</option>
+              <option *ngFor="let country of countryOptions" [value]="country.value">
+                {{ country.label }}
+              </option>
+            </select>
+            <div *ngIf="isFieldInvalid('step4.country')" class="text-danger small mt-1">This field is required.</div>
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label for="state" class="form-label">State/Province</label>
+            <select id="state" formControlName="state" class="form-select">
+              <option value="">Select State</option>
+              <option *ngFor="let state of stateOptions" [value]="state.value">
+                {{ state.label }}
+              </option>
+              <option value="Other">Other</option>
+            </select>
+            <div *ngIf="isFieldInvalid('step4.state')" class="text-danger small mt-1">This field is required.</div>
+          </div>
+
+          <div *ngIf="form.get('step4.state')?.value === 'Other'" class="col-md-3 mb-3">
+            <label for="otherState" class="form-label">Specify Other State</label>
+            <input type="text" id="otherState" formControlName="otherState" class="form-control"
+              placeholder="Enter Other State" />
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label for="pincode" class="form-label">PIN/ZIP Code</label>
+            <input type="text" id="pincode" formControlName="pincode" class="form-control" placeholder="Enter PIN/ZIP" />
+            <div *ngIf="isFieldInvalid('step4.pincode')" class="text-danger small mt-1">This field is required.</div>
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label for="latitude" class="form-label">Latitude</label>
+            <input type="number" id="latitude" formControlName="latitude" class="form-control" placeholder="Latitude" />
+            <div *ngIf="isFieldInvalid('step4.latitude')" class="text-danger small mt-1">This field is required.</div>
+            <div *ngIf="form.get('step4.latitude')?.errors?.['pattern']" class="text-danger small mt-1">
+              Please enter a valid latitude (-90 to 90).
+            </div>
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label for="longitude" class="form-label">Longitude</label>
+            <input type="number" id="longitude" formControlName="longitude" class="form-control" placeholder="Longitude" />
+            <div *ngIf="isFieldInvalid('step4.longitude')" class="text-danger small mt-1">This field is required.</div>
+            <div *ngIf="form.get('step4.longitude')?.errors?.['pattern']" class="text-danger small mt-1">
+              Please enter a valid longitude (-180 to 180).
+            </div>
+          </div>
+
+        </div>
+
+        <button class="btn btn-secondary btn-sm" (click)="prevStep()">Back</button>
+        <button class="btn btn-success btn-sm" (click)="addLicense()">Submit</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+  <!-- <div class="card shadow-sm border p-4">
+  <form [formGroup]="licenseForm" (ngSubmit)="addLicense()" >
+
+
+    <h4 class="mb-3">Company Information</h4>
+    <div class="row">
+
+  <div class="col-md-2 mb-3">
+     <label for="licenseParentId" class="form-label">Parent License Company</label>
+          <select id="licenseParentId" class="form-select" formControlName="licenseParentId">
+            <option value="">Select</option>
+            <option *ngFor="let license of (licenses$ | async)" [value]="license.licenseId">
+              {{ license.companyName }}
+            </option>
+          </select>
+          <div *ngIf="isFieldInvalid('licenseParentId')" class="text-danger small mt-1">This field is required.</div>
+        </div>     
+
+      
+        <div class="mb-3">
+          <label for="licenseType" class="form-label">License Type</label>
+          <select id="licenseType" class="form-select" formControlName="licenseType">
+            <option value="">Select</option>
+            <option value="free">Free</option>
+            <option value="standard">Standard</option>
+            <option value="premium">Premium</option>
+            <option value="custom-configurable">Custom-Configurable</option>
+          </select>
+          <div *ngIf="isFieldInvalid('licenseType')" class="text-danger small mt-1">This field is required.</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="startDate" class="form-label">Start Date</label>
+          <input type="date" id="startDate" class="form-control" formControlName="startDate" />
+          <div *ngIf="isFieldInvalid('startDate')" class="text-danger small mt-1">Start Date is required.</div>
+        </div>
+
+
+        <div class="mb-3">
+           <label for="currency" class="form-label">Currency</label>
+          <select id="currency" class="form-select" formControlName="currency">
+            <option value="">Select</option>
+            <option *ngFor="let currency of (currencies$ | async)" [value]="currency.currencyId">
+              {{ currency.currencyId }}
+            </option>
+          </select>
+          <div *ngIf="isFieldInvalid('currency')" class="text-danger small mt-1">This field is required.</div>
+       
+        </div>
+
+        <div class="mb-3">
+          <label for="language" class="form-label">Language</label>
+          <select id="language" class="form-select" formControlName="language">
+            <option value="">Select</option>
+            <option *ngFor="let language of (languages$ | async)" [value]="language.languageName">
+              {{ language.languageName }}
+            </option>
+          </select>
+        </div>
+         <div class="form-check mb-3 mt-5">
+  <input type="checkbox" id="isActive" class="form-check-input" formControlName="isActive" />
+  <label for="isActive" class="form-check-label">Is Active</label>
+</div>
+
+
+
+      </div>
+
+      <div class="col-md-6">
+
+        <div class="mb-3">
+           <label for="companyName" class="form-label">Company Name</label>
+          <input type="text" id="companyName" class="form-control" formControlName="companyName" />
+          <div *ngIf="isFieldInvalid('companyName')" class="text-danger small mt-1">This field is required.</div>
+         
+        </div>
+
+        <div class="mb-3">
+          <label for="licenseDuration" class="form-label">License Duration</label>
+          <select id="licenseDuration" class="form-select" formControlName="licenseDuration">
+            <option value="">Select</option>
+            <option value="trial">Trial</option>
+            <option value="monthly">Monthly</option>
+            <option value="quaterly">Quaterly</option>
+            <option value="yealy">Yearly</option>
+            <option value="2year">Two-Yearly</option>
+          </select>
+          <div *ngIf="isFieldInvalid('licenseDuration')" class="text-danger small mt-1">This field is required.</div>
+        </div>
+
+
+        <div class="mb-3">
+           <label for="endDate" class="form-label">End Date</label>
+          <input type="date" id="endDate" class="form-control" formControlName="endDate" />
+          <div *ngIf="isFieldInvalid('endDate')" class="text-danger small mt-1">End Date is required.</div>
+         
+        </div>
+
+        <div class="mb-3">
+          <label for="renewal" class="form-label">Renewal</label>
+          <select id="renewal" class="form-select" formControlName="renewal">
+            <option value="">Select</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="localization" class="form-label">Localization</label>
+          <select id="localization" class="form-select" formControlName="localization">
+            <option value="">Select</option>
+            <option *ngFor="let currency of (currencies$ | async)" [value]="currency.currencyLocale">
+              {{ currency.currencyLocale }}
+            </option>
+          </select>
+        </div>
+
+       
+
+        <div class="mb-3">
+          <label for="referencePrefix" class="form-label">Reference Prefix</label>
+          <input type="text" id="referencePrefix" class="form-control" formControlName="referencePrefix" />
+          <div *ngIf="isFieldInvalid('referencePrefix')" class="text-danger small mt-1">This field is required.</div>
+        </div>
+         
+      </div>
+
+
+   
+
+
+    <h4 class="mt-4 mb-3">Address Information</h4>
+    <div class="row">
+      <div class="col-md-6">
+
+        <div class="mb-3">
+          <label for="addressLine1" class="form-label">Address Line 1</label>
+          <input type="text" id="addressLine1" formControlName="addressLine1" class="form-control"
+            placeholder="Enter Address Line 1" />
+             <div *ngIf="isFieldInvalid('addressLine1')" class="text-danger small mt-1">This field is required.</div>
+        </div>
+
+
+        <div class="mb-3">
+           <label for="addressLine3" class="form-label">Address Line 3</label>
+          <input type="text" id="addressLine3" formControlName="addressLine3" class="form-control"
+            placeholder="Enter Address Line 3" />
+            <div *ngIf="isFieldInvalid('addressLine3')" class="text-danger small mt-1">This field is required.</div>
+        </div>
+
+
+        <div class="mb-3">
+          <label for="country" class="form-label">Country</label>
+          <select id="country" formControlName="country" class="form-select">
+            <option value="">Select Country</option>
+            <option *ngFor="let country of countryOptions" [value]="country.value">
+              {{ country.label }}
+            </option>
+          </select>
+          <div *ngIf="isFieldInvalid('country')" class="text-danger small mt-1">This field is required.</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="pincode" class="form-label">PIN/ZIP Code</label>
+          <input type="text" id="pincode" formControlName="pincode" class="form-control" placeholder="Enter PIN/ZIP" />
+          <div *ngIf="isFieldInvalid('pincode')" class="text-danger small mt-1">This field is required.</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="latitude" class="form-label">Latitude</label>
+          <input type="number" id="latitude" formControlName="latitude" class="form-control" placeholder="Latitude" />
+          <div *ngIf="isFieldInvalid('latitude')" class="text-danger small mt-1">This field is required.</div>
+          <div *ngIf="licenseForm.get('latitude')?.errors?.['pattern']" class="text-danger small mt-1"> Please enter a valid latitude (-90 to 90).</div>
+        </div>
+
+
+      </div>
+
+      <div class="col-md-6">
+
+        <div class="mb-3">
+       
+
+              <label for="addressLine2" class="form-label">Address Line 2</label>
+          <input type="text" id="addressLine2" formControlName="addressLine2" class="form-control"
+            placeholder="Enter Address Line 2" />
+            <div *ngIf="isFieldInvalid('addressLine2')" class="text-danger small mt-1">This field is required.</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="addressLine4" class="form-label">Address Line 4</label>
+          <input type="text" id="addressLine4" formControlName="addressLine4" class="form-control"
+            placeholder="Enter Address Line 4" />
+            
+        </div>
+
+        <div class="mb-3">
+        
+           <label for="state" class="form-label">State/Province</label>
+          <select id="state" formControlName="state" class="form-select">
+            <option value="">Select State</option>
+            <option *ngFor="let state of stateOptions" [value]="state.value">
+              {{ state.label }}
+            </option>
+            <option value="Other">Other</option>
+          </select>
+          <div *ngIf="isFieldInvalid('state')" class="text-danger small mt-1">This field is required.</div>
+        </div>
+
+
+        <div *ngIf="licenseForm.get('state')?.value === 'Other'" class="mb-3">
+          <label for="otherState" class="form-label">Specify Other State</label>
+          <input type="text" id="otherState" formControlName="otherState" class="form-control"
+            placeholder="Enter Other State" />
+        </div>
+
+      
+
+ 
+        <div class="mb-3">
+          <label for="longitude" class="form-label">Longitude</label>
+          <input type="number" id="longitude" formControlName="longitude" class="form-control" placeholder="Longitude" />
+          <div *ngIf="isFieldInvalid('longitude')" class="text-danger small mt-1">This field is required.</div>
+          <div *ngIf="licenseForm.get('longitude')?.errors?.['pattern']" class="text-danger small mt-1"> Please enter a valid latitude (-180 to 180).</div>
+        </div>
+      </div>
+
+
+    </div>
+
+<div class="row mt-4">
+  <div class="col-12 text-end">
+    <button type="submit" class="btn btn-primary px-5">Save and Continue</button>
+  </div>
+</div>
+
+
+  </form>
+</div>
+ -->

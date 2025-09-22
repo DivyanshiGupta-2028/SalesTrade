@@ -1,0 +1,45 @@
+<div class="contact-container">
+  <div class="header">
+    <h2>Contact List</h2>
+    <button class="add-btn" (click)="addContact()">Add New Contact</button>
+  </div>
+
+  <div class="loading" *ngIf="loading">Loading contacts...</div>
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+  <div class="contact-table" *ngIf="!loading && !errorMessage">
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Position</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let contact of contacts">
+            <td>{{ contact.firstname }} {{ contact.lastname }}</td>
+            <td>{{ contact.emailAddress }}</td>
+            <td>{{ contact.telephone1 || contact.mobile || '-' }}</td>
+            <td>{{ contact.positionId || '-' }}</td>
+            <td>
+              <span class="status" [class.active]="contact.isActive">
+                {{ contact.isActive ? 'Active' : 'Inactive' }}
+              </span>
+            </td>
+            <td>
+              <button class="edit-btn" (click)="editContact(contact)">Edit</button>
+              <button class="delete-btn" (click)="deleteContact(contact)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="no-data" *ngIf="contacts.length === 0">No contacts found</div>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item" *ngIf="(exchangeId$ | async) as exchangeId">
+        <a class="nav-link" [ngClass]="{'active': (activeRoute$ | async) === 'summary'}" [routerLink]="['/exchange-summary']"[queryParams]="{ exchangeId: exchangeId }">Summary</a>
+      </li>
+        <!--<li class="nav-item" *ngIf="(exchangeId$ | async) as exchangeId">
+          <a class="nav-link" [ngClass]="{'active': (activeRoute$ | async) === 'FeePlanList'}" [routerLink]="['/manager/feeplans/feeplan-list', exchangeId]">Fee Plan List</a>
+        </li>-->
+      <li class="nav-item" *ngIf="(exchangeId$ | async) as exchangeId">
+        <a class="nav-link" [ngClass]="{'active': (activeRoute$ | async) === 'OptionSettings'}" [routerLink]="['/option-settings']" [queryParams]="{ exchangeId: exchangeId }">Option Settings</a>
+      </li>
+      <!-- <li class="nav-item" *ngIf="(exchangeId$ | async) as exchangeId">
+        <a class="nav-link" [ngClass]="{'active': (activeRoute$ | async) === 'EditExchange'}" [routerLink]="['/edit-exchange']" [queryParams]="{ exchangeId: exchangeId }">Edit Exchange </a>
+      </li> -->
+    </ul>
+  </div>
+</nav>

@@ -1,0 +1,125 @@
+<div class="view-estimate-container">
+
+  <div class="estimate-actions">
+    <button class="save-button">Save</button>
+    <button class="download-button">Download</button>
+<select class="currency-select" [(ngModel)]="currency">
+  <option *ngFor="let curr of currencies" [value]="curr">
+    {{ curr }}
+  </option>
+</select>
+
+
+  </div>
+
+  <div class="estimate-container" >
+   <div class="header" *ngIf="sender">
+    <img [src]="sender.image_Url || 'logo.png'" alt="Logo" class="logo" />
+    <h2>{{ sender.company_Name }}</h2>
+    <p>{{ sender.address }}</p>
+    <p>GSTIN: {{ sender.gst_No }}</p>
+    <h3>EXPORT INVOICE</h3>
+</div>
+
+ <div class="estimate-meta">
+  <div class="meta-left" *ngFor="let client of clients">
+    <p><strong>Estimate No:</strong> {{ estimateNumber }}</p>
+    <p><strong>Bill To:</strong></p>
+     <p>Name: {{ client?.name }}</p>
+    <p>Company Name: {{ client?.company_Name }}</p>
+    <p>Email: {{ client?.email }}</p>
+    <p>Address: {{ client?.address }}</p>
+    <p>Country: {{ client?.country }}</p>
+  </div>
+
+  <div class="meta-right">
+     <p><strong>Estimate Date:</strong> {{ todayDate | date:'dd.MM.yyyy' }}</p>
+    <p><strong>Place Of Supply:</strong> {{ clients[0]?.country }}</p>
+    <p><strong>Name:</strong> {{ sender?.company_Name }}</p>
+    <p>Email: {{ sender?.email }}</p>
+    <p>Address: {{ sender?.address }}</p>
+    <p>State: {{ sender?.state }}</p>
+    <p>GSTIN: {{ sender?.gst_No }}</p>
+  </div>
+</div>
+
+
+
+<table class="invoice-table">
+    <thead>
+  <tr>
+    <th>SR.</th>
+    <th *ngFor="let col of visibleColumns">
+      {{  col.key }}
+    </th>
+    <th>Total Amount Payable</th>
+  </tr>
+</thead>
+       <tbody>
+    <tr *ngFor="let item of invoiceItems; let i = index">
+      <td>{{ i + 1 }})</td>
+   <!-- Table Body Cells -->
+<td *ngFor="let col of visibleColumns">
+  <input type="text" [(ngModel)]="item[col.key]" class="invoice-input" />
+</td>
+      <td class="actions-cell">
+       {{ getItemTotal(item) | number:'1.2-2' }} {{currency}}
+        <div class="action-icons">
+          <button class="icon-button" (click)="editItem(i)">✏️</button>
+          <button class="icon-button" (click)="removeInvoiceItem(i)">🗑️</button>
+        </div>
+      </td>
+    </tr>
+    <tr>
+     <td [attr.colspan]="visibleColumns.length + 2" class="add-row" (click)="addInvoiceItem()">
+        + Add New Invoice Item
+      </td>
+    </tr>
+    <tr class="total-row">
+  <td [attr.colspan]="visibleColumns.length + 1" class="text-right"><strong>Total Ammount:</strong></td>
+  <td><strong> {{ getTotalAmmount() | number:'1.2-2' }} {{ currency }}</strong></td>
+</tr>
+
+  </tbody>
+    </table>
+
+    <div class="total-section">
+      <p><strong>Total Amount:</strong> {{ currency }}</p>
+      <p><strong>Total Invoice Value:</strong> {{ currency }}</p>
+    </div>
+
+   <div class="bank-section" *ngFor="let bank of banks">
+  <div class="bank-left">
+    <p><strong>Total Invoice Value (In Words):</strong> {{ totalAmountInWords }} {{ currency }}</p>
+    <p><strong>Whether Reverse Charge Applicable:</strong> No</p>
+    <p><strong>Bank Account Details</strong></p>
+    <p><strong>Bank Name:</strong> {{ bank?.bank_Name }}</p>
+    <p><strong>A/C Type:</strong> {{ bank?.account_Type }}</p>
+    <p><strong>A/C Number:</strong> {{ bank?.account_No }}</p>
+    <p><strong>IFSC Code:</strong> {{ bank?.ifsc }}</p>
+  </div>
+
+
+  <div class="bank-right" *ngIf="sender">
+    <p><strong>Other Details</strong></p>
+    <p><strong>  CIN:</strong> {{ sender?.cin_No }}</p>
+    <p><strong> PAN:</strong> {{ sender?.pan_No }}</p>
+    <p> <strong> {{ sender?.company_Name }}</strong>   </p>
+    <p><strong> Director </strong>   </p>
+    <p><strong> Authorised Signatory</strong>  </p>
+  </div>
+</div>
+
+
+    <div class="footer-note">
+      <p>Note: Supply Meant For Export Under Bond Or Letter of Undertaking Without Payment Of Integrated Tax(GST)</p>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+

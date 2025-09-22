@@ -1,0 +1,39 @@
+
+<div class="container">
+  <div class="header">
+    <h2>Our Clients</h2>
+    <div class="actions">
+      <input type="text" [(ngModel)]="searchText" placeholder="Search" />
+      <button><i class="fas fa-search"></i></button>
+      <button (click)="openAddClientPopup()">Add Client</button>
+    </div>
+  </div>
+<div class="table-container">
+  <table class="table" *ngIf="filteredClients.length > 0; else noData">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th class="text-center">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let client of filteredClients">
+        <td>{{ client.name }}</td>
+        <td>{{ client.email }}</td>
+        <td class="text-center">
+         <button class="edit-btn">
+  <i class="fas fa-pencil-alt"></i>
+  <span><button (click)="openEditClientPopup(client)">Edit</button></span>
+</button>
+          <button class="invoice-btn invoice-btn:hover" [routerLink]="['/invoice-summary']" routerLinkActive="active">Check Invoice</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #noData>
+    <div class="no-data">No clients found.</div>
+  </ng-template>
+</div>
+</div>

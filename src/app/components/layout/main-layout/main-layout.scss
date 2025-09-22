@@ -1,0 +1,54 @@
+
+.sidebar-toggle-button {
+  position: fixed;
+  top: 70px;  /* Below header (assuming 60px height + margin) */
+  left: 10px;
+  z-index: 3000;
+  background-color: #111;
+  color: white;
+  border: none;
+  font-size: 28px;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: left 0.3s ease;
+}
+
+/* When sidebar is open, move toggle button to right edge of sidebar */
+.sidebar-toggle-button.sidebar-open {
+  left: 230px;  /* 220px sidebar width + 10px margin */
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+app-header {
+  flex: 0 0 60px;
+}
+
+.main-layout {
+  display: grid;
+  grid-template-columns: 0 1fr;
+  transition: grid-template-columns 0.3s ease;
+  height: calc(100vh - 60px);
+}
+
+.main-layout.sidebar-visible {
+  grid-template-columns: 220px 1fr;
+}
+
+/* Left menu styles remain unchanged, make sure width is consistent */
+app-left-menu {
+  width: 220px;
+}
+
+.dashboard-content {
+  padding: 20px;
+  overflow-y: auto;
+  height: 100%;
+  /* Optional: add left padding if desired when sidebar hidden */
+}

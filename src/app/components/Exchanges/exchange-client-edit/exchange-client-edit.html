@@ -1,0 +1,161 @@
+
+
+<form [formGroup]="clientForm" (ngSubmit)="save()">
+<mat-expansion-panel [expanded]="true">
+  <mat-expansion-panel-header>
+    <mat-panel-title>Basic Details</mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <div class="form-row">
+    <mat-form-field appearance="fill">
+      <mat-label>Business Name</mat-label>
+      <input matInput formControlName="businessName" required />
+      <mat-icon matSuffix>business</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Legal Name</mat-label>
+      <input matInput formControlName="legalName" />
+      <mat-icon matSuffix>gavel</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <mat-form-field appearance="fill">
+      <mat-label>Business Type</mat-label>
+      <input matInput formControlName="businessType" />
+      <mat-icon matSuffix>work</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Client Reference</mat-label>
+      <input matInput formControlName="clientReference" />
+      <mat-icon matSuffix>person_search</mat-icon>
+    </mat-form-field>
+  </div>
+</mat-expansion-panel>
+
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>Registration & Tax</mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <div class="form-row">
+    <mat-form-field appearance="fill">
+      <mat-label>Tax Reference (General)</mat-label>
+      <input matInput formControlName="taxReferenceGeneral" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Tax Reference (Sales)</mat-label>
+      <input matInput formControlName="taxReferenceSales" />
+    </mat-form-field>
+  </div>
+
+  <mat-form-field appearance="fill">
+    <mat-label>KYC</mat-label>
+    <input matInput formControlName="kyc" />
+  </mat-form-field>
+</mat-expansion-panel>
+
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>Financial & Status</mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <div class="form-row">
+    <mat-form-field appearance="fill">
+      <mat-label>Cash Revenue</mat-label>
+      <input matInput type="number" formControlName="cashRevenue" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>12-Month Income</mat-label>
+      <input matInput type="number" formControlName="total12MonthIncome" />
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <mat-form-field appearance="fill">
+      <mat-label>Number of Employees</mat-label>
+      <input matInput type="number" formControlName="numberOfEmployee" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Status</mat-label>
+      <input matInput formControlName="currentStatus" />
+    </mat-form-field>
+  </div>
+</mat-expansion-panel>
+
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>Website & Profile</mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Website</mat-label>
+    <input matInput formControlName="website" />
+    <mat-icon matSuffix>language</mat-icon>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Profile Description</mat-label>
+    <textarea matInput formControlName="profileDescription"></textarea>
+  </mat-form-field>
+</mat-expansion-panel>
+
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>Flags & Permissions</mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <div class="form-row">
+    <mat-slide-toggle formControlName="isLegalDocumentationHeld">Legal Docs Held</mat-slide-toggle>
+    <mat-slide-toggle formControlName="isTaxReportingExempt">Tax Exempt</mat-slide-toggle>
+    <mat-slide-toggle formControlName="canSendMessages">Can Send Messages</mat-slide-toggle>
+    <mat-slide-toggle formControlName="canReceiveMessages">Can Receive Messages</mat-slide-toggle>
+    <mat-slide-toggle formControlName="isListedInDirectory">Listed in Directory</mat-slide-toggle>
+    <mat-slide-toggle formControlName="isListedOnWebsite">Listed on Website</mat-slide-toggle>
+    <mat-slide-toggle formControlName="isActive">Active</mat-slide-toggle>
+    <mat-slide-toggle formControlName="isExchangeMember">Exchange Member</mat-slide-toggle>
+    <mat-slide-toggle formControlName="hasPermissionToUseInvoiceSystem">Invoice System Access</mat-slide-toggle>
+  </div>
+</mat-expansion-panel>
+
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>Dates</mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <div class="form-row">
+    <mat-form-field appearance="fill">
+      <mat-label>Date of Renewal</mat-label>
+      <input matInput [matDatepicker]="picker1" formControlName="dateRenewal" />
+      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+      <mat-datepicker #picker1></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Last Renewed</mat-label>
+      <input matInput [matDatepicker]="picker2" formControlName="lastRenewedDate" />
+      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      <mat-datepicker #picker2></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Business Start Date</mat-label>
+    <input matInput [matDatepicker]="picker3" formControlName="businessStartDate" />
+    <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+    <mat-datepicker #picker3></mat-datepicker>
+  </mat-form-field>
+</mat-expansion-panel>
+
+<!-- Save Button -->
+<div class="form-actions">
+  <button mat-flat-button color="primary" type="submit" [disabled]="clientForm.invalid">
+    <mat-icon>save</mat-icon> Save
+  </button>
+</div>
+</form>

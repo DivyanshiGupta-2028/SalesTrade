@@ -1,0 +1,88 @@
+<div *ngIf="clientContactData && clientData; else loading">
+<!-- <div *ngIf="clientContactData; else loading"> -->
+  <div class="row gutters-sm">
+    <div class="col-4 mb-2">
+      <div class="card">
+        <div class="card-header">
+          <h3>Primary Contact</h3>
+        
+        </div>
+        <div class="card-body">
+          <div class="d-flex flex-column">
+          <table class="table-responsive">
+             <tr>
+               <td>
+                <table class="table-responsive">
+                  <tr><th>Name</th> <td>{{ clientContactData.firstname }}{{ clientContactData.lastname || '-' }}</td></tr>
+                   <tr><th>Position Title</th> <td>{{ clientContactData.positionName }}</td></tr>
+                    <tr><th>Email Address</th> <td><a [href]="'mailto:' + clientContactData.emailAddress" target="_blank" rel="noopener">
+                       {{ clientContactData.emailAddress }}</a></td></tr>
+                        <tr><th>Telephone No.</th> <td><a [href]="'tel:' + clientContactData.telephone1 +  clientContactData.telephone2 " target="_blank" rel="noopener">{{ clientContactData.telephone1 }},{{ clientContactData.telephone2 }}</a></td></tr>
+                          <tr><th>Address</th> <td>{{ clientContactData.addressLine1 }},{{ clientContactData.addressLine2 }},
+                            {{ clientContactData.addressLine3 }},{{ clientContactData.addressLine4 }},{{ clientContactData.country }},
+                            {{ clientContactData.state }}</td></tr>
+                            <tr><th>Country</th><td>{{ clientContactData.countryName }}</td> </tr>
+                             <tr><th>State</th> <td>{{ clientContactData.name }}</td></tr>
+                             <tr><th>Pincode</th> <td>{{ clientContactData.pincode }}</td></tr>
+                              <tr><th>Gender</th> <td>{{ clientContactData.gender }}</td></tr>
+                              <tr><th>DateOfBirth</th> <td>{{ clientContactData.dateOfBirth }}</td></tr>
+                </table>
+               </td>
+              </tr>
+          </table>
+          </div>
+        
+        </div>
+      
+      </div>
+    </div>
+    <div class="col-4 mb-2">
+            <div class="row">               
+                <div class="col-auto">
+                  <div class="card">
+                    <div class="card-header">
+                      <h2>Basic Details</h2>
+        
+                    </div>
+                    <div class="card-body">                 
+                      <div class="d-flex flex-column">
+                      <table class="table-responsive">
+                         <tr>
+                          <td>
+                             <table class="table-responsive">
+                              <tr><th>Legal Name</th> <td>{{ clientData.legalName }}</td></tr>
+                               <tr><th>Client Reference</th><td> {{ clientData.referingClientName || '-' }}</td></tr>
+                               <tr><th>Business Type</th> <td>{{ clientData.businessType }}</td></tr>
+                               <tr><th>Business Name</th> <td>{{ clientData.businessName }}</td></tr>
+                               <tr><th>Tax Ref (General)</th> <td>{{ clientData.taxReferenceGeneral }}</td></tr>
+                                <tr><th>Tax Ref (Sales)</th> <td>{{ clientData.taxReferenceSales }}</td></tr>
+                                <tr><th>KYC</th> <td>{{ clientData.kyc }}</td></tr>
+                                <tr><th>Website</th> <td><a [href]="clientData.website" target="_blank" rel="noopener">{{ clientData.website }}</a></td></tr>
+                                <tr><th>Current Status</th> <td>{{ clientData.currentStatus ? 'Active' : 'Inactive' }}</td></tr>
+                             </table>
+                          </td>
+                         </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+    </div>
+  </div>
+    
+      
+    
+  
+</div>
+    
+                                    
+<!-- <div *ngIf="clientData; else loading">
+  <div class="row gutters-sm">
+
+  </div>
+</div> -->
+
+<ng-template #loading>
+  <p>Loading client details...</p>
+</ng-template>

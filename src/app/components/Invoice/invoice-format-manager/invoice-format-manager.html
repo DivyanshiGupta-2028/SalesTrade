@@ -1,0 +1,112 @@
+<div class="format-manager-container">
+  <h2>Add Invoice Format</h2>
+
+  <form (ngSubmit)="saveFormat()" #formatForm="ngForm" class="format-form">
+  <div class="form-row">
+  <div class="form-group">
+    <label for="formatName">Format Name :</label>
+    <input
+      id="formatName"
+      class="form-control"
+      [(ngModel)]="newFormat.formatName"
+      name="formatName"
+      placeholder="Enter Format Name"
+      required
+    />
+  </div>
+
+  <div class="form-group">
+    <label for="pattern">Invoice No. Pattern :</label>
+    <input
+      id="pattern"
+      class="form-control"
+      [(ngModel)]="newFormat.invoiceNumberPattern"
+      name="pattern"
+      placeholder="Enter Pattern (e.g., IRS/01/25-26)"
+      required
+    />
+  </div>
+
+  <div class="form-group">
+    <label for="currency">Currency :</label>
+    <select
+      id="currency"
+      class="form-control"
+      [(ngModel)]="newFormat.defaultCurrency"
+      name="currency"
+      required
+    >
+      <option value="">-- Select Currency --</option>
+      <option value="USD">USD - US Dollar</option>
+      <option value="INR">INR - Indian Rupee</option>
+      <option value="EUR">EUR - Euro</option>
+      <option value="GBP">GBP - British Pound</option>
+      <option value="JPY">JPY - Japanese Yen</option>
+      <option value="AUD">AUD - Australian Dollar</option>
+    </select>
+  </div>
+</div>
+
+
+
+
+
+
+
+   <div class="section">
+  <h4>Tax Details</h4>
+  <div class="form-row">
+    <div class="form-group">
+      <label for="cgst">CGST (%) :</label>
+      <input type="number" id="cgst" [(ngModel)]="newFormat.taxDetails.cgst" name="cgst" placeholder="Enter CGST %" />
+    </div>
+
+    <div class="form-group">
+      <label for="sgst">SGST (%) :</label>
+      <input type="number" id="sgst" [(ngModel)]="newFormat.taxDetails.sgst" name="sgst" placeholder="Enter SGST %" />
+    </div>
+
+    <div class="form-group">
+      <label for="igst">IGST (%) :</label>
+      <input type="number" id="igst" [(ngModel)]="newFormat.taxDetails.igst" name="igst" placeholder="Enter IGST %" />
+    </div>
+  </div>
+</div>
+
+
+<div class="section">
+  <h4>Item Columns</h4>
+  <div class="item-columns">
+    <div class="column-row" *ngFor="let col of newFormat.itemColumns; let i = index">
+  <input [(ngModel)]="col.key" name="colKey{{i}}" placeholder="Key" class="form-control" />
+  <!-- <input [(ngModel)]="col.label" name="colLabel{{i}}" placeholder="Label" class="form-control" /> -->
+
+  <!-- ✅ Show checkbox for default (first 4) columns only -->
+  <label *ngIf="i < 4" class="visibility-checkbox">
+    <input type="checkbox" [(ngModel)]="col.visible" name="colVisible{{i}}" />
+    Show
+  </label>
+
+  <!-- ✅ Show delete button for user-added columns only -->
+  <button *ngIf="i >= 4" type="button" (click)="newFormat.itemColumns.splice(i, 1)">🗑</button>
+</div>
+
+
+
+
+<button
+  class="add-column"
+  type="button"
+  (click)="newFormat.itemColumns.push({ key: '', visible: true })">
+  + Add Column
+</button>
+
+  </div>
+</div>
+
+
+    <button class="submit-btn" type="submit">💾 Save Format</button>
+  </form>
+
+
+</div>

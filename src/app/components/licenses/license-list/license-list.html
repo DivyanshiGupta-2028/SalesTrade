@@ -1,0 +1,110 @@
+  <!-- <div class="row">
+      <div class="d-flex justify-content-between align-items-center my-4">
+        <h4>License List</h4>
+        
+  </div> -->
+<div class="row">
+    <div class="d-flex justify-content-between align-items-center my-4">
+     <app-user-bar-control
+        [title]="pageTitle"
+        [subtitle]="pageSubtitle"
+        [showBackButton]="showBackFlag"
+       [showSubtitle] = true>
+      </app-user-bar-control>
+      <button class="btn btn-primary" (click)="navigateToAddLicense()">
+          <i class="bi bi-plus-lg"></i>  Add License
+        </button>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-12">
+        <table id="example" class="table  table-bordered w-100">
+          <thead class="table-light">
+            <tr>
+              <th>Licensed Company Name</th>
+              <!-- <th>License</th>
+              <th>Owner</th>
+              <th>Expiry Date</th>
+              <th>Created Date</th>
+              <th>Currency</th>
+              <th>Country</th>
+              <th>Localization</th>
+              <th>Language</th>
+              <th>Reference Prefix</th>
+              <th>Status</th> -->
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let license of licenses$ | async">
+              <td>
+                <a [routerLink]="['/license-summary']" [queryParams]="{ licenseId: license.licenseId, userId: license.userId }" class="text-decoration-none">
+                  {{ license.companyName }}
+                </a>
+              </td>
+              <!-- <td>{{ license.licenseType }}</td>
+              <td>{{ license.firstName }} {{ license.lastName }}</td>
+              <td>{{ license.expiry }}</td>
+              <td>{{ license.start }}</td>
+              <td>{{ license.currency }}</td>
+              <td>{{ license.countryName }}</td>
+              <td>{{ license.localization }}</td>
+              <td>{{ license.language }}</td>
+              <td>{{ license.referencePrefix }}</td>
+              <td>{{ license.isActive ? 'Active' : 'Suspended' }}</td> -->
+             <td>
+  <div class="dropdown">
+    <button 
+      class="btn btn-primary btn-sm dropdown-toggle" 
+      type="button" 
+      data-bs-toggle="dropdown" 
+      aria-expanded="false">
+      Actions
+    </button>
+    <ul class="dropdown-menu">
+      <li>
+        <button 
+          class="dropdown-item text-primary" 
+          (click)="viewDetails(license.licenseId)">
+          Modify
+        </button>
+      </li>
+      <li>
+        <button 
+          class="dropdown-item text-success" 
+          (click)="openAlert(license.licenseId ?? 0)">
+          Renew License
+        </button>
+      </li>
+      <li>
+        <button 
+          class="dropdown-item text-danger" 
+          (click)="confirmSuspend(license)" 
+    [disabled]="!license.isActive">
+          Suspend
+        </button>
+      </li>
+      <li>
+        <button 
+          class="dropdown-item text-danger" 
+          (click)="confirmDelete(license.licenseId!)">
+          Delete
+        </button>
+      </li>
+    </ul>
+  </div>
+</td>
+
+            </tr>
+          </tbody>
+          <app-renew-license *ngIf="showAlert"
+                             [licenseId]="alertLicenseId!"
+                             [title]="alertTitle"
+                             (closed)="onAlertClosed()">
+          </app-renew-license>
+
+        </table>
+    </div>
+  </div>

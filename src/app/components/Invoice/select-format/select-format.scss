@@ -1,0 +1,63 @@
+// select-format.component.scss or select-format.scss
+.modal-wrapper {
+  width: 400px;
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+}
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  color: #333;
+}
+
+select.form-control {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+  transition: border-color 0.3s;
+
+  &:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.actions button {
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.actions button:first-child {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.actions button:first-child:hover {
+  background-color: #218838;
+}
+
+.actions button:last-child {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.actions button:last-child:hover {
+  background-color: #c82333;
+}

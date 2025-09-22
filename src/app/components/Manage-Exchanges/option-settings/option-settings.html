@@ -1,0 +1,145 @@
+<app-exchangenavbar></app-exchangenavbar>
+
+<div class="container min-vh-100 d-flex justify-content-center">
+  <div class="row w-100 justify-content-center">
+    <div class="col-12 col-md-10 col-lg-9">
+      <h2 class="mb-4 text-center">Option Groups</h2>
+      <ng-container *ngIf="groupTitles.length > 0; else loading">
+        <div class="accordion" id="optionGroupsAccordion">
+          <div *ngFor="let group of groupTitles; let groupIndex = index" class="accordion-item">
+            <h2 class="accordion-header" [id]="'heading' + groupIndex">
+              <button class="accordion-button"
+                      [class.collapsed]="selectedGroup !== group"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      [attr.data-bs-target]="'#collapse' + groupIndex"
+                      aria-expanded="true"
+                      [attr.aria-controls]="'collapse' + groupIndex"
+                      (click)="selectGroup(group)">
+                {{ group.optionGroupTittle }}
+              </button>
+            </h2>
+            <div [id]="'collapse' + groupIndex"
+                 class="accordion-collapse collapse"
+                 [class.show]="selectedGroup === group"
+                 [attr.aria-labelledby]="'heading' + groupIndex">
+              <div class="accordion-body">
+                <form *ngIf="selectedGroupOptions.length > 0">
+                  <div *ngFor="let option of selectedGroupOptions; let optionIndex = index" class="option-container mb-3">
+                    <div class="row align-items-center">
+                      <div class="col-md-3">
+                        <h5 class="mb-0">{{ option.optionTitle }}</h5>
+                      </div>
+                      <div class="col-md-8">
+                        <div class="d-flex align-items-center flex-grow-1">
+                          <ng-container *ngIf="option.type === 'Text'">
+                            <input type="text" class="form-control" [value]="option.typeValues || ''"
+                                   (change)="updateOptionValue(option, $event)">
+                          </ng-container>
+                          <ng-container *ngIf="option.type === 'Number'">
+                            <input type="number" class="form-control" [value]="option.typeValues || 0"
+                                   (change)="updateOptionValue(option, $event)">
+                          </ng-container>
+                          <ng-container *ngIf="option.type === 'Checkbox'">
+                            <div class="form-check">
+                              <input type="checkbox"
+                                     class="form-check-input"
+                                     [checked]="isChecked(option.typeValues)"
+                                     (change)="updateCheckboxValue(option, $event)">
+                            </div>
+                          </ng-container>
+
+                          <ng-container *ngIf="option.type === 'Radiobutton'">
+                            <div class="d-flex gap-3">
+                              <div *ngFor="let item of getTypeValues(option.typeValues); let i = index" class="form-check">
+                                <input type="radio"
+                                       class="form-check-input"
+                                       [name]="'option-radio-' + option.optionId"
+                                       [id]="'option-radio-' + option.optionId + '-' + i"
+                                       [value]="item.value"
+                                       [checked]="item.value === option.selectedValue"
+                                       (change)="updateOptionValue(option, $event)">
+                                <label class="form-check-label" [for]="'option-radio-' + option.optionId + '-' + i">
+                                  {{ item.label }}
+                                </label>
+                              </div>
+                            </div>
+                          </ng-container>
+
+                          <!-- File Upload -->
+                          <!--<ng-container *ngIf="option.type === 'File'">
+                            <input type="file" class="form-control"
+                                   (change)="updateFileValue(option, $event)">
+                          </ng-container>-->
+
+                          <!-- Multiline (Textarea) -->
+                          <ng-container *ngIf="option.type === 'Multiline'">
+                            <textarea class="form-control" rows="4"
+                                      (change)="updateOptionValue(option, $event)">
+                           {{ option.typeValues || '' }}
+                            </textarea>
+                          </ng-container>
+
+                          <!-- Email Input -->
+                          <ng-container *ngIf="option.type === 'Email'">
+                            <input type="email" class="form-control" [value]="option.typeValues || ''"
+                                   (change)="updateOptionValue(option, $event)">
+                          </ng-container>
+
+                          <!-- Calendar (Date Picker) -->
+                          <ng-container *ngIf="option.type === 'Calendar'">
+                            <input type="date" class="form-control" [value]="option.typeValues || ''"
+                                   (change)="updateOptionValue(option, $event)">
+                          </ng-container>
+
+                          <!-- Slider -->
+                          <ng-container *ngIf="option.type === 'Slider'">
+                            <input type="range" class="form-range"
+                                   [value]="option.typeValues || 50"
+                                   (change)="updateOptionValue(option, $event)">
+                          </ng-container>
+                          <!-- Time Picker -->
+                          <ng-container *ngIf="option.type === 'Time'">
+                            <input type="time" class="form-control" [value]="option.typeValues || ''"
+                                   (change)="updateOptionValue(option, $event)">
+                          </ng-container>
+
+                          <ng-container *ngIf="option.type === 'Dropdown'">
+    <select class="form-control" [value]="option.typeValues || ''" (change)="updateOptionValue(option, $event)">
+      <option *ngFor="let item of getTypeValues(option.typeValues)" [value]="item.value">{{ item.label }}</option>
+    </select>
+  </ng-container>
+                        
+
+
+                          <ng-container *ngIf="!['Text', 'Number', 'Dropdown', 'Checkbox', 'Radiobutton', 'File', 'Multiline', 'Email', 'Calendar', 'Slider', 'Time'].includes(option.type)">
+                            <input type="text" class="form-control" [value]="option.typeValues || ''"
+                                   (change)="updateOptionValue(option, $event)">
+                            <small class="text-danger">Unknown type: {{option.type}}</small>
+                          </ng-container>
+
+                          <div class="ms-2" *ngIf="option.description">
+                            <span class="help-icon" (click)="showAlert(option.description)">
+                              ❓
+                            </span>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <div class="text-end mt-4">
+        <button type="button" class="btn btn-primary" (click)="saveOptions()">Save</button>
+      </div>
+      <ng-template #loading>
+        <div class="alert alert-info">Loading option groups...</div>
+      </ng-template>
+    </div>
+  </div>
+</div>

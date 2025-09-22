@@ -1,0 +1,150 @@
+<!-- add-client.component.html -->
+<div class="add-client-wrapper mat-elevation-z4">
+  <div class="header d-flex justify-content-between align-items-center">
+    <h3>{{ data?.client ? 'Edit Client' : 'Add Client' }}</h3>
+    <button mat-icon-button (click)="closeDialog()" [disabled]="isSubmitting">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <form [formGroup]="clientForm" (ngSubmit)="onSubmit()" class="client-form" autocomplete="off">
+    
+
+
+    <!-- User ID Dropdown -->
+<mat-form-field appearance="outline" class="full-width">
+  <mat-label>User *</mat-label>
+  <mat-select formControlName="user_id" placeholder="Select User">
+    <mat-option *ngIf="loadingUsers" disabled>
+      <mat-spinner diameter="20"></mat-spinner>
+      Loading users...
+    </mat-option>
+    <mat-option *ngFor="let user of users" [value]="user.id">
+      {{ user.name }}
+    </mat-option>
+  </mat-select>
+  <mat-error *ngIf="hasError('user_id', 'required')">
+    User is required
+  </mat-error>
+</mat-form-field>
+
+    <!-- Name Field -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Name *</mat-label>
+      <input matInput formControlName="name" placeholder="Enter full name">
+      <mat-error *ngIf="hasError('name', 'required')">
+        Name is required
+      </mat-error>
+      <mat-error *ngIf="hasError('name', 'minlength')">
+        Name must be at least 2 characters
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Email Field -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Email *</mat-label>
+      <input matInput formControlName="email" type="email" placeholder="Enter email address">
+      <mat-error *ngIf="hasError('email', 'required')">
+        Email is required
+      </mat-error>
+      <mat-error *ngIf="hasError('email', 'email')">
+        Please enter a valid email address
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Phone Field -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Phone</mat-label>
+      <input matInput formControlName="phone" placeholder="Enter phone number">
+      <mat-error *ngIf="hasError('phone', 'pattern')">
+        Please enter a valid phone number
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Company Name Field -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Company Name</mat-label>
+      <input matInput formControlName="company_Name" placeholder="Enter company name">
+    </mat-form-field>
+
+    <!-- Project Name Field -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Project Name</mat-label>
+      <input matInput formControlName="project_Name" placeholder="Enter project name">
+    </mat-form-field>
+
+    <!-- Country and State Row -->
+   <div class="row gap-3">
+  <mat-form-field appearance="outline" class="half-width">
+    <mat-label>Country *</mat-label>
+    <mat-select formControlName="country" placeholder="Select Country">
+      <mat-option *ngIf="loadingCountries" disabled>
+        <mat-spinner diameter="20"></mat-spinner>
+        Loading countries...
+      </mat-option>
+      <mat-option *ngFor="let country of countries" [value]="country.id">
+        {{ country.name }}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="hasError('country', 'required')">
+      Country is required
+    </mat-error>
+  </mat-form-field>
+
+
+      <!-- State Field -->
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>State</mat-label>
+        <mat-select formControlName="state" placeholder="Select State" [disabled]="!clientForm.get('country')?.value">
+          <mat-option *ngIf="loadingStates" disabled>
+            <mat-spinner diameter="20"></mat-spinner>
+            Loading states...
+          </mat-option>
+          <mat-option *ngFor="let state of states" [value]="state.id">
+            {{ state.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- Address Field -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Address</mat-label>
+      <textarea matInput formControlName="address" rows="3" placeholder="Enter address"></textarea>
+    </mat-form-field>
+
+    <!-- GST Number Field -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>GST Number / Company ID</mat-label>
+      <input matInput formControlName="gst_No" placeholder="Enter GST number (India) or Company ID (International)">
+    </mat-form-field>
+
+    <!-- Note -->
+    <div class="note text-muted mb-3">
+      <small>* Required fields</small>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="button-container">
+      <button 
+        mat-flat-button 
+        color="primary" 
+        type="submit" 
+        class="save-button"
+        [disabled]="clientForm.invalid || isSubmitting">
+        
+        <mat-spinner *ngIf="isSubmitting" diameter="20" class="button-spinner"></mat-spinner>
+        {{ isSubmitting ? 'Saving...' : 'Save Client' }}
+      </button>
+      
+      <button 
+        mat-button 
+        type="button" 
+        (click)="closeDialog()" 
+        [disabled]="isSubmitting"
+        class="cancel-button">
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>

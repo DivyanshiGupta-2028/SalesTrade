@@ -1,0 +1,44 @@
+<div class="invoice-container">
+  <div class="user-info">
+    <div>
+      <h2>{{ user.name }}</h2>
+      <p>{{ user.email }}</p>
+    </div>
+    <div class="total-sales">
+      <span>Total Sales</span>
+      <strong>Rs. {{ user.totalSales }}</strong>
+    </div>
+  </div>
+
+  <hr />
+
+  <h4>All invoices</h4>
+
+  <table class="invoice-table">
+    <thead>
+      <tr>
+        <th>Invoice No.</th>
+        <th>Amount</th>
+        <th>Client Name</th>
+        <th>TDS Deducted</th>
+        <th>Date</th>
+        <th>₹ Received</th>
+        <th>Tag</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngIf="invoices.length === 0">
+        <td colspan="7" class="empty-row">No data available in table</td>
+      </tr>
+      <tr *ngFor="let invoice of invoices">
+        <td>{{ invoice.invoice_Number }}</td>
+        <td>{{ invoice.estimate_Amount }}</td>
+        <td>{{ invoice.name }}</td>
+        <td>{{ invoice.tds }}</td>
+        <td>{{ invoice.amount_Date | date: 'shortDate' }}</td>
+        <td>{{ invoice.amount }}</td>
+        <td>{{ invoice.tag }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

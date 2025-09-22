@@ -1,0 +1,31 @@
+<div class="update-container">
+  <h2>🛠 Edit Invoice Format</h2>
+
+  <form (ngSubmit)="updateFormat()">
+    <label>Format Name</label>
+    <input [(ngModel)]="formatData.formatName" name="formatName" required />
+
+    <label>Invoice Pattern</label>
+    <input [(ngModel)]="formatData.invoiceNumberPattern" name="pattern" required />
+
+    <label>Currency</label>
+    <select [(ngModel)]="formatData.defaultCurrency" name="currency">
+      <option value="USD">USD</option>
+      <option value="INR">INR</option>
+      <option value="EUR">EUR</option>
+    </select>
+
+    <h4>Tax Details</h4>
+    <!-- <input type="number" [(ngModel)]="formatData.taxDetailsParsed.cgst" name="cgst" placeholder="CGST" />
+    <input type="number" [(ngModel)]="formatData.taxDetailsParsed.sgst" name="sgst" placeholder="SGST" />
+    <input type="number" [(ngModel)]="formatData.taxDetailsParsed.igst" name="igst" placeholder="IGST" /> -->
+
+    <!-- <h4>Item Columns</h4>
+    <div *ngFor="let col of formatData.itemColumnsParsed; let i = index">
+      <input [(ngModel)]="col.key" name="colKey{{i}}" placeholder="Key" />
+      <input [(ngModel)]="col.label" name="colLabel{{i}}" placeholder="Label" />
+    </div> -->
+
+    <button type="submit">💾 Update Format</button>
+  </form>
+</div>

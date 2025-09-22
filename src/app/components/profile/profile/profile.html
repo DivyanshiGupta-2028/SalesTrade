@@ -1,0 +1,29 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div *ngIf="user$ | async as user" class="card shadow-sm">
+
+        <div class="card-header  text-black">
+          <h5 class="mb-0">Profile Description</h5>
+        </div>
+        <div class="card-body">
+          <dl class="row">
+            <dt class="col-sm-4"> Name</dt>
+            <dd class="col-sm-8">{{ user.firstName || '-' }}   {{ user.lastName || '-' }}</dd>
+
+             <dt class="col-sm-4"> User Name</dt>
+            <dd class="col-sm-8">{{ user.userName || '-' }}</dd>
+
+            <dt class="col-sm-4">Email Id</dt>
+            <dd class="col-sm-8">{{ user.email || '-' }}</dd> 
+          </dl>
+        </div>
+      </div>
+      <div *ngIf="errors$ | async as errors" class="alert alert-danger mt-3">
+        <ul class="mb-0">
+          <li *ngFor="let error of errors">{{ error }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

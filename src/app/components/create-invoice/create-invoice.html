@@ -1,0 +1,201 @@
+<!-- create-invoice.component.html -->
+<div class="invoice-wrapper">
+<div class="textCenter mt-12 py-4 px-md-4 align-items-center p-sm-12 p-6 login">
+  <div class="mx-auto mt-12 pt-4 form-container">
+    <img class="login-logo " src="logo.png" />
+  </div>
+</div>
+  <!-- Company Header Section -->
+  <table class="headingTable">
+    <tr>
+
+    </tr>
+    <tr>
+      <td>
+        <h1 class="textCenter margin0 fontSize18 boldText">{{ member.company_name }}</h1>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <h2 class="textCenter margin0 fontSize15 boldText">{{ member.address }}</h2>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <h2 class="textCenter margin0 fontSize15 boldText">GSTIN: {{ member.gst_no }}</h2>
+      </td>
+    </tr>
+    <tr>
+      <td><hr class="borderLine"></td>
+    </tr>
+  </table>
+
+  <!-- Invoice Heading -->
+
+<table class="headingTable2" style="width: 100%;">
+  <tr>
+    <td class="fontSize18 boldText textCenter" colspan="2">{{ client_data.country === '101' ? 'Tax' : 'Export' }} Invoice</td>
+  </tr>
+</table>
+
+<!-- Full-width bottom border after Tax Invoice -->
+<hr class="borderLine" />
+
+<!-- Estimate No. (Left) and Date (Right) -->
+<table class="headingTable2" style="width: 100%;">
+  <tr>
+    <td class="fontSize14 boldText textLeft" style="width: 50%;">
+      Estimate No: {{ estimate_data.invoice_number }}
+    </td>
+    <td class="fontSize14 boldText textRight" style="width: 50%;">
+      Estimate Date: {{ invoices.amount_date | date:'dd.MM.yyyy' }}
+    </td>
+  </tr>
+</table>
+
+<!-- Full-width border below Estimate info -->
+<hr class="borderLine" />
+
+
+  <!-- Bill To & Supplier Details -->
+  <table class="topDetailsTable ">
+    <tr>
+      <td>
+        <!-- Bill To -->
+        <table class="innerTable innerTableLeft borderLine">
+          <tr><td class="fontSize15 boldText">Bill To</td></tr>
+          <tr><td class="fontSize14">Name:</td><td class="fontSize14 boldText">{{ client_data.name }}</td></tr>
+          <tr><td class="fontSize14">Company Name:</td><td class="fontSize14 boldText">{{ client_data.company_name }}</td></tr>
+          <tr><td class="fontSize14">Email:</td><td class="fontSize14 boldText">{{ client_data.email }}</td></tr>
+          <tr><td class="fontSize14">Address:</td><td class="fontSize14 boldText">{{ client_data.address }}</td></tr>
+          <tr><td class="fontSize14">{{ client_data.country === '101' ? 'State' : 'Country' }}:</td><td class="fontSize14 boldText">{{ client_data.country === '101' ? client_data.state_name : client_data.country_name }}</td></tr>
+          <tr *ngIf="client_data.country === '101'"><td class="fontSize14">State Code:</td><td class="fontSize14 boldText">{{ client_data.state_code.length === 1 ? '0' + client_data.state_code : client_data.state_code }}</td></tr>
+          <tr *ngIf="client_data.country === '101'"><td class="fontSize14">GSTIN:</td><td class="fontSize14 boldText">{{ client_data.gst_no }}</td></tr>
+        </table>
+      </td>
+
+      <td>
+        <!-- Supplier Details -->
+        <table class="innerTable innerTableRight">
+          <tr><td class="fontSize14">Place Of Supply:</td><td class="fontSize14 boldText">{{ client_data.country === '101' ? client_data.state_name : client_data.country_name }}</td></tr>
+          <tr><td class="fontSize14">Name:</td><td class="fontSize14 boldText">{{ member.company_name }}</td></tr>
+          <tr><td class="fontSize14">Email:</td><td class="fontSize14 boldText">{{ member.email }}</td></tr>
+          <tr><td class="fontSize14">Address:</td><td class="fontSize14 boldText">{{ member.address }}</td></tr>
+          <tr><td class="fontSize14">State:</td><td class="fontSize14 boldText">{{ member.state_name }}</td></tr>
+          <tr><td class="fontSize14">State Code:</td><td class="fontSize14 boldText">0{{ member.state_code }}</td></tr>
+          <tr><td class="fontSize14">GSTIN:</td><td class="fontSize14 boldText">{{ member.gst_no }}</td></tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  <!-- Invoice Table -->
+  <div class="tbl_brdr">
+     <table class="amountDetailTable">
+      <thead>
+        <tr>
+          <th class="textCenter fontSize14 boldText">S No.</th>
+          <th class="textCenter fontSize14 boldText">Description</th>
+          <th class="textCenter fontSize14 boldText">Hrs/Qty</th>
+          <th class="textCenter fontSize14 boldText">Rate</th>
+          <th class="textCenter fontSize14 boldText">SAC Code</th>
+          <th class="textCenter fontSize14 boldText">Total Amount Payable</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of estimate_data_prices; index as i">
+          <td class="textCenter fontSize14">{{ i + 1 }}</td>
+          <td class="textCenter fontSize14">{{ item.description }}</td>
+          <td class="textCenter fontSize14">{{ item.qty }}</td>
+          <td class="textCenter fontSize14">{{ item.price }}</td>
+          <td class="textCenter fontSize14">998314</td>
+          <td class="textRight fontSize14">{{ item.qty * item.price }} <b>{{ estimate_data.currency }}</b></td>
+        </tr>
+        <tr>
+          <td colspan="5" class="fontSize14 textRight">Total Amount</td>
+          <td class="fontSize14 textRight">{{ getTotal() }} <b>{{ estimate_data.currency }}</b></td>
+        </tr>
+        <ng-container *ngIf="client_data.country === '101'">
+          <tr *ngIf="client_data.state_code !== '9'">
+            <td colspan="5" class="fontSize14 textRight">IGST  18%</td>
+            <td class="fontSize14 textRight">{{ getGST() }} <b>{{ estimate_data.currency }}</b></td>
+          </tr>
+          <ng-container *ngIf="client_data.state_code === '9'">
+            <tr>
+              <td colspan="5" class="fontSize14 textRight">CGST  9%</td>
+              <td class="fontSize14 textRight">{{ getTotal() * 0.09 | number:'1.2-2' }} <b>{{ estimate_data.currency }}</b></td>
+            </tr>
+            <tr>
+              <td colspan="5" class="fontSize14 textRight">SGST  9%</td>
+              <td class="fontSize14 textRight">{{ getTotal() * 0.09 | number:'1.2-2' }} <b>{{ estimate_data.currency }}</b></td>
+            </tr>
+          </ng-container>
+        </ng-container>
+        <tr>
+          <td colspan="5" class="fontSize14 textRight boldText">Total Invoice Value</td>
+          <td class="fontSize14 textRight boldText">{{ getTotal() + getGST() }} <b>{{ estimate_data.currency }}</b></td>
+        </tr>
+        <tr>
+          <td class="fontSize14 textLeft" colspan="2">Total Invoice Value (In Words)</td>
+          <td class="fontSize14 valueString textLeft" colspan="4">{{ numberToWords(getTotal() + getGST()) }} <b>{{ estimate_data.currency }}</b></td>
+        </tr>
+        <tr>
+          <td colspan="6" class="fontSize11 textLeft">Whether Reverse Charge Applicable : No</td>
+        </tr>
+          <tr>
+          <td colspan="6" class="fontSize11 textLeft">Bank Account Details</td>
+        </tr>
+          <tr>
+          <td colspan="6" class="fontSize11 textLeft">Other Details</td>
+        </tr>
+          <tr>
+          <td colspan="6" class="fontSize11 textLeft">Bank Name</td>
+        </tr>
+          <tr>
+          <td colspan="6" class="fontSize11 textLeft">A/c Type</td>
+        </tr>
+      </tbody>
+    </table>
+     <!-- New Section: Weather + Bank Details Table -->
+  <table class="bankDetailTable">
+    <thead>
+      <tr>
+        <th class="fontSize14" colspan="6" style="background-color: #fff; color: black; padding: 8px;">Bank Account Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="fontSize14" colspan="2">Bank Name:</td>
+        <td class="fontSize10" colspan="4">{{ bank.name }}</td>
+      </tr>
+      <tr>
+        <td class="fontSize14" colspan="2">A/c Type:</td>
+        <td class="fontSize14" colspan="4">{{ bank.account_type }}</td>
+      </tr>
+      <tr>
+        <td class="fontSize14" colspan="2">A/c Number:</td>
+        <td class="fontSize14" colspan="4">{{ bank.account_no }}</td>
+      </tr>
+      <tr>
+        <td class="fontSize14" colspan="2">IFSC Code:</td>
+        <td class="fontSize14" colspan="4">{{ bank.swift }}</td>
+      </tr>
+      <tr>
+        <td class="fontSize14" colspan="2">CIN:</td>
+        <td class="fontSize14" colspan="4">{{ member.cin_no }}</td>
+      </tr>
+      <tr>
+        <td class="fontSize14" colspan="2">PAN:</td>
+        <td class="fontSize14" colspan="4">{{ member.pan_no }}</td>
+      </tr>
+      <tr>
+        <td class="fontSize14" colspan="6" style="text-align: center; padding-top: 10px;">For Sanskriti IT Solutions Pvt. Ltd.<br/><br/><span class="fontSize14">Director</span></td>
+      </tr>
+      <tr>
+        <td class="fontSize14" colspan="6" style="color: #000; padding-top: 8px;">*Note: Supply Meant For Export Under Bond Or Letter of Undertaking Without Payment Of Integrated Tax (IGST)</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+</div>

@@ -1,0 +1,7 @@
+<!-- <h2 mat-dialog-title>{{ data.title }}</h2> -->
+
+<div mat-dialog-content>
+  <ng-container *ngIf="data.contentComponent">
+    <ng-container *ngComponentOutlet="data.contentComponent; injector: componentInjector"></ng-container>
+  </ng-container>
+</div>

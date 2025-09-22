@@ -1,0 +1,175 @@
+.container {
+  padding: 24px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.header h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #6b21a8; /* Purple */
+  border-bottom: 2px solid #7c3aed;
+  padding-bottom: 4px;
+  display: inline-block;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.actions input {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 240px;
+}
+
+.actions button {
+  padding: 6px 12px;
+  border: 1px solid #7c3aed;
+  background-color: white;
+  color: #7c3aed;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.actions button:hover {
+  background-color: #f3e8ff;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.table th,
+.table td {
+  padding: 12px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.table thead {
+  background-color: #f9fafb;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.edit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #333;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: color 0.2s ease;
+
+  i {
+    font-size: 14px;
+  }
+
+  &:hover {
+    color: #007bff; // blue on hover
+  }
+}
+
+
+.invoice-btn {
+  background-color: #2563eb;
+  color: white;
+  padding: 6px 10px;
+  font-size: 13px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.invoice-btn:hover {
+  background-color: #1d4ed8;
+}
+
+.no-data {
+  text-align: center;
+  color: #888;
+  padding: 30px 0;
+}
+@media (max-width: 768px) {
+  .container {
+    padding: 16px;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .actions {
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 8px;
+
+    input {
+      width: 100%;
+    }
+
+    button {
+      flex: 1;
+      min-width: 120px;
+      font-size: 13px;
+    }
+  }
+
+  .table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+
+    thead, tbody, tr, th, td {
+      white-space: nowrap;
+    }
+  }
+
+  .edit-btn,
+  .invoice-btn {
+    font-size: 13px;
+    padding: 5px 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header h2 {
+    font-size: 18px;
+  }
+
+  .actions button {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+
+  .edit-btn i {
+    font-size: 13px;
+  }
+
+  .invoice-btn {
+    font-size: 12px;
+    padding: 5px 8px;
+  }
+}
+.table-container {
+  overflow-x: auto;
+  width: 100%;
+}
