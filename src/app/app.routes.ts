@@ -41,6 +41,7 @@ import { UserList } from './components/profile/user-list/user-list';
 import { AddProfile } from './components/profile/add-profile/add-profile';
 import { Profile } from './components/profile/profile/profile';
 import { ViewUser } from './components/profile/view-user/view-user';
+import { LicenseFlow } from './components/licenses/license-flow/license-flow';
 
 
 export const routes: Routes = [
@@ -100,6 +101,9 @@ export const routes: Routes = [
        // },
         {
           path: 'license-dashboard', component:LicenseDashboard, canActivate: [RoleGuard], data: { role: 'SuperAdmin' }
+        },
+        {
+          path: 'license-flow', component:LicenseFlow, canActivate: [RoleGuard], data: {role: 'SuperAdmin'}
         },
 
         

@@ -28,10 +28,39 @@ export class UserList implements OnInit {
 showAddProfile = false; 
   alertMessage = 'This is a custom alert message!';
   alertTitle = 'Add User ';
+
+
+users: any[] = [];
+pagedUsers: any[] = [];
+currentPage = 1;
+itemsPerPage = 15;
+totalPages = 0;
+pages: number[] = [];
+viewAll = false;
+
   constructor(private fb: FormBuilder,private licenseService: LicenseService, private router: Router, private authService: AuthService,private route: ActivatedRoute) { }
   ngOnInit() {
     this.users$ = this.licenseService.getUsers();
+
+     this.users$.subscribe(data => {
+    this.users = data; // ✅ no filter
+  //  this.totalPages = Math.ceil(this.users.length / this.itemsPerPage);
+   // this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+    this.calculatePagination();
+    this.setPage(1);
+  });
   }
+
+
+  calculatePagination() {
+  if (this.viewAll) {
+    this.totalPages = 1;
+    this.pages = [1];
+  } else {
+    this.totalPages = Math.ceil(this.users.length / this.itemsPerPage);
+    this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+}
 
   viewDetails(id: string | undefined) {
     if (id !== undefined) {
@@ -78,6 +107,35 @@ closeAddProfile() {
   this.users$ = this.licenseService.getUsers();
 }
 
+
+setPage(page: number) {
+//   this.currentPage = page;
+//   const startIndex = (page - 1) * this.itemsPerPage;
+//   const endIndex = startIndex + this.itemsPerPage;
+//   this.pagedUsers = this.users.slice(startIndex, endIndex);
+// }
+
+this.currentPage = page;
+  if (this.viewAll) {
+    this.pagedUsers = this.users;
+  } else {
+    const startIndex = (page - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.pagedUsers = this.users.slice(startIndex, endIndex);
+  }
+}
+
+goToPage(page: number) {
+  if (page < 1 || page > this.totalPages) return;
+  this.setPage(page);
+}
+
+toggleViewAll() {
+  this.viewAll = !this.viewAll;
+  this.calculatePagination();
+  this.setPage(1);
+
+}
 }
 
 

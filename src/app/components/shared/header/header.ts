@@ -35,11 +35,6 @@ export class Header implements OnInit {
 
 
   ngOnInit(): void {
-     this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        this.showAddUserButton = event.urlAfterRedirects.includes('license-dashboard');
-      }
-    });
      this.route.queryParams.subscribe(params => {
     this. userId =  params['userId'];
     console.log('UserId from query params:', this.userId);
@@ -59,9 +54,6 @@ toggleMenu() {
   this.menuOpen = !this.menuOpen;
 }
 
- navigateToAddProfile() {
-    this.router.navigate(['/add-profile']);
-  }
 
 showDropdown = false;
 
