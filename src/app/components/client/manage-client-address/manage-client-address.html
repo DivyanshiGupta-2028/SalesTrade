@@ -39,7 +39,6 @@
             </div>
               <div *ngIf="isClientAddressLoading" class="loading-indicator">
               <i class="fas fa-spinner fa-spin"></i> Loading Client Address...</div>
-              <!-- <small class="text-muted">Client Address count: {{ clientAddress.length }}</small> -->
             </div>
           </div>
 
@@ -149,7 +148,6 @@
               <div class="invalid-feedback">
                 {{ getFieldError('address.state') }}
               </div>
-              <!-- <small class="text-muted">States count: {{ stateOptions.length }} | Selected Country: {{ selectedCountries }}</small> -->
             </div>
             <div class="form-row" *ngIf="addressForm.get('state')?.value === 'Other'">
   <div class="form-group col-md-12">

@@ -1,38 +1,14 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light px-3 shadow-sm">
-    <!-- Left Logo -->
     <a class="navbar-brand d-flex align-items-center" href="./license-dashboard">
       <img src="logo.png" alt="Logo" class="logo me-2">
     </a>
     
-    <!-- Mobile Toggle -->
 <button class="navbar-toggler" type="button" (click)="toggleMenu()">
   <span class="navbar-toggler-icon"></span>
 </button>
 
-    <!-- Menu -->
   <div [class.collapse]="!menuOpen" class="navbar-collapse" id="navbarNavDropdown">
-  <!-- Center Navigation -->
 <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-  <!-- <li class="nav-item" *ngIf="authService.hasRole('SuperAdmin')">
-    <a class="nav-link" routerLink="/exchange-dashboard" routerLinkActive="active">Dashboard</a>
-  </li>
-  <li class="nav-item" *ngIf="authService.hasRole('SuperAdmin')">
-    <a class="nav-link" routerLink="/add-exchange" routerLinkActive="active">Add New Company</a>
-  </li>
-  <li class="nav-item" *ngIf="authService.hasRole('Admin')">
-    <a class="nav-link" routerLink="/settings" routerLinkActive="active">Settings</a>
-  </li> -->
-
-   <!-- <li class="nav-item"  *ngIf="authService.hasRoleObservable('SuperAdmin') | async">
-    <a class="nav-link" routerLink="/license-dashboard" routerLinkActive="active">Dashboard</a>
-  </li> 
-  <li class="nav-item" *ngIf="authService.hasRoleObservable('SuperAdmin') | async">
-    <a class="nav-link" routerLink="/add-profile" routerLinkActive="active">Add New Company</a>
-  </li>
-  <li class="nav-item" *ngIf="authService.hasRoleObservable('SuperAdmin') | async">
-    <a class="nav-link" routerLink="/license-list" routerLinkActive="active">License List</a>
-  </li> -->
-
   <li class="nav-item" *ngIf="authService.hasRoleObservable('SuperAdmin') | async">
     <a class="nav-link" routerLink="/user-list" routerLinkActive="active">Manage Users</a>
   </li>
@@ -43,8 +19,6 @@
 <button class="btn btn-primary" (click)="navigateToAddProfile()" *ngIf="showAddUserButton">
   <i class="bi bi-plus-lg"></i> + Add User
 </button>
-
-      <!-- Right Profile Dropdown -->
       <ul class="navbar-nav">
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle d-flex align-items-center"  (click)="toggleDropdown()" tabindex="0" (blur)="closeDropdown()" role="button"  aria-expanded="false">
@@ -52,7 +26,6 @@
             <span>{{ firstName }} {{ lastName }}</span>
           </a>
           <ul class="dropdown-menu dropdown-menu-end" [class.show]="showDropdown">
-            <!-- <li><a class="dropdown-item" href="./profile"><i class="fa-solid fa-user me-2"></i>Profile</a></li> -->
              <li>
   <a class="dropdown-item" [routerLink]="['/profile']" [queryParams]="{ userId: userId }">
     <i class="fa-solid fa-user me-2"></i>Profile

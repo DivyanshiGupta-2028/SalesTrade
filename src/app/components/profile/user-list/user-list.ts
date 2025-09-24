@@ -4,11 +4,9 @@ import { LicenseService } from '../../../services/Licenses/licenseservice.servic
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserProfile } from '../../Models/Client.model';
-//import { UserBarControl } from '../../shared/user-bar-control/user-bar-control';
 import { AddProfile } from '../add-profile/add-profile';
-import { Modal } from 'bootstrap';
 import { UserBarControl } from '../../user-bar-control/user-bar-control';
 @Component({
   selector: 'app-user-list',
@@ -70,35 +68,6 @@ showAddProfile = false;
     this.deleteUser(id);
   }
 }
-//  openAddUserModal() {
-//     this.showAddProfile = true;
-//     setTimeout(() => {
-//       const modalEl = document.getElementById('addUserModal');
-//       if (modalEl) {
-//         import('bootstrap').then(({ Modal }) => {
-//           const modal = new Modal(modalEl);
-//           modal.show();
-//         });
-//       }
-//     });
-//   }
-//  closeAddProfile() {
-//     this.showAddProfile = false;
-//   }
-
-// openAlert() {
-//   console.log('openAlert ');
-
-//   this.showAlert = true;   
-
-// }
-//   onAlertClosed() {
-//     this.showAlert = false;
-//     this.users$ = this.licenseService.getUsers();
-//   }
-
-
-
 
 openAddUserModal() {
   this.showAddProfile = true;

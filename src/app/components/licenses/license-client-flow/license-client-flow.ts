@@ -17,6 +17,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { License } from '../../Models/license.models';
 import { LicenseService } from '../../../services/Licenses/licenseservice.service';
 import { LicenseClient } from '../../Models/LicenseClient';
+import { UserBarControl } from '../../user-bar-control/user-bar-control';
  
  
  
@@ -35,7 +36,7 @@ import { LicenseClient } from '../../Models/LicenseClient';
      MatDatepickerModule,
   MatNativeDateModule,
   MatSlideToggleModule,
- 
+ UserBarControl
   ],
   templateUrl: './license-client-flow.html',
   styleUrl: './license-client-flow.scss'
@@ -54,21 +55,45 @@ export class LicenseClientFlow implements OnInit {
   licenseClientId: number = 0;
    userId: string = '';
 
-    clientNameValidator = (validClients: string[]): ValidatorFn => {
-    return (control: AbstractControl): ValidationErrors | null => {
-      if (!control.value) return null;  
-      return validClients.includes(control.value) ? null : { invalidClientName: true };
-    };
+   pageTitle = ' Bussiness Details';
+  pageSubtitle = '';
+  licenseName = '';
+  showBackFlag = true;
+  showSubtitle = true;
+   showLicenseName = true;
+
+  clientNameValidator(validNames: string[]) {
+  return (control: AbstractControl) => {
+    const value = control.value?.trim();
+    
+    if (!value) {
+      return { required: true }; 
+    }
+    
+    if (!validNames.includes(value)) {
+      return { invalidClientName: true };
+    }
+    
+    return null; 
   };
+}
+
  
   constructor(private fb: FormBuilder, private licenseClientService: LicenseClientService, private router: Router, private licenseService: LicenseService, private route:ActivatedRoute) {
    this.licenses$ = this.route.queryParams.pipe(
   switchMap(params => {
     this.licenseId = +params['licenseId'];
-   
-    
+    this.userId = params['userId'];
+    if (this.userId) {
+        this.licenseService.getUserDetail(this.userId).subscribe(userProfile => {
+  this.pageSubtitle = `${userProfile.firstName} ${userProfile.lastName}`;
+});
+}
      if (this.licenseId) {
         this.loadBusinessDetails(this.licenseId);
+        this.licenseService.getLicenseDetail(this.licenseId).subscribe(license => {
+          this.licenseName = `${license.companyName}`;
+        });
       }
     return this.licenseService.getLicenseDetail(this.licenseId).pipe(
       map(license => license ? [license] : []), 
@@ -86,12 +111,7 @@ this.licenses$.subscribe(licenses => {
     this.form.get(['step4', 'dateRenewal'])?.setValue(licenses[0].expiry || '');
   }
 });
-// clientNameValidator = (validClients: string[]): ValidatorFn => {
-//   return (control: AbstractControl): ValidationErrors | null => {
-//     if (!control.value) return null;  // allow required validator to handle empty
-//     return validClients.includes(control.value) ? null : { invalidClientName: true };
-//   };
-// };
+
 
 const today = new Date().toISOString().substring(0, 10);
 this.form = this.fb.group({
@@ -114,7 +134,6 @@ this.form = this.fb.group({
         taxReferenceGeneral: ['', Validators.required],
         taxReferenceSales: ['', Validators.required],
         kyc: ['', Validators.required],
-       // cashRevenue: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
         cashRevenue: ['', [Validators.required, Validators.pattern(/^[0-9]*$/)]],
        total12MonthIncome: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
         numberOfEmployee: ['', [Validators.required, Validators.min(1)]],
@@ -256,24 +275,12 @@ loadBusinessDetails(licenseId: number): void {
   });
 }
 
- 
-// onClientInput(): void {
-//   const query = this.step1.get('referingClientName')?.value;
-//   if (query) {
-//     this.searchClients(query).subscribe(clients => this.referringClients = clients);
-//   } else {
-//     this.referringClients = [];
-//     this.step1.get('referingClientId')?.setValue(null);
-//   }
-//   this.highlightedIndex = -1;
-// }
 
 onClientInput(): void {
   const query = this.step1.get('referingClientName')?.value;
   if (query) {
     this.searchClients(query).subscribe(clients => {
       this.referringClients = clients;
-      // Update validator to reflect updated referringClients
       const control = this.step1.get('referingClientName');
       control?.setValidators([
   Validators.required,
@@ -355,16 +362,20 @@ selectClient(client: ReferringClientModel) {
     return this.form.get('step5') as FormGroup;
   }
  
-  nextStep() {
-    const currentGroup = this.form.get(`step${this.currentStep}`);
-    if (currentGroup?.invalid) {
-      currentGroup.markAllAsTouched();
-      return;
-    }
-    if (this.currentStep < 5) {
+  
+
+  nextStep(): void {
+
+  const stepGroup = this.form.get(`step${this.currentStep}`);
+  if (stepGroup) {
+    stepGroup.markAllAsTouched();
+  }
+
+  if (stepGroup?.valid) {
     this.currentStep++;
   }
-  }
+}
+
  
   prevStep() {
     if (this.currentStep > 1) {
@@ -395,7 +406,6 @@ submitForm() {
       taxReferenceSales: this.step2.value.taxReferenceSales,
       kyc: this.step2.value.kyc,
       cashRevenue: Number(this.step2.value.cashRevenue),
-      //cashRevenue: this.step2.value.cashRevenue,
       total12MonthIncome: this.step2.value.total12MonthIncome,
       numberOfEmployee: this.step2.value.numberOfEmployee,
       website: this.step3.value.website,

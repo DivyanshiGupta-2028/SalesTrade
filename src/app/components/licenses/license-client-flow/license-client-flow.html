@@ -1,24 +1,33 @@
-<div class="custom-stepper" [formGroup]="form">
-  <div class="container py-3 w-50">
+<br>
+<nav class="navbar navbar-expand-lg navbar-light bg-light px-3 shadow-sm w-100">
+  <div class="d-flex justify-content-between align-items-center w-100">
+     <app-user-bar-control
+         [title]="pageTitle"
+        [subtitle]="pageSubtitle"
+        [license] ="licenseName"
+        [showBackButton]="showBackFlag"
+       [showSubtitle] = true
+       [showLicenseName] = true>
+      </app-user-bar-control>
+      
+  </div>
+</nav>
+
+<br>
+
+    <div class="custom-stepper" [formGroup]="form">
+  <div class="container py-3 w-25">
     <div class="contact-form-container">
       <div class="form-header mb-4">
         <h2 class="form-title text-center">
-          <i class="fas fa-user-plus"></i>
            Business Details
         </h2>
-        <div class="form-subtitle"></div>
       </div>
-
+<div class="card shadow-sm border p-4">
       <div class="form-grid">
         <!-- Step 1: Client Info -->
         <div class="form-section" *ngIf="currentStep === 1" formGroupName="step1">
-          <table class="table table-borderless p-0 mb-3 w-auto">
-            <tbody>
-              <tr *ngFor="let license of licenses$ | async">
-                <td><h5><b>Licensed Company Name: {{ license.companyName }}</b></h5></td>
-              </tr>
-            </tbody>
-          </table>
+          
 
           <div class="mb-3">
             <label class="form-label" for="businessName">Business Name</label>
@@ -57,10 +66,17 @@
                formControlName="referingClientName"
                (input)="onClientInput()"
                (keydown)="onKeyDown($event)" />
-            <div *ngIf="form.get('step1.referingClientName')?.touched && form.get('step1.referingClientName')?.hasError('invalidClientName')" 
-     class="text-danger small mt-1">
-  Please select a valid client from the suggestions.
+
+
+<div *ngIf="form.get('step1.referingClientName')?.touched">
+  <div *ngIf="form.get('step1.referingClientName')?.hasError('required')" class="text-danger small mt-1">
+    Referring Client Name is required.
+  </div>
+  <div *ngIf="form.get('step1.referingClientName')?.hasError('invalidClientName')" class="text-danger small mt-1">
+    Please select a valid client from the suggestions.
+  </div>
 </div>
+
 
             <ul *ngIf="referringClients.length > 0" class="list-group position-absolute w-100" style="z-index: 1000;">
               <li *ngFor="let client of referringClients; let i = index" 
@@ -81,15 +97,9 @@
       <div class="form-grid">
         <!-- Step 2: Business Details -->
         <div class="form-section" *ngIf="currentStep === 2" formGroupName="step2">
-          <table class="table table-borderless p-0 mb-3 w-auto">
-            <tbody>
-              <tr *ngFor="let license of licenses$ | async">
-                <td><h5><b>Licensed Company Name: {{ license.companyName }}</b></h5></td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="row">
 
-          <div class="mb-3">
+          <div class="col-md-6 mb-3">
             <label class="form-label" for="taxReferenceGeneral">General Tax Ref</label>
             <input type="text" class="form-control form-control-sm" placeholder="General Tax Ref" formControlName="taxReferenceGeneral" />
             <div *ngIf="form.get('step2.taxReferenceGeneral')?.touched && form.get('step2.taxReferenceGeneral')?.hasError('required')" class="text-danger small mt-1">
@@ -97,15 +107,16 @@
             </div>
           </div>
   
-          <div class="mb-3">
+          <div class="col-md-6 mb-3">
             <label class="form-label" for="taxReferenceSales">Sales Tax Ref</label>
             <input type="text" class="form-control form-control-sm" placeholder="Sales Tax Ref" formControlName="taxReferenceSales" />
             <div *ngIf="form.get('step2.taxReferenceSales')?.touched && form.get('step2.taxReferenceSales')?.hasError('required')" class="text-danger small mt-1">
               Sales Tax Ref is required.
             </div>
           </div>
-
-          <div class="mb-3">
+</div>
+<div class="row">
+          <div class="col-md-6 mb-3">
             <label class="form-label" for="kyc">KYC</label>
             <input type="text" class="form-control form-control-sm" placeholder="KYC" formControlName="kyc" />
             <div *ngIf="form.get('step2.kyc')?.touched && form.get('step2.kyc')?.hasError('required')" class="text-danger small mt-1">
@@ -113,7 +124,7 @@
             </div>
           </div>
 
-          <div class="mb-3">
+          <div class="col-md-6 mb-3">
             <label class="form-label" for="cashRevenue">Cash Revenue</label>
             <input 
   type="text" 
@@ -131,8 +142,9 @@
               Only numbers are allowed.
             </div>
           </div>
-
-          <div class="mb-3">
+</div>
+<div class="row">
+          <div class="col-md-6 mb-3">
             <label class="form-label" for="total12MonthIncome">12-Month Income</label>
             <input type="number" class="form-control form-control-sm" placeholder="12-Month Income" formControlName="total12MonthIncome" inputmode="numeric"
   pattern="[0-9]*"
@@ -142,7 +154,7 @@
             </div>
           </div>
 
-          <div class="mb-3">
+          <div class=" col-md-6 mb-3">
             <label class="form-label" for="numberOfEmployee">No. of Employees</label>
             <input type="number" class="form-control form-control-sm" placeholder="No. of Employees" formControlName="numberOfEmployee" inputmode="numeric"
   pattern="[0-9]*"
@@ -151,7 +163,7 @@
               Number of Employees is required.
             </div>
           </div>
-
+</div>
           <div class="d-flex justify-content-between">
             <button type="button" class="btn btn-secondary btn-sm" (click)="prevStep()">Back</button>
             <button type="button" class="btn btn-primary btn-sm" (click)="nextStep()">Next</button>
@@ -162,13 +174,7 @@
       <div class="form-grid">
         <!-- Step 3: Profile -->
         <div class="form-section" *ngIf="currentStep === 3" formGroupName="step3">
-          <table class="table table-borderless p-0 mb-3 w-auto">
-            <tbody>
-              <tr *ngFor="let license of licenses$ | async">
-                <td><h5><b>Licensed Company Name: {{ license.companyName }}</b></h5></td>
-              </tr>
-            </tbody>
-          </table>
+          
 
           <div class="mb-3 position-relative">
             <label class="form-label" for="website">Website</label>
@@ -188,9 +194,11 @@
 
           <div class="mb-3">
             <label class="form-label" for="profileDescription">Profile Description</label>
-            <textarea class="form-control form-control-sm" placeholder="Profile Description"
-                      formControlName="profileDescription"
-                      (input)="updateWordCount()"></textarea>
+
+                      <textarea class="form-control form-control-sm" rows="6"
+          placeholder="Profile Description"
+          formControlName="profileDescription"
+          (input)="updateWordCount()"></textarea>
             <small class="text-muted">{{ profileDescriptionWordCount }}/500 words</small>
             <div *ngIf="form.get('step3.profileDescription')?.touched && form.get('step3.profileDescription')?.hasError('required')" class="text-danger small mt-1">
               Profile Description is required.
@@ -207,17 +215,12 @@
       <div class="form-grid">
         <!-- Step 4: Dates -->
         <div class="form-section" *ngIf="currentStep === 4" formGroupName="step4">
-          <table class="table table-borderless p-0 mb-3 w-auto">
-            <tbody>
-              <tr *ngFor="let license of licenses$ | async">
-                <td><h5><b>Licensed Company Name: {{ license.companyName }}</b></h5></td>
-              </tr>
-            </tbody>
-          </table>
+          
 
           <!-- Business Start Date -->
-<div class="mb-3">
-  <label class="form-label">Business Start Date</label>
+           <div class="row justify-content-center">
+<div class=" col-md-8 mb-3">
+  <label class="form-label ">Business Start Date</label>
   <input type="date" class="form-control form-control-sm" formControlName="businessStartDate" />
   <div *ngIf="form.get('step4.businessStartDate')?.touched && form.get('step4.businessStartDate')?.hasError('required')" class="text-danger small mt-1">
     Business Start Date is required.
@@ -226,9 +229,10 @@
     Business Start Date must be earlier than Last Renewed Date.
   </div>
 </div>
-
+           </div>
 <!-- Last Renewed Date -->
-<div class="mb-3">
+ <div class="row justify-content-center">
+<div class="col-md-8 mb-3">
   <label class="form-label">Last Renewed Date</label>
   <input type="date" class="form-control form-control-sm" formControlName="lastRenewedDate" />
   <div *ngIf="form.get('step4.lastRenewedDate')?.touched && form.get('step4.lastRenewedDate')?.hasError('required')" class="text-danger small mt-1">
@@ -238,9 +242,10 @@
     Last Renewed Date must be earlier than Date Renewal.
   </div>
 </div>
-
+ </div>
 <!-- Date Renewal -->
-<div class="mb-3">
+ <div class="row justify-content-center">
+<div class="col-md-8 mb-3">
   <label class="form-label">Date Renewal</label>
   <input type="date" class="form-control form-control-sm" formControlName="dateRenewal" />
   <div *ngIf="form.get('step4.dateRenewal')?.touched && form.get('step4.dateRenewal')?.hasError('required')" class="text-danger small mt-1">
@@ -248,7 +253,7 @@
   </div>
 </div>
 
-
+        </div>
 
 
 
@@ -263,13 +268,7 @@
       <div class="form-grid">
         <!-- Step 5: Settings -->
         <div class="form-section" *ngIf="currentStep === 5" formGroupName="step5">
-          <table class="table table-borderless p-0 mb-3 w-auto">
-            <tbody>
-              <tr *ngFor="let license of licenses$ | async">
-                <td><h5><b>Licensed Company Name: {{ license.companyName }}</b></h5></td>
-              </tr>
-            </tbody>
-          </table>
+          
 
           <div class="form-check">
             <mat-checkbox formControlName="currentStatus"></mat-checkbox>
@@ -318,6 +317,8 @@
           </div>
         </div>
       </div>
+      </div>
     </div>
   </div>
-</div>
+
+    </div>

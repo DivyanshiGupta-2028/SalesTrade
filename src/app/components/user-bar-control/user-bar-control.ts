@@ -13,8 +13,10 @@ import { Location } from '@angular/common';
 export class UserBarControl {
   @Input() title: string = '';
   @Input() subtitle: string = '';
+  @Input() license: string = '';
   @Input() showBackButton: boolean = false;
   @Input() showSubtitle = false;
+  @Input() showLicenseName = false;
   constructor(private router: Router, private location: Location, private cdr: ChangeDetectorRef) {}
 
   onBack() {

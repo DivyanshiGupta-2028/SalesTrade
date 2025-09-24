@@ -1,21 +1,10 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
-import {
-  faBars,
-  faChartBar,
-  faFileAlt,
-  faFileInvoice,
-  faMoneyBillWave,
-  faReceipt,
-  faUser,
-  faUsers
-} from '@fortawesome/free-solid-svg-icons';
+import { faBars,faChartBar,faFileAlt,faFileInvoice,faMoneyBillWave,faReceipt,faUser,faUsers} from '@fortawesome/free-solid-svg-icons';
 import { PopupService } from '../../../services/Popup/popup-service';
 import { AuthService } from '../../../services/auth.service';
-import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CommonModule } from '@angular/common';
-import { CreateEstimate } from '../../estimate/create-estimate/create-estimate';
 import { LicenseService } from 'src/app/services/Licenses/licenseservice.service';
 
 
@@ -48,7 +37,6 @@ export class Header implements OnInit {
   ngOnInit(): void {
      this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        // Check if current url contains license-dashboard
         this.showAddUserButton = event.urlAfterRedirects.includes('license-dashboard');
       }
     });
@@ -58,7 +46,7 @@ export class Header implements OnInit {
     if (this.userId) {
       this.licenseService.getUserDetail(this.userId).subscribe(user => {
         this.firstName = user?.firstName || '';
-        this.lastName = user?.lastName || ''; // Adjust property name based on your API response
+        this.lastName = user?.lastName || ''; 
       });
     }
   
@@ -75,14 +63,6 @@ toggleMenu() {
     this.router.navigate(['/add-profile']);
   }
 
-
-  // openEstimatePopup() {
-  //   this.popupService.showPopup('Create Estimate', CreateEstimate);
-  // }
-
-  // goToInvoiceFormatManager() {
-  //   this.router.navigate(['/invoice-format-list']);
-  // }
 showDropdown = false;
 
 toggleDropdown() {

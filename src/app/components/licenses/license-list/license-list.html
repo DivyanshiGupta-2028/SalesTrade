@@ -1,10 +1,6 @@
-  <!-- <div class="row">
-      <div class="d-flex justify-content-between align-items-center my-4">
-        <h4>License List</h4>
-        
-  </div> -->
-<div class="row">
-    <div class="d-flex justify-content-between align-items-center my-4">
+<br>
+<nav class="navbar navbar-expand-lg navbar-light bg-light px-3 shadow-sm w-100">
+  <div class="d-flex justify-content-between align-items-center w-100">
      <app-user-bar-control
         [title]="pageTitle"
         [subtitle]="pageSubtitle"
@@ -14,8 +10,10 @@
       <button class="btn btn-primary" (click)="navigateToAddLicense()">
           <i class="bi bi-plus-lg"></i>  Add License
         </button>
-    </div>
   </div>
+</nav>
+
+<br>
 
 
   <div class="row">
@@ -24,16 +22,6 @@
           <thead class="table-light">
             <tr>
               <th>Licensed Company Name</th>
-              <!-- <th>License</th>
-              <th>Owner</th>
-              <th>Expiry Date</th>
-              <th>Created Date</th>
-              <th>Currency</th>
-              <th>Country</th>
-              <th>Localization</th>
-              <th>Language</th>
-              <th>Reference Prefix</th>
-              <th>Status</th> -->
               <th>Actions</th>
             </tr>
           </thead>
@@ -44,16 +32,6 @@
                   {{ license.companyName }}
                 </a>
               </td>
-              <!-- <td>{{ license.licenseType }}</td>
-              <td>{{ license.firstName }} {{ license.lastName }}</td>
-              <td>{{ license.expiry }}</td>
-              <td>{{ license.start }}</td>
-              <td>{{ license.currency }}</td>
-              <td>{{ license.countryName }}</td>
-              <td>{{ license.localization }}</td>
-              <td>{{ license.language }}</td>
-              <td>{{ license.referencePrefix }}</td>
-              <td>{{ license.isActive ? 'Active' : 'Suspended' }}</td> -->
              <td>
   <div class="dropdown">
     <button 
@@ -65,11 +43,12 @@
     </button>
     <ul class="dropdown-menu">
       <li>
-        <button 
-          class="dropdown-item text-primary" 
-          (click)="viewDetails(license.licenseId)">
-          Modify
-        </button>
+       <button 
+  class="dropdown-item text-primary" 
+  (click)="viewDetails(license.licenseId)">
+  Modify
+</button>
+
       </li>
       <li>
         <button 

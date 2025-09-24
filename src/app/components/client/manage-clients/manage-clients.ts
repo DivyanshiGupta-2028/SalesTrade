@@ -8,11 +8,12 @@ import { Country, Department, LicenseClientContact, PositionsTitle } from '../..
 import { License } from '../../Models/license.models';
 import { catchError, map, Observable, of, switchMap } from 'rxjs';
 import { LicenseService } from '../../../services/Licenses/licenseservice.service';
+import { UserBarControl } from '../../user-bar-control/user-bar-control';
 
 @Component({
   selector: 'app-manage-clients',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, UserBarControl],
   templateUrl: './manage-clients.html',
   styleUrl: './manage-clients.scss'
 })
@@ -26,6 +27,14 @@ export class ManageClients implements OnInit {
    userId: string = '';
   @Output() onSave = new EventEmitter<LicenseClientContact>();
   @Output() onCancel = new EventEmitter<void>();
+
+
+  pageTitle = ' Owner Details';
+  pageSubtitle = '';
+  licenseName = '';
+  showBackFlag = true;
+  showSubtitle = true;
+   showLicenseName = true;
 
   contactForm: FormGroup;
   isEditMode = false;
@@ -86,23 +95,9 @@ export class ManageClients implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private clientService: ClientService,
-    private exchangeService:LicenseService
+    private licenseService:LicenseService
 
   ) {
-    this.licenses$ = this.route.queryParams.pipe(
-      switchMap(params => {
-        this.licenseId = +params['licenseId'];
-        this.userId = params['userId'] || '';
-        return this.exchangeService.getLicenseDetail(this.licenseId).pipe(
-          map(license => license ? [license] : []), 
-          catchError(error => {
-            console.error('Error fetching license details:', error);
-            this.errors$ = of(['Error fetching license details']);
-            return of([]);
-          })
-        );
-      })
-    );
     this.contactForm = this.createForm();
 
     const today = new Date();
@@ -130,6 +125,23 @@ export class ManageClients implements OnInit {
         console.log('licenseClientId from query param:', this.licenseClientId);
       }
     });
+      this.route.queryParamMap.subscribe(params => {
+    this.licenseId = +(params.get('licenseId') || 0);
+    this.userId = params.get('userId') || '';
+
+    if (this.userId) {
+      this.licenseService.getUserDetail(this.userId).subscribe(userProfile => {
+        this.pageSubtitle = `${userProfile.firstName} ${userProfile.lastName}`;
+      });
+    }
+
+    if (this.licenseId) {
+      this.licenseService.getLicenseDetail(this.licenseId).subscribe(license => {
+        this.licenseName = license.companyName;
+      });
+    }
+  });
+
 
     this.route.params.subscribe(params => {
       const routeContactId = params['id'];
@@ -406,9 +418,9 @@ private loadStatesByCountry(country_id: number): void {
             console.log("Navigating to list with licenseClientId:", this.licenseClientId, "clientId:", this.clientId, "userId:", this.userId);
 
 this.router.navigate(['/license-list'], 
-//  {
- // queryParams: { licenseClientId: this.licenseClientId, clientId: this.clientId, licenseId: this.licenseId }
-//}
+ {
+ queryParams: { userId: this.userId,licenseClientId: this.licenseClientId, clientId: this.clientId, licenseId: this.licenseId }
+}
 );
 
           console.log('Result Sent:', response);

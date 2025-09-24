@@ -31,7 +31,7 @@ constructor(private fb: FormBuilder, private clientService: ClientService, priva
 
 
  onClose() {
-    console.log('Close clicked'); // Debug check
+    console.log('Close clicked'); 
     this.closed.emit();
   }
 onGuestSubmit(): void {
@@ -41,7 +41,10 @@ onGuestSubmit(): void {
         console.log("Guest creation response:", res);
         const newUserId =  res.userId; 
         if (newUserId) {
-          this.router.navigate(['/user-list']);
+          this.router.navigate(['/user-list']).then(() => {
+    window.location.reload();
+  });
+          
         } else {
           console.error('No UserId found in response');
         }

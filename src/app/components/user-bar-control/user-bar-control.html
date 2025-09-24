@@ -1,14 +1,18 @@
-<br>
 <nav class="navbar d-flex align-items-center">
-<button *ngIf="showBackButton" (click)="onBack()" class="btn p-0 me-2">
-  <i class="bi bi-arrow-left-circle big-up-icon"></i>
-</button>
+  <button *ngIf="showBackButton" (click)="onBack()" class="btn p-0 me-2">
+    <i class="bi bi-arrow-left-circle big-up-icon"></i>
+  </button>
 
   <div>
     <h3 class="m-0">{{ title }}</h3>
-    <small *ngIf="showSubtitle"><b>User</b> - {{ subtitle }}</small>
+
+    <div *ngIf="showSubtitle">
+      <small><b>User</b> - {{ subtitle }}</small>
+    </div>
+
+    <div *ngIf="showLicenseName">
+      <small><b>License Name</b> - {{ license }}</small>
+    </div>
 
   </div>
 </nav>
-
-

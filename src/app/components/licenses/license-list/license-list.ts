@@ -58,7 +58,6 @@ export class LicenseList implements OnInit {
   this.id = params['userId']
   console.log('UserId from query params:', this.id);
         if (this.someParamValue) {
-    // API call with status or filter received from someParam
     this.licenses$ = this.licenseService.getLicensesByStatus(this.someParamValue);
   }
       if (this.userId) {
@@ -68,18 +67,13 @@ export class LicenseList implements OnInit {
 }
   
   if (this.id) {
-    // API call with status or filter received from someParam
     this.licenses$ = this.licenseService.getLicensesByUserId(this.id);
 } else {
-    // Default API call to fetch all licenses
     this.licenses$ = this.licenseService.getLicenses();
   }
   
   });
 
-//     this.route.queryParams.subscribe(params => {
-      
-// });
   }
 
   getLicenseNameById(licenseId: number): Observable<string> {
@@ -92,24 +86,19 @@ export class LicenseList implements OnInit {
     });
   }
 
+viewDetails(licenseId?: number) {
+  this.router.navigate(['/add-license'], {
+    queryParams: { userId: this.userId, licenseId: licenseId }
+  });
+}
 
-  viewDetails(licenseId: number | undefined) {
-    if (licenseId !== undefined) {
-      this.router.navigate(['/edit-license', licenseId]
-      );
-    } else {
-      console.error('License ID is undefined');
-    }
-  }
 
+  
   navigateToAddLicense() {
     this.router.navigate(['/add-license'], {
   queryParams: { userId: this.userId }
 });
   }
-// this.router.navigate(['/license-list'], {
-//   queryParams: { userId: newUserId }
-// });
 
   deleteLicense(id: number): void {
     this.licenseService.deleteLicense(id).subscribe({
