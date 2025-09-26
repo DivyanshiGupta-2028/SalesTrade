@@ -7,7 +7,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 
 //import { FilterOptionCodeModel } from '../../models/optioncode.models';
 //import { OptionSettingModel, UpdateOptionModel } from '../../models/optionsetting.Models';
-import { License,  LicenseActive,  RenewLicenseModal } from '../../components/Models/license.models';
+import { License,  LicenseActive,  LicenseFlow,  RenewLicenseModal } from '../../components/Models/license.models';
 import { environment } from '../../environments/environment';
 import { Currencies } from '../../components/Models/currencies.models';
 import { Langauges } from '../../components/Models/langauges.models';
@@ -29,6 +29,9 @@ export class LicenseService {
     return this.baseService.post<License>(`${this.apiUrl}/License/add-license`, license);
   }
 
+  addLicenseFlow(license: LicenseFlow): Observable<LicenseFlow> {
+    return this.baseService.post<LicenseFlow>(`${this.apiUrl}/License/add-license-flow`, license);
+  }
     addExchangeDomain(exchange: License): Observable<License> {
     return this.baseService.post<License>(`${this.apiUrl}/License/add-domain`, exchange);
   }
@@ -108,6 +111,9 @@ getLicensesByStatus(param: string): Observable<License[]> {
      return this.baseService.put<boolean>(`${this.apiUrl}/License/modify-license`, license);
   }
 
+     updateLicenseFlow(license: LicenseFlow): Observable<boolean> {  
+     return this.baseService.put<boolean>(`${this.apiUrl}/License/update-license-flow`, license);
+  }
      updateRenewLicense(license: RenewLicenseModal): Observable<boolean> {  
      return this.baseService.put<boolean>(`${this.apiUrl}/License/upgrade/renew-license`, license);
   }

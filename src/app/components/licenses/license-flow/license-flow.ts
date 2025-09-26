@@ -1,19 +1,40 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserBarControl } from '../../user-bar-control/user-bar-control';
-import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Observable, of } from 'rxjs';
+import { CommonModule, formatDate } from '@angular/common';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { catchError, map, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSelectModule } from '@angular/material/select';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatNativeDateModule } from '@angular/material/core';
+import { Currencies } from '../../Models/currencies.models';
+import { Langauges } from '../../Models/langauges.models';
+import { License } from '../../Models/license.models';
+import { Country } from '../../Models/country.models';
+import { LicenseService } from 'src/app/services/Licenses/licenseservice.service';
+import { MasterService } from 'src/app/services/master/master.service';
+import { ClientService } from 'src/app/services/Client/client-service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { LicenseClientService } from 'src/app/services/Licenses/license-client-service';
 
 @Component({
   selector: 'app-license-flow',
   standalone:true,
   imports: [CommonModule,
      ReactiveFormsModule,
-  UserBarControl],
+  UserBarControl,
+     MatCheckboxModule,
+   ],
   templateUrl: './license-flow.html',
   styleUrl: './license-flow.scss'
 })
-export class LicenseFlow {
+export class LicenseFlow implements OnInit, OnDestroy {
+   private destroy$ = new Subject<void>();
    pageTitle = ' Bussiness Details';
   pageSubtitle = '';
   licenseName = '';
@@ -24,40 +45,144 @@ export class LicenseFlow {
 
    form!: FormGroup;
   currentStep: number = 1;
+userId: string = '';
+  licenseId: number = 0;
+  currencies$!: Observable<Currencies[]>;
+    languages$!: Observable<Langauges[]>;
+    countries$!: Observable<Country[]>;
+    licenses$!: Observable<License[]>;
+    parentLicenses$!: Observable<License[]>;
+  parentLicenseName$!: Observable<string | undefined>;
+  errorMessage: string = '';
+  errors$: Observable<string[]> | undefined;
+  licenseClientId: number = 0;
 
-  countryOptions = [
-    { value: 'US', label: 'United States' },
-    { value: 'IN', label: 'India' },
-    // add more countries
-  ];
-  stateOptions = [
-    { value: 'CA', label: 'California' },
-    { value: 'NY', label: 'New York' },
-    // add more states
-  ];
-  isCountriesLoading = false;
-  isStatesLoading = false;
+  isLoading = false;
+  isCountriesLoading = true;
+  isStatesLoading = true;
+  
+  countryOptions: { value: number, label: string }[] = [];
+  stateOptions: { value: string, label: string }[] = [];
+  selectedCountries = 0;
+
   selectedCountry: string | null = null;
 
-  currencies$: Observable<any[]> = of([
-    { currencyId: 'USD', currencyLocale: 'en-US' },
-    { currencyId: 'EUR', currencyLocale: 'de-DE' },
-  ]);
-  languages$: Observable<any[]> = of([
-    { languageName: 'English' },
-    { languageName: 'German' },
-  ]);
 
-  suggestedWebsites: string[] = [];
+ wordCount: number = 0;
   profileDescriptionWordCount: number = 0;
+  suggestedWebsites: string[] = [];
 
-  get contactForm(): FormGroup {
-    return this.form;
+    fieldDisplayNames: { [key: string]: string } = {
+    addressLine1: 'Address Line 1',
+    addressLine2: 'Address Line 2',
+    addressLine3: 'Address Line 3',
+    country: 'Country',
+    state:'State',
+    pincode: 'PinCode'
+  };
+
+
+  constructor(private fb: FormBuilder,
+    private licenseService: LicenseService,
+    private masterService: MasterService,
+    public clientService: ClientService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private licenseClientService: LicenseClientService
+  ) { 
+    this.licenses$ = this.route.queryParams.pipe(
+    switchMap(params => {
+      this.licenseId = +params['licenseId'];
+      this.userId = params['userId'];
+      if (this.userId) {
+          this.licenseService.getUserDetail(this.userId).subscribe(userProfile => {
+    this.pageSubtitle = `${userProfile.firstName} ${userProfile.lastName}`;
+  });
+  }
+       if (this.licenseId) {
+          this.loadBusinessDetails(this.licenseId);
+          this.licenseService.getLicenseDetail(this.licenseId).subscribe(license => {
+            this.licenseName = `${license.companyName}`;
+          });
+        }
+      return this.licenseService.getLicenseDetail(this.licenseId).pipe(
+        map(license => license ? [license] : []), 
+        catchError(error => {
+          console.error('Error fetching license details:', error);
+          this.errors$ = of(['Error fetching license details']);
+          return of([]);
+        })
+      );
+    })
+  );
+}
+  
+
+  ngOnInit(): void{
+
+        this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe(params => {
+          this.userId = params['userId'] || '';
+          if (this.userId) {
+            this.licenseService.getUserDetail(this.userId).subscribe(userProfile => {
+      this.pageSubtitle = `${userProfile.firstName} ${userProfile.lastName}`;
+    });
+    }
+        });
+        this.countries$ = this.licenseService.getCountrySelectedItems();
+        this.languages$ = this.licenseService.getLangaugeSelectedItems();
+        this.currencies$ = this.licenseService.getCurrencySelectedItems();
+        this.parentLicenses$ = this.licenseService.getParentLicenses();
+    
+        this.initializeForm();
+        this.loadCountries();
+    
+         this.route.queryParamMap.subscribe(params => {
+          this.licenseId = +params.get('licenseId')!;
+          if (this.licenseId) {
+            this.loadLicenseDetails(this.licenseId);
+          }
+          if (this.licenseId) {
+          this.loadBusinessDetails(this.licenseId);
+          this.licenseService.getLicenseDetail(this.licenseId).subscribe(license => {
+            this.licenseName = `${license.companyName}`;
+          });
+        }
+        });
+    
+        this.form.get('step4.licenseDuration')?.valueChanges
+          .pipe(takeUntil(this.destroy$))
+          .subscribe(duration => {
+            this.updateEndDateBasedOnDuration(duration);
+          });
+
+          this.form.get('step1.businessName')?.valueChanges.subscribe(value => {
+  const acronym = this.generateAcronym(value);
+  this.form.get('step3.referencePrefix')?.setValue(acronym, { emitEvent: false });
+});
+
+    
+    
+        this.form.get('step2.country')?.valueChanges
+          .pipe(takeUntil(this.destroy$))
+          .subscribe(countryId => {
+            if (countryId) {
+              this.selectedCountries = countryId;
+              this.loadStatesByCountry(countryId);
+            } else {
+              this.stateOptions = [];
+            }
+          });
+      }
+      ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
-  constructor(private fb: FormBuilder) {}
-
-  ngOnInit() {
+  initializeForm(): void {
+    const todayT = new Date().toISOString().substring(0, 10);
+    const today = new Date();
+    const nextYear = new Date(today);
+    nextYear.setFullYear(nextYear.getFullYear() + 1);
     this.form = this.fb.group({
       step1: this.fb.group({
         businessName: ['', Validators.required],
@@ -69,10 +194,10 @@ export class LicenseFlow {
         cashRevenue: ['', [Validators.required, Validators.pattern(/^\d*$/)]],
         total12MonthIncome: ['', Validators.required],
         numberOfEmployee: ['', Validators.required],
-        businessStartDate: ['', Validators.required],
-        lastRenewedDate: ['', Validators.required],
-        dateRenewal: ['', Validators.required],
-      }),
+        businessStartDate: [''],
+        lastRenewedDate: [todayT],
+        dateRenewal: [''],
+      }, { validators: this.dateOrderValidator }),
       step2: this.fb.group({
         addressLine1: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9]+$/)]],
         addressLine2: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9]+$/)]],
@@ -81,72 +206,390 @@ export class LicenseFlow {
         country: ['', Validators.required],
         state: ['', Validators.required],
         otherState: [''],
-        pincode: ['', Validators.required],
+        pincode: ['', [Validators.required, Validators.maxLength(10)]],
       }),
       step3: this.fb.group({
         website: ['', [Validators.required, Validators.pattern(/^https?:\/\/.+/)]],
-        telephone1: ['', Validators.required],
-        telephone2: [''],
-        mobile: [''],
+       // mobile: [''],
         profileDescription: ['', Validators.required],
-        currency: ['', Validators.required],
-        language: [''],
-        localization: [''],
-        referencePrefix: ['', Validators.required],
+        currency: ['USD', Validators.required],
+        language: ['English', Validators.required],
+        localization: ['en-US', Validators.required],
+       referencePrefix: ['', Validators.required],
         isActive: [false],
       }),
       step4: this.fb.group({
-        licenseType: ['', Validators.required],
+        licenseType: ['standard', Validators.required],
         licenseDuration: ['', Validators.required],
-        startDate: ['', Validators.required],
-        endDate: ['', Validators.required],
-        renewal: [''],
-        currentStatus: [false],
-        isLegalDocumentationHeld: [false],
-        isTaxReportingExempt: [false],
-        canSendMessages: [false],
-        canReceiveMessages: [false],
-        isListedInDirectory: [false],
-        isListedOnWebsite: [false],
-        isActive: [false],
-        isLicenseMember: [false],
-        hasPermissionToUseInvoiceSystem: [false],
+        startDate: [formatDate(today, 'yyyy-MM-dd', 'en'), Validators.required],
+        endDate: [formatDate(nextYear, 'yyyy-MM-dd', 'en'), Validators.required],
+        renewal: ['yes'],
+        currentStatus: [''],
+        isLegalDocumentationHeld: [''],
+        isTaxReportingExempt: [''],
+        canSendMessages: [''],
+        canReceiveMessages: [''],
+        isListedInDirectory: [''],
+        isListedOnWebsite: [''],
+        isActive: [''],
+        isLicenseMember: [''],
+        hasPermissionToUseInvoiceSystem: [''],
       }),
     });
 
-    // Optional: Watch for country selection changes to update selectedCountry
     this.form.get('step2.country')?.valueChanges.subscribe(val => {
       this.selectedCountry = val;
-      // Fetch or filter state options accordingly here.
+
       this.form.get('website')?.valueChanges.subscribe(value => {
    const control = this.form.get('website');
    if (value && !value.startsWith('http') && !value.startsWith('https')) {
      const updated = `https://www.${value.replace(/^www\./, '')}`;
-     control?.setValue(updated, { emitEvent: false }); // prevent loop
+     control?.setValue(updated, { emitEvent: false }); 
    }
  });
     });
+
+    this.form.get('businessName')?.valueChanges.subscribe(value => {
+      const acronym = this.generateAcronym(value);
+      this.form.get('referencePrefix')?.setValue(acronym, { emitEvent: false });
+    });
   }
 
-  nextStep() {
-    if (this.getCurrentStepGroup().valid) {
-      this.currentStep++;
+  
+  generateAcronym(name: string): string {
+  if (!name) return '';
+
+  const excludeWords = ['and', 'of', 'the', 'a', 'an', 'in', 'on'];
+  return name
+    .toLowerCase()
+    .split(/[\s\-]+/) 
+    .filter(word => word.length > 0 && !excludeWords.includes(word))
+    .map(word => word[0].toUpperCase())
+    .join('');
+}
+
+
+  loadBusinessDetails(licenseId: number): void {
+  this.licenseClientService.getBusinessDetail(licenseId).subscribe(data => {
+    if (data) {
+      this.licenseClientId = data.licenseClientId;
+      this.form.patchValue({
+        step1: {
+          businessName: data.businessName || '',
+          legalName: data.legalName || '',
+          businessType: data.businessType || '',
+          taxReferenceGeneral: data.taxReferenceGeneral || '',
+          taxReferenceSales: data.taxReferenceSales || '',
+          kyc: data.kyc || '',
+          cashRevenue: data.cashRevenue || null,
+          total12MonthIncome: data.total12MonthIncome || null,
+          numberOfEmployee: data.numberOfEmployee || '',
+           dateRenewal: data.renewal || '',
+          lastRenewedDate: data.lastRenewed || '',
+          businessStartDate: data.businessStarted || ''
+
+        },
+        step3: {
+          website: data.website || '',
+          profileDescription: data.profileDescription || ''
+        },
+
+        step5: {
+          currentStatus: data.currentStatus || '',
+          isLegalDocumentationHeld: data.isLegalDocumentationHeld || '',
+          isTaxReportingExempt: data.isTaxReportingExempt || '',
+          canSendMessages: data.canSendMessages || '',
+          canReceiveMessages: data.canReceiveMessages || '',
+          isListedInDirectory: data.isListedInDirectory || '',
+          isListedOnWebsite: data.isListedOnWebsite || '',
+          isActive: data.isActive || '',
+          isLicenseMember: data.isLicenseMember || '',
+          hasPermissionToUseInvoiceSystem: data.hasPermissionToUseInvoiceSystem || ''
+        }
+      });
     } else {
-      this.getCurrentStepGroup().markAllAsTouched();
+      console.log('No business data found') 
     }
+  }, error => {
+    console.log('Error fetching business details.');
+  });
+}
+  loadLicenseDetails(id: number): void {
+    this.licenseService.getLicenseDetail(id).subscribe(data => {
+      if (data) {
+        
+        this.form.get('step2')?.patchValue({
+         
+          addressLine1:  data.addressLine1 || '',
+        addressLine2:  data.addressLine2 || '',
+        addressLine3:  data.addressLine3 || '',
+        addressLine4:  data.addressLine4 || '',
+        country: data.country || '',
+        state:  data.state || '',
+        otherState:  data.otherState || '',
+        pincode: data.pincode || '',
+
+        });
+  
+        this.form.get('step3')?.patchValue({
+          currency: data.currency || '',
+          language: data.language || '',
+          localization: data.localization || '',
+          referencePrefix: data.referencePrefix || '',
+          isActive: data.isActive ?? false
+        });
+
+        this.form.get('step4')?.patchValue({
+          licenseType:  data.licenseType || '',
+        licenseDuration: data.licenseDuration || '',
+        startDate:  data.start || '',
+        endDate:  data.expiry || '',
+        renewal:  data.renewal || '',
+        });
+  
+  
+        if (data.licenseParentId) {
+          this.parentLicenseName$ = this.licenseService.getLicenseDetail(data.licenseParentId).pipe(
+            map(parentData => parentData?.companyName || 'Unknown')
+          );
+        } else {
+          this.parentLicenseName$ = new Observable(observer => {
+            observer.next('No Parent License');
+            observer.complete();
+          });
+        }
+      }
+    }, error => {
+      this.errorMessage = 'Error fetching License details.';
+    });
   }
-  prevStep() {
+  
+  
+//     nextStep(): void {
+  
+//     const stepGroup = this.form.get(`step${this.currentStep}`);
+// if (stepGroup?.invalid) {
+//     stepGroup.markAllAsTouched(); 
+//     return; 
+//   }
+
+//     if (stepGroup?.valid) {
+//       this.currentStep++;
+//     }
+//   }
+
+  
+ nextStep(): void {
+  const stepGroup = this.form.get(`step${this.currentStep}`) as FormGroup | null;
+
+  if (!stepGroup) return;
+
+  // Mark all controls in the current step group as touched and dirty to trigger validation messages
+  stepGroup.markAllAsTouched();
+  Object.keys(stepGroup.controls).forEach(controlName => {
+    const control = stepGroup.get(controlName);
+    control?.markAsDirty();
+  });
+
+  // After marking, check validity to allow step navigation
+  if (stepGroup.valid) {
+    this.currentStep++;
+  }
+}
+
+  
+ prevStep(): void {
     if (this.currentStep > 1) this.currentStep--;
   }
 
-  submitForm() {
-    if (this.form.valid) {
-      console.log('Form submitted:', this.form.value);
-      // Your form submit logic here
-    } else {
-      this.form.markAllAsTouched();
-    }
+     updateEndDateBasedOnDuration(duration: string | null): void {
+  if (!duration) {
+    return;
   }
+  const startDateControl = this.form.get('step4.startDate');
+  const endDateControl = this.form.get('step4.endDate');
+
+  if (!startDateControl || !endDateControl) {
+    return;
+  }
+
+  const startDateValue = startDateControl.value;
+  if (!startDateValue) {
+    return;
+  }
+
+  const startDate = new Date(startDateValue);
+  let newEndDate: Date;
+
+  switch (duration) {
+    case 'trial':
+      newEndDate = new Date(startDate);
+      newEndDate.setDate(newEndDate.getDate() + 14);
+      break;
+    case 'monthly':
+      newEndDate = new Date(startDate);
+      newEndDate.setMonth(newEndDate.getMonth() + 1);
+      break;
+    case 'quaterly':
+      newEndDate = new Date(startDate);
+      newEndDate.setMonth(newEndDate.getMonth() + 3);
+      break;
+    case 'yearly':
+      newEndDate = new Date(startDate);
+      newEndDate.setFullYear(newEndDate.getFullYear() + 1);
+      break;
+    case '2year':
+      newEndDate = new Date(startDate);
+      newEndDate.setFullYear(newEndDate.getFullYear() + 2);
+      break;
+    default:
+      return;
+  }
+    const formattedEndDate = newEndDate.toISOString().substring(0, 10);
+  endDateControl.setValue(formattedEndDate);
+}
+
+
+private loadCountries(): void {
+    this.isCountriesLoading = true;
+    this.clientService.getCountries()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (countries: any[]) => {
+          this.countryOptions = countries.map(c => ({ value: c.id, label: c.name }));
+          this.isCountriesLoading = false;
+        },
+        error: () => { this.countryOptions = []; this.isCountriesLoading = false; }
+      });
+  }
+
+ private loadStatesByCountry(countryId: number): void {
+  if (!countryId) {
+    this.stateOptions = [];
+    return;
+  }
+
+  this.isStatesLoading = true;
+
+  this.clientService.getStatesByCountry(countryId)
+    .pipe(takeUntil(this.destroy$))
+    .subscribe({
+      next: (states: any[]) => {
+        this.stateOptions = states.map(state => ({
+          value: state.id,
+          label: state.name
+        }));
+        this.isStatesLoading = false;
+      },
+      error: (error) => {
+        console.error('Error loading states:', error);
+        this.stateOptions = [];
+        this.isStatesLoading = false;
+      }
+    });
+}
+
+private formatDateOnly(date: any): string | null {
+  if (!date) return null;
+  const d = new Date(date);
+  if (isNaN(d.getTime())) return null; 
+  return d.toISOString().split('T')[0]; 
+}
+
+saveLicense(): void {
+  if (this.form.invalid) {
+    this.form.markAllAsTouched();
+    return;
+  }
+
+   const step2 = this.form.value.step2;
+
+  const licensePayload = {
+  ...this.form.value.step1,
+  ...step2,
+  ...this.form.value.step3,
+  ...this.form.value.step4,
+  userId: this.userId,
+   startDate: this.formatDateOnly(this.form.value.step4.startDate), 
+  endDate: this.formatDateOnly(this.form.value.step4.endDate),
+  dateCreated: this.licenseId ? undefined : new Date(),
+  pincode: String(step2.pincode), 
+};
+
+
+  if (this.licenseId) {
+    licensePayload['licenseId'] = this.licenseId;
+    this.licenseService.updateLicenseFlow(licensePayload).subscribe({
+      next: (success: boolean) => {
+        if (success) {
+          this.router.navigate(['/license-list'], {
+            queryParams: { licenseId: this.licenseId, userId: this.userId }
+          });
+        }
+      },
+      error: (err) => console.error('Error updating license:', err)
+    });
+  } else {
+    this.licenseService.addLicenseFlow(licensePayload).subscribe({
+      next: (response) => {
+        const newLicenseId = response.licenseId;
+        this.router.navigate(['/license-list'], {
+          queryParams: { licenseId: newLicenseId, userId: this.userId }
+        });
+      },
+      error: (err) => console.error('Error adding license:', err)
+    });
+  }
+}
+getFieldError(fieldName: string): string {
+    const displayName = this.fieldDisplayNames[fieldName] || fieldName;
+    const field = this.form.get(fieldName);
+    if (field?.errors) {
+      if (field.errors['required']) return `${displayName} is required`;
+      if (field.errors['maxlength']) return `${displayName} is too long`;
+      if (field.errors['pattern']) return `${displayName} is invalid`;
+    }
+    return '';
+  }
+
+  getControlError(controlName: string): string {
+    const displayName = this.fieldDisplayNames[controlName] || controlName;
+    const field = this.form.get(controlName);
+    if (field?.errors) {
+      if (field.errors['required']) return `${displayName} is required`;
+      if (field.errors['maxlength']) return `${displayName} is too long`;
+      if (field.errors['pattern']) return `${displayName} is invalid`;
+    }
+    return '';
+  }
+
+
+  dateOrderValidator: ValidatorFn = (group: AbstractControl): ValidationErrors | null => {
+  const businessStartDate = group.get('businessStartDate')?.value;
+  const lastRenewedDate = group.get('lastRenewedDate')?.value;
+  const dateRenewal = group.get('dateRenewal')?.value;
+
+  if (!businessStartDate || !lastRenewedDate || !dateRenewal) {
+    return null;
+  }
+
+  const start = new Date(businessStartDate);
+  const last = new Date(lastRenewedDate);
+  const renewal = new Date(dateRenewal);
+
+  if (start >= last) {
+    group.get('businessStartDate')?.setErrors({ afterLastRenewed: true });
+    return { invalidOrder: true };
+  }
+
+  if (last >= renewal) {
+    group.get('lastRenewedDate')?.setErrors({ afterRenewal: true });
+    return { invalidOrder: true };
+  }
+
+  return null; 
+};
+
 
   getCurrentStepGroup(): FormGroup {
     return this.form.get('step' + this.currentStep) as FormGroup;
@@ -158,29 +601,68 @@ export class LicenseFlow {
     }
   }
 
-  isFieldInvalid(controlName: string): boolean {
-    const control = this.form.get('step' + this.currentStep + '.' + controlName);
-    return !!(control && control.invalid && (control.dirty || control.touched));
+  isFieldInvalid(fieldName: string): boolean {
+  const control = this.form.get(fieldName);
+  return !!(control && control.invalid && (control.dirty || control.touched));
+}
+
+
+      onWebsiteInput() {
+    const value = this.form.get('step3.website')?.value;
+    this.suggestedWebsites = value && !value.startsWith('http')
+      ? [`http://${value}`, `https://${value}`]
+      : [];
   }
 
-  getFieldError(controlName: string): string {
-    const control = this.form.get('step' + this.currentStep + '.' + controlName);
-    if (control && control.errors) {
-      if (control.errors['required']) return 'This field is required';
-      if (control.errors['pattern']) return 'Invalid format';
-      // add other error messages as needed
-    }
-    return '';
+  get step1(): FormGroup {
+    return this.form.get('step1') as FormGroup;
+  }
+ 
+  get step2(): FormGroup {
+    return this.form.get('step2') as FormGroup;
+  }
+ 
+  get step3(): FormGroup {
+    return this.form.get('step3') as FormGroup;
+  }
+ 
+  get step4(): FormGroup {
+    return this.form.get('step4') as FormGroup;
+  }
+ 
+  get step5(): FormGroup {
+    return this.form.get('step5') as FormGroup;
   }
 
-  onWebsiteInput() {
-    const site = this.form.get('step3.website')?.value || '';
-    this.suggestedWebsites = site.length > 2 ? [`${site}.com`, `${site}.net`] : [];
+  goToStep(step: number) {
+    if (step >= 1 && step <= 4) {
+    this.currentStep = step;
+  }
+ 
   }
 
+ 
   updateWordCount() {
-  const profileDesc = this.form.get('step3.profileDescription')?.value || '';
-  this.profileDescriptionWordCount = profileDesc.trim().split(/\s+/).filter((word: string) => word.length > 0).length;
+    const desc = this.form.get('step3.profileDescription')?.value || '';
+    this.profileDescriptionWordCount = desc.trim().split(/\s+/).length;
+  }
+ 
+filterTextOnly(controlName: string) {
+  const control = this.step3.get(controlName);
+  if (control) {
+    let value = control.value || '';
+    value = value.replace(/[^a-zA-Z\s]/g, '');
+    value = value.replace(/([a-zA-Z])\1{2,}/g, '$1$1');
+ 
+    const words = value.trim().split(/\s+/);
+    if (words.length > 500) {
+      value = words.slice(0, 500).join(' ');
+    }
+ 
+    control.setValue(value, { emitEvent: false });
+  }
+ 
+  this.updateWordCount();
 }
 
 
@@ -193,497 +675,3 @@ export class LicenseFlow {
 
 
 
-
-
-
-// import { Component, OnInit } from '@angular/core';
-// import { CommonModule } from '@angular/common';
-// import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-// import { ActivatedRoute, Router } from '@angular/router';
-// import { LicenseClientService } from '../../../services/Licenses/license-client-service';
-// import { MatInputModule } from '@angular/material/input';
-// import { MatSelectModule } from '@angular/material/select';
-// import { MatButtonModule } from '@angular/material/button';
-// import { MatStepperModule } from '@angular/material/stepper';
-// import {MatCheckboxModule} from '@angular/material/checkbox';
-// import { MatDatepickerModule } from '@angular/material/datepicker';
-// import { MatNativeDateModule } from '@angular/material/core';
-// import { ReferringClientModel } from '../../Models/ReferingClientModel';
-// import { catchError, map, Observable, of, switchMap } from 'rxjs';
-// import { MatExpansionModule } from '@angular/material/expansion';
-// import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-// import { License } from '../../Models/license.models';
-// import { LicenseService } from '../../../services/Licenses/licenseservice.service';
-// import { LicenseClient } from '../../Models/LicenseClient';
-// import { UserBarControl } from '../../user-bar-control/user-bar-control';
- 
- 
- 
-// @Component({
-//   selector: 'app-license-client-flow',
-//   standalone: true,
-//   imports: [
-//     CommonModule,
-//     ReactiveFormsModule,
-//     MatStepperModule,
-//     MatInputModule,
-//     MatButtonModule,
-//     MatExpansionModule,
-//     MatCheckboxModule,
-//     MatSelectModule,
-//      MatDatepickerModule,
-//   MatNativeDateModule,
-//   MatSlideToggleModule,
-//  UserBarControl
-//   ],
-//   templateUrl: './license-client-flow.html',
-//   styleUrl: './license-client-flow.scss'
-// })
-// export class LicenseClientFlow implements OnInit {
-//   form: FormGroup;
-//   wordCount: number = 0;
-//   profileDescriptionWordCount: number = 0;
-//   suggestedWebsites: string[] = [];
-//   referringClients: ReferringClientModel[] = [];
-//   highlightedIndex: number = -1;
-//   currentStep = 1;
-//   licenses$!: Observable<License[]>;
-//   errors$: Observable<string[]> | undefined;
-//   licenseId: number = 0;
-//   licenseClientId: number = 0;
-//    userId: string = '';
-
-//    pageTitle = ' Bussiness Details';
-//   pageSubtitle = '';
-//   licenseName = '';
-//   showBackFlag = true;
-//   showSubtitle = true;
-//    showLicenseName = true;
-
-//   clientNameValidator(validNames: string[]) {
-//   return (control: AbstractControl) => {
-//     const value = control.value?.trim();
-    
-//     if (!value) {
-//       return { required: true }; 
-//     }
-    
-//     if (!validNames.includes(value)) {
-//       return { invalidClientName: true };
-//     }
-    
-//     return null; 
-//   };
-// }
-
- 
-//   constructor(private fb: FormBuilder, private licenseClientService: LicenseClientService, private router: Router, private licenseService: LicenseService, private route:ActivatedRoute) {
-//    this.licenses$ = this.route.queryParams.pipe(
-//   switchMap(params => {
-//     this.licenseId = +params['licenseId'];
-//     this.userId = params['userId'];
-//     if (this.userId) {
-//         this.licenseService.getUserDetail(this.userId).subscribe(userProfile => {
-//   this.pageSubtitle = `${userProfile.firstName} ${userProfile.lastName}`;
-// });
-// }
-//      if (this.licenseId) {
-//         this.loadBusinessDetails(this.licenseId);
-//         this.licenseService.getLicenseDetail(this.licenseId).subscribe(license => {
-//           this.licenseName = `${license.companyName}`;
-//         });
-//       }
-//     return this.licenseService.getLicenseDetail(this.licenseId).pipe(
-//       map(license => license ? [license] : []), 
-//       catchError(error => {
-//         console.error('Error fetching license details:', error);
-//         this.errors$ = of(['Error fetching license details']);
-//         return of([]);
-//       })
-//     );
-//   })
-// );
-
-// this.licenses$.subscribe(licenses => {
-//   if (licenses.length) {
-//     this.form.get(['step4', 'dateRenewal'])?.setValue(licenses[0].expiry || '');
-//   }
-// });
-
-
-// const today = new Date().toISOString().substring(0, 10);
-// this.form = this.fb.group({
-//       step1: this.fb.group({
-//         businessName: ['', Validators.required],
-//         legalName: ['', Validators.required],
-//         businessType: ['', Validators.required],
-//         referingClientName: ['', [
-//       Validators.required,
-//       this.clientNameValidator(
-//   this.referringClients
-//     .map(c => c.referingClientName)
-//     .filter((name): name is string => name !== undefined)
-// )
-
-//     ]],
-//         referingClientId:['']
-//       }),
-//       step2: this.fb.group({
-//         taxReferenceGeneral: ['', Validators.required],
-//         taxReferenceSales: ['', Validators.required],
-//         kyc: ['', Validators.required],
-//         cashRevenue: ['', [Validators.required, Validators.pattern(/^[0-9]*$/)]],
-//        total12MonthIncome: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
-//         numberOfEmployee: ['', [Validators.required, Validators.min(1)]],
-//       }),
-//       step3: this.fb.group({
-//         website: ['', [Validators.required, Validators.pattern(/^https?:\/\/.+$/)]],
-//         profileDescription: ['', [Validators.required, Validators.maxLength(500)]],
-//       }),
-//       step4: this.fb.group({
-//   dateRenewal: ['' ],
-//   lastRenewedDate: [today],
-//   businessStartDate: [''],
-// }, 
-// { validators: this.dateOrderValidator }
-// ),
-
-//       step5: this.fb.group({
-//         currentStatus: [false],
-//         isLegalDocumentationHeld: [false],
-//         isTaxReportingExempt: [false],
-//         canSendMessages: [false],
-//         canReceiveMessages: [false],
-//         isListedInDirectory: [false],
-//         isListedOnWebsite: [false],
-//         isActive: [true],
-//         isLicenseMember: [false],
-//         hasPermissionToUseInvoiceSystem: [false],
-//       })
-//     });
-//   }
-
-// ngOnInit(): void {
-//   this.referringClients = []; 
-   
-//   this.licenseId = +this.route.snapshot.queryParams['licenseId'];
-//   this.userId = this.route.snapshot.queryParams['userId']|| '';
-//   console.log("userId",this.userId)
-//   if (this.licenseId) {
-//     this.loadBusinessDetails(this.licenseId);
-//     this.licenses$ = this.licenseService.getLicenseDetail(this.licenseId).pipe(
-//       map(license => license ? [license] : []),
-//       catchError(error => {
-//         console.error('Error fetching license details:', error);
-//         this.errors$ = of(['Error fetching license details']);
-//         return of([]);
-//       })
-//     );
-//   }
-//   this.step3.get('website')?.valueChanges.subscribe(value => {
-//    const control = this.step3.get('website');
-//    if (value && !value.startsWith('http') && !value.startsWith('https')) {
-//      const updated = `https://www.${value.replace(/^www\./, '')}`;
-//      control?.setValue(updated, { emitEvent: false }); // prevent loop
-//    }
-//  });
-// }
-
-// dateOrderValidator: ValidatorFn = (group: AbstractControl): ValidationErrors | null => {
-//   const businessStartDate = group.get('businessStartDate')?.value;
-//   const lastRenewedDate = group.get('lastRenewedDate')?.value;
-//   const dateRenewal = group.get('dateRenewal')?.value;
-
-//   if (!businessStartDate || !lastRenewedDate || !dateRenewal) {
-//     return null;
-//   }
-
-//   const start = new Date(businessStartDate);
-//   const last = new Date(lastRenewedDate);
-//   const renewal = new Date(dateRenewal);
-
-//   if (start >= last) {
-//     group.get('businessStartDate')?.setErrors({ afterLastRenewed: true });
-//     return { invalidOrder: true };
-//   }
-
-//   if (last >= renewal) {
-//     group.get('lastRenewedDate')?.setErrors({ afterRenewal: true });
-//     return { invalidOrder: true };
-//   }
-
-//   return null; 
-// };
-
-
-// allowOnlyNumbers(event: KeyboardEvent) {
-//   if (!/[0-9]/.test(event.key)) {
-//     event.preventDefault();
-//   }
-// }
-
-
-// loadBusinessDetails(licenseId: number): void {
-//   this.licenseClientService.getBusinessDetail(licenseId).subscribe(data => {
-//     if (data) {
-//       this.licenseClientId = data.licenseClientId;
-//       this.form.patchValue({
-//         step1: {
-//           businessName: data.businessName || '',
-//           legalName: data.legalName || '',
-//           businessType: data.businessType || '',
-//           referingClientId: data.referingClientId || '',
-//           referingClientName: data.referingClientName || ''
-//         },
-//         step2: {
-//           taxReferenceGeneral: data.taxReferenceGeneral || '',
-//           taxReferenceSales: data.taxReferenceSales || '',
-//           kyc: data.kyc || '',
-//           cashRevenue: data.cashRevenue || null,
-//           total12MonthIncome: data.total12MonthIncome || null,
-//           numberOfEmployee: data.numberOfEmployee || ''
-//         },
-//         step3: {
-//           website: data.website || '',
-//           profileDescription: data.profileDescription || ''
-//         },
-//         step4: {
-//           dateRenewal: data.renewal || '',
-//           lastRenewedDate: data.lastRenewed || '',
-//           businessStartDate: data.businessStarted || ''
-//         },
-//         step5: {
-//           currentStatus: data.currentStatus || false,
-//           isLegalDocumentationHeld: data.isLegalDocumentationHeld || false,
-//           isTaxReportingExempt: data.isTaxReportingExempt || false,
-//           canSendMessages: data.canSendMessages || false,
-//           canReceiveMessages: data.canReceiveMessages || false,
-//           isListedInDirectory: data.isListedInDirectory || false,
-//           isListedOnWebsite: data.isListedOnWebsite || false,
-//           isActive: data.isActive || false,
-//           isLicenseMember: data.isLicenseMember || false,
-//           hasPermissionToUseInvoiceSystem: data.hasPermissionToUseInvoiceSystem || false
-//         }
-//       });
-//     } else {
-//       console.log('No business data found') 
-//     }
-//   }, error => {
-//     console.log('Error fetching business details.');
-//   });
-// }
-
-
-// onClientInput(): void {
-//   const query = this.step1.get('referingClientName')?.value;
-//   if (query) {
-//     this.searchClients(query).subscribe(clients => {
-//       this.referringClients = clients;
-//       const control = this.step1.get('referingClientName');
-//       control?.setValidators([
-//   Validators.required,
-//   this.clientNameValidator(
-//     this.referringClients
-//       .map(c => c.referingClientName)
-//       .filter((name): name is string => name !== undefined)
-//   )
-// ]);
-
-//       control?.updateValueAndValidity();
-//     });
-//   } else {
-//     this.referringClients = [];
-//     this.step1.get('referingClientId')?.setValue(null);
-//   }
-//   this.highlightedIndex = -1;
-// }
-//   searchClients(query: string): Observable<ReferringClientModel[]> {
-//     return this.licenseClientService.getReferringClients(query).pipe(
-//       switchMap(response => {
-//         if (!response || response.length === 0) {
-//           console.warn('No referring clients found.');
-//           return of([]);
-//         }
-//         return of(response);
-//       }),
-//       catchError(error => {
-//         console.error('Error fetching clients:', error);
-//         return of([]);
-//       })
-//     );
-//   }
-//     onWebsiteInput() {
-//     const value = this.form.get('step3.website')?.value;
-//     this.suggestedWebsites = value && !value.startsWith('http')
-//       ? [`http://${value}`, `https://${value}`]
-//       : [];
-//   }
-
-// onKeyDown(event: KeyboardEvent): void {
-//     const total = this.referringClients.length;
-//     if (event.key === 'ArrowDown') {
-//       event.preventDefault();
-//       this.highlightedIndex = (this.highlightedIndex + 1) % total;
-//     } else if (event.key === 'ArrowUp') {
-//       event.preventDefault();
-//       this.highlightedIndex = (this.highlightedIndex - 1 + total) % total;
-//     } else if (event.key === 'Enter' && this.highlightedIndex >= 0) {
-//       this.selectClient(this.referringClients[this.highlightedIndex]);
-//     }
-//   }
- 
- 
-// selectClient(client: ReferringClientModel) {
-//   this.step1.get('referingClientName')?.setValue(client.referingClientName);
-//   this.step1.get('referingClientId')?.setValue(client.referingClientId);
-//   this.referringClients = [];
-//   this.highlightedIndex = -1;
-// }
-
-//   get step1(): FormGroup {
-//     return this.form.get('step1') as FormGroup;
-//   }
- 
-//   get step2(): FormGroup {
-//     return this.form.get('step2') as FormGroup;
-//   }
- 
-//   get step3(): FormGroup {
-//     return this.form.get('step3') as FormGroup;
-//   }
- 
-//   get step4(): FormGroup {
-//     return this.form.get('step4') as FormGroup;
-//   }
- 
-//   get step5(): FormGroup {
-//     return this.form.get('step5') as FormGroup;
-//   }
- 
-  
-
-//   nextStep(): void {
-
-//   const stepGroup = this.form.get(`step${this.currentStep}`);
-//   if (stepGroup) {
-//     stepGroup.markAllAsTouched();
-//   }
-
-//   if (stepGroup?.valid) {
-//     this.currentStep++;
-//   }
-// }
-
- 
-//   prevStep() {
-//     if (this.currentStep > 1) {
-//     this.currentStep--;
-//   }
-//   }
- 
-//   goToStep(step: number) {
-//     if (step >= 1 && step <= 5) {
-//     this.currentStep = step;
-//   }
- 
-//   }
-
-// submitForm() {
-//   if (this.form.valid) {
-//     console.log('Form submitted:', this.form.value);
-//     const licenseClient: LicenseClient = {
-//       licenseClientId: this.licenseClientId ,  
-//       userId: this.userId,
-//       licenseID: this.licenseId,
-//       businessName: this.step1.value.businessName,
-//       legalName: this.step1.value.legalName,
-//       businessType: this.step1.value.businessType,
-//       referingClientId: this.step1.value.referingClientId,
-//       referingClientName: this.step1.value.referingClientName,
-//       taxReferenceGeneral: this.step2.value.taxReferenceGeneral,
-//       taxReferenceSales: this.step2.value.taxReferenceSales,
-//       kyc: this.step2.value.kyc,
-//       cashRevenue: Number(this.step2.value.cashRevenue),
-//       total12MonthIncome: this.step2.value.total12MonthIncome,
-//       numberOfEmployee: this.step2.value.numberOfEmployee,
-//       website: this.step3.value.website,
-//       profileDescription: this.step3.value.profileDescription,
-//       dateRenewal: this.step4.value.dateRenewal,
-//       lastRenewedDate: this.step4.value.lastRenewedDate,
-//       businessStartDate: this.step4.value.businessStartDate,
-//       currentStatus: this.step5.value.currentStatus,
-//       isLegalDocumentationHeld: this.step5.value.isLegalDocumentationHeld,
-//       isTaxReportingExempt: this.step5.value.isTaxReportingExempt,
-//       canSendMessages: this.step5.value.canSendMessages,
-//       canReceiveMessages: this.step5.value.canReceiveMessages,
-//       isListedInDirectory: this.step5.value.isListedInDirectory,
-//       isListedOnWebsite: this.step5.value.isListedOnWebsite,
-//       isActive: this.step5.value.isActive,
-//       isLicenseMember: this.step5.value.isLicenseMember,
-//       hasPermissionToUseInvoiceSystem: this.step5.value.hasPermissionToUseInvoiceSystem,
-//       dateCreated: new Date(),
-//     };
-
-    
-//     this.licenseClientService.addLicenseClient(licenseClient).subscribe({
-//       next: (res) => {
-//         const returnedLicenseClientId = res.licenseClientId || licenseClient.licenseClientId;
-//         console.log('Saved/Updated successfully', res);
-//         this.router.navigate(['/manage-clients'], {
-//           queryParams: { licenseId: this.licenseId, licenseClientId: returnedLicenseClientId , userId: this.userId}
-//         });
-//       },
-//       error: (err) => {
-//         console.error('Error saving/updating client', err);
-//       }
-//     });
-
-//   } else {
-//     this.form.markAllAsTouched();
-//   }
-// }
-
-
- 
- 
- 
- 
- 
-// private markFormGroupTouched(formGroup: FormGroup | FormArray) {
-//   Object.keys(formGroup.controls).forEach(field => {
-//     const control = formGroup.get(field);
-//     if (control instanceof FormGroup || control instanceof FormArray) {
-//       this.markFormGroupTouched(control);
-//     } else {
-//       control?.markAsTouched({ onlySelf: true });
-//     }
-//   });
-// }
-
-//   updateWordCount() {
-//     const desc = this.form.get('step3.profileDescription')?.value || '';
-//     this.profileDescriptionWordCount = desc.trim().split(/\s+/).length;
-//   }
- 
-// filterTextOnly(controlName: string) {
-//   const control = this.step3.get(controlName);
-//   if (control) {
-//     let value = control.value || '';
-//     value = value.replace(/[^a-zA-Z\s]/g, '');
-//     value = value.replace(/([a-zA-Z])\1{2,}/g, '$1$1');
- 
-//     const words = value.trim().split(/\s+/);
-//     if (words.length > 500) {
-//       value = words.slice(0, 500).join(' ');
-//     }
- 
-//     control.setValue(value, { emitEvent: false });
-//   }
- 
-//   this.updateWordCount();
-// }
- 
- 
- 
-// }
- 

@@ -30,7 +30,7 @@ export interface License {
   addressLine3: string,
   addressLine4: string;
   state:string,
-  State: string,
+  otherState: string,
   pincode: string,
   latitude: number,
   longitude: number,
@@ -69,6 +69,52 @@ export interface ExchangeDomain {
 
 
 
+export interface LicenseFlow {
+  licenseId: number;
+  userId: string;
+  businessName: string;
+  legalName: string;
+  businessType: string;
+  taxReferenceGeneral: string;
+  taxReferenceSales: string;
+  kyc: string;
+  cashRevenue: number; // numeric string as per pattern /^\d*$/
+  total12MonthIncome: number;
+  numberOfEmployee: number;
+  businessStartDate: Date;
+  lastRenewedDate: Date;
+  dateRenewal: Date;
+  addressLine1: string;
+  addressLine2: string;
+  addressLine3: string;
+  addressLine4?: string;
+  country: string;
+  state: string;
+  otherState?: string;
+  pincode: string;
+  website: string;
+  //mobile?: string;
+  profileDescription: string;
+  currency: string;
+  language: string;
+  localization: string;
+  referencePrefix: string;
+  isActive: boolean;
+  licenseType: string;
+  licenseDuration: string;
+  startDate: Date;
+  endDate: Date;
+  renewal: string;
+  currentStatus: boolean;
+  isLegalDocumentationHeld: boolean;
+  isTaxReportingExempt: boolean;
+  canSendMessages: boolean;
+  canReceiveMessages: boolean;
+  isListedInDirectory: boolean;
+  isListedOnWebsite: boolean;
+  isLicenseMember: boolean;
+  hasPermissionToUseInvoiceSystem: boolean;
+}
 
 
 

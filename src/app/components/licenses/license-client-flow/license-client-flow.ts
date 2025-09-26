@@ -186,7 +186,7 @@ ngOnInit(): void {
    const control = this.step3.get('website');
    if (value && !value.startsWith('http') && !value.startsWith('https')) {
      const updated = `https://www.${value.replace(/^www\./, '')}`;
-     control?.setValue(updated, { emitEvent: false }); // prevent loop
+     control?.setValue(updated, { emitEvent: false });
    }
  });
 }

@@ -62,7 +62,7 @@ export class LicenseSummary {
   // }
 
   viewDetails(licenseId?: number) {
-  this.router.navigate(['/add-license'], {
+  this.router.navigate(['/license-add'], {
     queryParams: { userId: this.userId, licenseId: licenseId }
   });
 }

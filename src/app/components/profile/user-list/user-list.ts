@@ -28,9 +28,10 @@ export class UserList implements OnInit {
 showAddProfile = false; 
   alertMessage = 'This is a custom alert message!';
   alertTitle = 'Add User ';
-
+  shouldScroll = false;
 
 users: any[] = [];
+filteredUsers: any[] = [];
 pagedUsers: any[] = [];
 currentPage = 1;
 itemsPerPage = 15;
@@ -43,7 +44,8 @@ viewAll = false;
     this.users$ = this.licenseService.getUsers();
 
      this.users$.subscribe(data => {
-    this.users = data; // ✅ no filter
+    this.users = data; 
+    this.filteredUsers = [...this.users];// ✅ no filter
   //  this.totalPages = Math.ceil(this.users.length / this.itemsPerPage);
    // this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
     this.calculatePagination();
@@ -52,16 +54,37 @@ viewAll = false;
   }
 
 
-  calculatePagination() {
-  if (this.viewAll) {
-    this.totalPages = 1;
-    this.pages = [1];
-  } else {
-    this.totalPages = Math.ceil(this.users.length / this.itemsPerPage);
-    this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-  }
-}
+//   calculatePagination() {
+//   if (this.viewAll) {
+//     this.totalPages = 1;
+//     this.pages = [1];
+//   } else {
+//     this.totalPages = Math.ceil(this.users.length / this.itemsPerPage);
+//     this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+//   }
+// }
 
+  onSearch(searchText: string) {
+    const lowerText = searchText.toLowerCase();
+    this.filteredUsers = this.users.filter(user =>
+      (user.firstName?.toLowerCase().includes(lowerText) ?? false) ||
+      (user.lastName?.toLowerCase().includes(lowerText) ?? false) ||
+      (user.email?.toLowerCase().includes(lowerText) ?? false)
+    );
+    this.currentPage = 1; // reset to first page when searching
+    this.calculatePagination();
+    this.setPage(1);
+  }
+
+  // calculatePagination() {
+  //   if (this.viewAll) {
+  //     this.totalPages = 1;
+  //     this.pages = [1];
+  //   } else {
+  //     this.totalPages = Math.ceil(this.filteredUsers.length / this.itemsPerPage);
+  //     this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  //   }
+  // }
   viewDetails(id: string | undefined) {
     if (id !== undefined) {
       this.router.navigate(['/license-list'], { queryParams: { userId: id } }
@@ -74,6 +97,14 @@ viewAll = false;
   navigateToAddUser() {
     this.router.navigate(['/add-profile']);
   }
+
+
+  navigateToAddLicense(id: string | undefined) {
+     if (id !== undefined) {
+    this.router.navigate(['/license-add'], {queryParams: { userId: id }
+});
+  }
+}
 
 
   deleteUser(id: string): void {
@@ -108,27 +139,39 @@ closeAddProfile() {
 }
 
 
-setPage(page: number) {
-//   this.currentPage = page;
-//   const startIndex = (page - 1) * this.itemsPerPage;
-//   const endIndex = startIndex + this.itemsPerPage;
-//   this.pagedUsers = this.users.slice(startIndex, endIndex);
+// setPage(page: number) {
+// //   this.currentPage = page;
+// //   const startIndex = (page - 1) * this.itemsPerPage;
+// //   const endIndex = startIndex + this.itemsPerPage;
+// //   this.pagedUsers = this.users.slice(startIndex, endIndex);
+// // }
+
+// this.currentPage = page;
+//   if (this.viewAll) {
+//     this.pagedUsers = this.users;
+//   } else {
+//     const startIndex = (page - 1) * this.itemsPerPage;
+//     const endIndex = startIndex + this.itemsPerPage;
+//     this.pagedUsers = this.users.slice(startIndex, endIndex);
+//   }
 // }
 
-this.currentPage = page;
-  if (this.viewAll) {
-    this.pagedUsers = this.users;
-  } else {
-    const startIndex = (page - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    this.pagedUsers = this.users.slice(startIndex, endIndex);
-  }
-}
 
-goToPage(page: number) {
-  if (page < 1 || page > this.totalPages) return;
-  this.setPage(page);
-}
+//  setPage(page: number) {
+//     this.currentPage = page;
+//     if (this.viewAll) {
+//       this.pagedUsers = this.filteredUsers;
+//     } else {
+//       const startIndex = (page - 1) * this.itemsPerPage;
+//       const endIndex = startIndex + this.itemsPerPage;
+//       this.pagedUsers = this.filteredUsers.slice(startIndex, endIndex);
+//     }
+//   }
+
+// goToPage(page: number) {
+//   if (page < 1 || page > this.totalPages) return;
+//   this.setPage(page);
+// }
 
 toggleViewAll() {
   this.viewAll = !this.viewAll;
@@ -136,6 +179,77 @@ toggleViewAll() {
   this.setPage(1);
 
 }
+
+
+//  onPageSizeChange(event: any) {
+//     const selectedValue = event.target.value;
+
+//     if (selectedValue === 'all') {
+//       this.viewAll = true;
+//       this.itemsPerPage = this.filteredUsers.length; // keep track
+//     } else {
+//       this.viewAll = false;
+//       this.itemsPerPage = +selectedValue; // convert string to number
+//     }
+
+//     this.calculatePagination();
+//     this.setPage(1);
+//   }
+
+
+onPageSizeChange(event: any) {
+  const selectedValue = event.target.value;
+
+  if (selectedValue === 'all') {
+    this.viewAll = true;
+    this.itemsPerPage = this.filteredUsers.length;
+  } else {
+    this.viewAll = false;
+    this.itemsPerPage = +selectedValue;
+  }
+
+  this.calculatePagination();
+  this.setPage(1);
+
+  // ✅ update scrollbar logic
+  this.updateScrollFlag();
+}
+
+updateScrollFlag() {
+  if (this.viewAll) {
+    this.shouldScroll = this.filteredUsers.length > 5;
+  } else {
+    this.shouldScroll = this.itemsPerPage > 5;
+  }
+}
+
+
+  calculatePagination() {
+    if (this.viewAll) {
+      this.totalPages = 1;
+      this.pages = [1];
+    } else {
+      this.totalPages = Math.ceil(this.filteredUsers.length / this.itemsPerPage);
+      this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+    }
+  }
+
+  setPage(page: number) {
+    this.currentPage = page;
+    if (this.viewAll) {
+      this.pagedUsers = this.filteredUsers; // show all
+    } else {
+      const startIndex = (page - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      this.pagedUsers = this.filteredUsers.slice(startIndex, endIndex);
+    }
+  }
+
+  goToPage(page: number) {
+    if (page < 1 || page > this.totalPages) return;
+    this.setPage(page);
+  }
+
 }
 
 

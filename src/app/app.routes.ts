@@ -103,7 +103,7 @@ export const routes: Routes = [
           path: 'license-dashboard', component:LicenseDashboard, canActivate: [RoleGuard], data: { role: 'SuperAdmin' }
         },
         {
-          path: 'license-flow', component:LicenseFlow, canActivate: [RoleGuard], data: {role: 'SuperAdmin'}
+          path: 'license-add', component:LicenseFlow, canActivate: [RoleGuard], data: {role: 'SuperAdmin'}
         },
 
         
