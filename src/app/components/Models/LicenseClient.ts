@@ -94,6 +94,7 @@ export interface LicenseClientView {
   profileDescription: string;
   numberOfEmployee: number;
   businessStarted: string;
+  businessStartedDate: Date;
   cashRevenue: number;
   total12MonthIncome: number;
   taxReferenceSales: string;

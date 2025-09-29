@@ -41,12 +41,14 @@ export class LicenseFlow implements OnInit, OnDestroy {
   showBackFlag = true;
   showSubtitle = true;
    showLicenseName = true;
+  
 
 
    form!: FormGroup;
   currentStep: number = 1;
 userId: string = '';
   licenseId: number = 0;
+  legalName?: string; 
   currencies$!: Observable<Currencies[]>;
     languages$!: Observable<Langauges[]>;
     countries$!: Observable<Country[]>;
@@ -56,7 +58,7 @@ userId: string = '';
   errorMessage: string = '';
   errors$: Observable<string[]> | undefined;
   licenseClientId: number = 0;
-
+renewal= false  ;
   isLoading = false;
   isCountriesLoading = true;
   isStatesLoading = true;
@@ -88,7 +90,7 @@ userId: string = '';
     public clientService: ClientService,
     private router: Router,
     private route: ActivatedRoute,
-    private licenseClientService: LicenseClientService
+    private licenseClientService: LicenseClientService,
   ) { 
     this.licenses$ = this.route.queryParams.pipe(
     switchMap(params => {
@@ -148,6 +150,7 @@ userId: string = '';
           });
         }
         });
+
     
         this.form.get('step4.licenseDuration')?.valueChanges
           .pipe(takeUntil(this.destroy$))
@@ -155,9 +158,9 @@ userId: string = '';
             this.updateEndDateBasedOnDuration(duration);
           });
 
-          this.form.get('step1.businessName')?.valueChanges.subscribe(value => {
-  const acronym = this.generateAcronym(value);
-  this.form.get('step3.referencePrefix')?.setValue(acronym, { emitEvent: false });
+    this.form.get('businessName')?.valueChanges.subscribe(value => {
+  const acronym = this.generateReferencePrefix(value);
+  this.form.get('referencePrefix')?.setValue(acronym, { emitEvent: false });
 });
 
     
@@ -186,17 +189,40 @@ userId: string = '';
     this.form = this.fb.group({
       step1: this.fb.group({
         businessName: ['', Validators.required],
+      //    businessName: ['', 
+      // {
+      //   validators: [Validators.required],
+      //   asyncValidators: [this.businessNameExistsValidator.validate.bind(this.businessNameExistsValidator)],
+      //   updateOn: 'blur' // or 'change' as per your preference
+      // }
+   // ],
         legalName: ['', Validators.required],
         businessType: ['', Validators.required],
         taxReferenceGeneral: ['', Validators.required],
         taxReferenceSales: ['', Validators.required],
         kyc: ['', Validators.required],
-        cashRevenue: ['', [Validators.required, Validators.pattern(/^\d*$/)]],
-        total12MonthIncome: ['', Validators.required],
-        numberOfEmployee: ['', Validators.required],
+        cashRevenue: ['', [
+    Validators.required,
+    Validators.minLength(1),   // minimum 1 digit
+    Validators.maxLength(18)    // maximum 3 digits, e.g., 0-999 employees
+  ]],
+        total12MonthIncome: ['', [
+    Validators.required,
+    Validators.minLength(1),   // minimum 1 digit
+    Validators.maxLength(18)    // maximum 3 digits, e.g., 0-999 employees
+  ]],
+       // numberOfEmployee: ['', Validators.required],
+       numberOfEmployee: [
+  '', 
+  [
+    Validators.required,
+    Validators.minLength(1),   // minimum 1 digit
+    Validators.maxLength(10)    // maximum 3 digits, e.g., 0-999 employees
+  ]
+],
         businessStartDate: [''],
-        lastRenewedDate: [todayT],
-        dateRenewal: [''],
+       // lastRenewedDate: [todayT],
+       // dateRenewal: [''],
       }, { validators: this.dateOrderValidator }),
       step2: this.fb.group({
         addressLine1: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9]+$/)]],
@@ -206,7 +232,7 @@ userId: string = '';
         country: ['', Validators.required],
         state: ['', Validators.required],
         otherState: [''],
-        pincode: ['', [Validators.required, Validators.maxLength(10)]],
+        pincode: ['', [Validators.required, Validators.minLength(6),Validators.maxLength(12)]],
       }),
       step3: this.fb.group({
         website: ['', [Validators.required, Validators.pattern(/^https?:\/\/.+/)]],
@@ -215,7 +241,7 @@ userId: string = '';
         currency: ['USD', Validators.required],
         language: ['English', Validators.required],
         localization: ['en-US', Validators.required],
-       referencePrefix: ['', Validators.required],
+       referencePrefix: ['', [Validators.required, Validators.minLength(4)]],
         isActive: [false],
       }),
       step4: this.fb.group({
@@ -249,24 +275,130 @@ userId: string = '';
  });
     });
 
-    this.form.get('businessName')?.valueChanges.subscribe(value => {
-      const acronym = this.generateAcronym(value);
-      this.form.get('referencePrefix')?.setValue(acronym, { emitEvent: false });
-    });
+    // this.form.get('businessName')?.valueChanges.subscribe(value => {
+    //   const acronym = this.generateAcronym(value);
+    //   this.form.get('referencePrefix')?.setValue(acronym, { emitEvent: false });
+    // });
+
+    this.form.get('step1.businessName')?.valueChanges.subscribe(value => {
+    if (!value) return;
+    
+    const acronym = this.generateReferencePrefix(value);
+    this.form.get('step3.referencePrefix')?.setValue(acronym, { emitEvent: false });
+  });
+
+    this.form.get('step1.businessName')?.setAsyncValidators(this.businessNameExistsValidator.bind(this));
+     this.form.get('step1.legalName')?.setAsyncValidators(this.businessNameExistsValidator.bind(this));
+
+
+     this.form.get('step4.licenseDuration')?.valueChanges.subscribe(duration => {
+  const startDateControl = this.form.get('step4.startDate');
+  const endDateControl = this.form.get('step4.endDate');
+  if (duration === 'custom') {
+    startDateControl?.enable();
+    endDateControl?.enable();
+  } else {
+    startDateControl?.disable();
+    endDateControl?.disable();
+  }
+});
+
+
   }
 
-  
-  generateAcronym(name: string): string {
-  if (!name) return '';
+
+
+
+generateReferencePrefix(name: string): string {
+  if (!name) return this.generateRandomString(4);
 
   const excludeWords = ['and', 'of', 'the', 'a', 'an', 'in', 'on'];
-  return name
-    .toLowerCase()
-    .split(/[\s\-]+/) 
+
+  let letters = name
+    .toUpperCase()
+    .split(/[\s\-]+/)
     .filter(word => word.length > 0 && !excludeWords.includes(word))
-    .map(word => word[0].toUpperCase())
+    .map(word => word[0])
     .join('');
+
+  if (letters.length < 4) {
+    letters += this.generateRandomNumberString(4 - letters.length);
+  }
+
+  return letters;
 }
+
+generateRandomNumberString(length: number): string {
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += Math.floor(Math.random() * 10).toString();
+  }
+  return result;
+}
+
+generateRandomString(length: number): string {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
+}
+  
+//   generateAcronym(name: string): string {
+//   if (!name) return '';
+
+//   const excludeWords = ['and', 'of', 'the', 'a', 'an', 'in', 'on'];
+//   return name
+//     .toLowerCase()
+//     .split(/[\s\-]+/) 
+//     .filter(word => word.length > 0 && !excludeWords.includes(word))
+//     .map(word => word[0].toUpperCase())
+//     .join('');
+// }
+
+// businessNameExistsValidator(control: AbstractControl): Observable<ValidationErrors | null> {
+//   return this.licenseClientService.checkBusinessNameExists(control.value).pipe(
+//     map(exists => (exists ? { businessNameExists: true } : null)),
+//     catchError(() => of(null))
+//   );
+
+// businessNameExistsValidator(control: AbstractControl): Observable<ValidationErrors | null> {
+//   // If licenseId exists (edit mode), skip validation
+//   if (this.licenseId && this.licenseId > 0) {
+//     return of(null);
+//   }
+
+//   // Otherwise, extract businessName and legalName from the control or component state
+//   // Assuming businessName is control.value and legalName is available in component property
+//   const businessName = control.value;
+//   const legalName = this.legalName; // assign legalName from your form or component context
+
+//   return this.licenseClientService.checkBusinessNameExists(businessName, legalName).pipe(
+//     map(exists => (exists ? { businessNameExists: true } : null)),
+//     catchError(() => of(null))
+//   );
+// }
+
+
+businessNameExistsValidator(control: AbstractControl): Observable<ValidationErrors | null> {
+  if (this.licenseId && this.licenseId > 0) {
+    return of(null);
+  }
+
+  // Get legalName from the form's step1 group
+  const legalName = this.form?.get('step1.legalName')?.value ?? '';
+
+  const businessName = control.value;
+
+  return this.licenseClientService.checkBusinessNameExists(businessName, legalName).pipe(
+    map(exists => (exists ? { businessNameExists: true } : null)),
+    catchError(() => of(null))
+  );
+}
+
+
+
 
 
   loadBusinessDetails(licenseId: number): void {
@@ -363,6 +495,8 @@ userId: string = '';
       this.errorMessage = 'Error fetching License details.';
     });
   }
+
+
   
   
 //     nextStep(): void {
@@ -379,23 +513,38 @@ userId: string = '';
 //   }
 
   
- nextStep(): void {
-  const stepGroup = this.form.get(`step${this.currentStep}`) as FormGroup | null;
+//  nextStep(): void {
+//   const stepGroup = this.form.get(`step${this.currentStep}`) as FormGroup | null;
 
+//   if (!stepGroup) return;
+
+//   // Mark all controls in the current step group as touched and dirty to trigger validation messages
+//   stepGroup.markAllAsTouched();
+//   Object.keys(stepGroup.controls).forEach(controlName => {
+//     const control = stepGroup.get(controlName);
+//     control?.markAsDirty();
+//   });
+
+//   // After marking, check validity to allow step navigation
+//   if (stepGroup.valid) {
+//     this.currentStep++;
+//   }
+// }
+
+
+nextStep(): void {
+  const stepGroup = this.form.get(`step${this.currentStep}`) as FormGroup;
   if (!stepGroup) return;
 
-  // Mark all controls in the current step group as touched and dirty to trigger validation messages
+  // Mark all controls as touched and dirty
   stepGroup.markAllAsTouched();
-  Object.keys(stepGroup.controls).forEach(controlName => {
-    const control = stepGroup.get(controlName);
-    control?.markAsDirty();
-  });
 
-  // After marking, check validity to allow step navigation
+  // Only move to next step if the group is valid
   if (stepGroup.valid) {
     this.currentStep++;
   }
 }
+
 
   
  prevStep(): void {
@@ -595,11 +744,41 @@ getFieldError(fieldName: string): string {
     return this.form.get('step' + this.currentStep) as FormGroup;
   }
 
-  allowOnlyNumbers(event: KeyboardEvent) {
-    if (!/[0-9]/.test(event.key)) {
+allowOnlyNumbers(event: KeyboardEvent, maxLength: number) {
+  const input = event.target as HTMLInputElement;
+
+  // Allow digits
+  if (/[0-9]/.test(event.key)) {
+    if (input.value.length >= maxLength) {
       event.preventDefault();
     }
+    return;
   }
+
+  // Block everything else
+  event.preventDefault();
+}
+
+
+  allowNumbers(event: KeyboardEvent, maxLength: number) {
+  const input = event.target as HTMLInputElement;
+
+  // Allow digits
+  if (/[0-9]/.test(event.key)) {
+    if (input.value.length >= maxLength) {
+      event.preventDefault();
+    }
+    return;
+  }
+
+  // Allow one decimal point
+  if (event.key === '.' && !input.value.includes('.')) return;
+
+  // Block everything else
+  event.preventDefault();
+}
+
+
 
   isFieldInvalid(fieldName: string): boolean {
   const control = this.form.get(fieldName);

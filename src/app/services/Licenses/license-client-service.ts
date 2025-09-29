@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.development';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { catchError, Observable } from 'rxjs';
 import { LicenseClient, LicenseClientView } from '../../components/Models/LicenseClient';
 
@@ -29,6 +29,17 @@ addLicenseClient(payload: LicenseClient): Observable<LicenseClient> {
   return this.http.post<LicenseClient>(`${this.apiUrl}/License/add-client`, payload);
 }
 
+checkBusinessNameExists(businessName?: string, legalName?: string): Observable<boolean> {
+  let params = new HttpParams();
+  if (businessName) {
+    params = params.set('businessName', businessName);
+  }
+  if (legalName) {
+    params = params.set('legalName', legalName);
+  }
+
+  return this.http.get<boolean>(`${this.apiUrl}/License/check-business-name`, { params });
+}
 
 
 

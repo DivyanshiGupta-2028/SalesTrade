@@ -26,14 +26,24 @@
             <div class="row">
               <div class="col-md-4 mb-2">
                 <label class="form-label" for="businessName">Business Name</label>
-                <input
+                <!-- <input
                   type="text"
                   class="form-control form-control-sm"
                   placeholder="Business Name"
-                  formControlName="businessName" />
+                  formControlName="businessName" /> -->
+                  <input
+  type="text"
+  class="form-control form-control-sm"
+  placeholder="Business Name"
+  formControlName="businessName" />
+
                 <div *ngIf="form.get('step1.businessName')?.touched && form.get('step1.businessName')?.hasError('required')" class="text-danger small mt-1">
                   Business Name is required.
                 </div>
+                <div *ngIf="form.get('step1.businessName')?.hasError('businessNameExists')" class="text-danger small mt-1">
+  Business Name already exists.
+</div>
+
               </div>
 
               <div class="col-md-4 mb-2">
@@ -42,10 +52,13 @@
                   type="text"
                   class="form-control form-control-sm"
                   placeholder="Legal Name"
-                  formControlName="legalName" />
+                  formControlName="legalName"  />
                 <div *ngIf="form.get('step1.legalName')?.touched && form.get('step1.legalName')?.hasError('required')" class="text-danger small mt-1">
                   Legal Name is required.
                 </div>
+                <div *ngIf="form.get('step1.legalName')?.hasError('businessNameExists')" class="text-danger small mt-1">
+  Legal Name already exists.
+</div>
               </div>
 
               <div class="col-md-4 mb-2">
@@ -114,9 +127,9 @@
                 class="form-control form-control-sm"
                 placeholder="Cash Revenue"
                 formControlName="cashRevenue"
-                inputmode="numeric"
-                pattern="[0-9]*"
-                (keypress)="allowOnlyNumbers($event)" />
+                inputmode="decimal"
+                pattern="[0-9]*\.?[0-9]*"
+                (keypress)="allowNumbers($event,18)" />
               <div *ngIf="form.get('step1.cashRevenue')?.touched && form.get('step1.cashRevenue')?.hasError('required')" class="text-danger small mt-1">
                 Cash Revenue is required.
               </div>
@@ -128,15 +141,18 @@
             <div class="col-md-3 mb-2">
               <label class="form-label" for="total12MonthIncome">12-Month Income</label>
               <input
-                type="number"
+                type="text"
                 class="form-control form-control-sm"
                 placeholder="12-Month Income"
                 formControlName="total12MonthIncome"
-                inputmode="numeric"
-                pattern="[0-9]*"
-                (keypress)="allowOnlyNumbers($event)" />
+                inputmode="decimal"
+                pattern="[0-9]*\.?[0-9]*"
+                (keypress)="allowNumbers($event,18)" />
               <div *ngIf="form.get('step1.total12MonthIncome')?.touched && form.get('step1.total12MonthIncome')?.hasError('required')" class="text-danger small mt-1">
                 12-Month Income is required.
+              </div>
+              <div *ngIf="form.get('step1.total12MonthIncome')?.hasError('pattern')" class="text-danger small mt-1">
+                Only numbers are allowed.
               </div>
             </div>
 
@@ -149,10 +165,11 @@
                 formControlName="numberOfEmployee"
                 inputmode="numeric"
                 pattern="[0-9]*"
-                (keypress)="allowOnlyNumbers($event)" />
+                (keypress)="allowOnlyNumbers($event,10)" />
               <div *ngIf="form.get('step1.numberOfEmployee')?.touched && form.get('step1.numberOfEmployee')?.hasError('required')" class="text-danger small mt-1">
                 Number of Employees is required.
               </div>
+
             </div>
 
             <div class="col-md-3 mb-2">
@@ -170,7 +187,7 @@
             </div>
           </div>
 
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-md-4 mb-2">
               <label class="form-label">Last Renewed Date</label>
               <input
@@ -195,7 +212,7 @@
                 Date Renewal is required.
               </div>
             </div>
-          </div>
+          </div> -->
 
           <div class="d-flex justify-content-end">
             <button type="button" class="btn btn-primary btn-sm" (click)="nextStep()">Next</button>
@@ -220,9 +237,11 @@
                     title="Only alphanumeric characters are allowed"
                     formControlName="addressLine1"
                     class="form-control"
-                    [class.is-invalid]="isFieldInvalid('addressLine1')"
+                    
                     placeholder="Enter Address Line 1" />
-                  <div class="invalid-feedback">{{ getFieldError('addressLine1') }}</div>
+                  <div *ngIf="form.get('step2.addressLine1')?.touched && form.get('step2.addressLine1')?.hasError('required')" class="text-danger small mt-1">
+                Address is required.
+              </div>
                 </div>
                 <div class="col-md-4">
                   <label for="addressLine2" class="form-label required">Address Line 2</label>
@@ -233,9 +252,11 @@
                     title="Only alphanumeric characters are allowed"
                     formControlName="addressLine2"
                     class="form-control"
-                    [class.is-invalid]="isFieldInvalid('addressLine2')"
+                  
                     placeholder="Enter Address Line 2" />
-                  <div class="invalid-feedback">{{ getFieldError('addressLine2') }}</div>
+                  <div *ngIf="form.get('step2.addressLine2')?.touched && form.get('step2.addressLine2')?.hasError('required')" class="text-danger small mt-1">
+                Address is required.
+              </div>
                 </div>
                 <div class="col-md-4">
                   <label for="addressLine3" class="form-label required">Address Line 3</label>
@@ -246,9 +267,11 @@
                     title="Only alphanumeric characters are allowed"
                     formControlName="addressLine3"
                     class="form-control"
-                    [class.is-invalid]="isFieldInvalid('addressLine3')"
+                    
                     placeholder="Enter Address Line 3" />
-                  <div class="invalid-feedback">{{ getFieldError('addressLine3') }}</div>
+                  <div *ngIf="form.get('step2.addressLine3')?.touched && form.get('step2.addressLine3')?.hasError('required')" class="text-danger small mt-1">
+                Address is required.
+              </div>
                 </div>
               </div>
 
@@ -262,9 +285,9 @@
                     title="Only alphanumeric characters are allowed"
                     formControlName="addressLine4"
                     class="form-control"
-                    [class.is-invalid]="isFieldInvalid('addressLine4')"
+                    
                     placeholder="Enter address line 4" />
-                  <div class="invalid-feedback">{{ getFieldError('addressLine4') }}</div>
+                  
                 </div>
 
                 <div class="col-md-4">
@@ -273,12 +296,14 @@
                     id="country"
                     formControlName="country"
                     class="form-select"
-                    [class.is-invalid]="isFieldInvalid('country')"
+                    
                     [disabled]="isCountriesLoading">
                     <option value="">{{ isCountriesLoading ? 'Loading countries...' : 'Select Country' }}</option>
                     <option *ngFor="let country of countryOptions" [value]="country.value">{{ country.label }}</option>
                   </select>
-                  <div class="invalid-feedback">{{ getFieldError('country') }}</div>
+                  <div *ngIf="form.get('step2.country')?.touched && form.get('step2.country')?.hasError('required')" class="text-danger small mt-1">
+                Country is required.
+              </div>
                 </div>
 
                 <div class="col-md-4">
@@ -287,13 +312,15 @@
                     id="state"
                     formControlName="state"
                     class="form-select"
-                    [class.is-invalid]="isFieldInvalid('state')"
+                    
                     [disabled]="isStatesLoading || !selectedCountry">
                     <option value="">{{ isStatesLoading ? 'Loading states...' : (!selectedCountry ? 'Select country first' : 'Select State') }}</option>
                     <option *ngFor="let state of stateOptions" [value]="state.value">{{ state.label }}</option>
                     <option value="Other">Other</option>
                   </select>
-                  <div class="invalid-feedback">{{ getFieldError('state') }}</div>
+                  <div *ngIf="form.get('step2.state')?.touched && form.get('step2.state')?.hasError('required')" class="text-danger small mt-1">
+                State is required.
+              </div>
                 </div>
               </div>
 
@@ -307,9 +334,9 @@
                     title="Only alphabet characters are allowed"
                     formControlName="otherState"
                     class="form-control"
-                    [class.is-invalid]="isFieldInvalid('otherState')"
+                    
                     placeholder="Enter other state" />
-                  <div class="invalid-feedback">{{ getFieldError('otherState') }}</div>
+                  
                 </div>
               </div>
 
@@ -317,15 +344,19 @@
                 <div class="col-md-4">
                   <label for="pincode" class="form-label required">PIN/ZIP Code</label>
                   <input
-                    type="number"
-                    id="pincode"
-                    pattern="[0-9]+"
-                    title="Only numeric characters are allowed"
-                    formControlName="pincode"
-                    class="form-control"
-                    [class.is-invalid]="isFieldInvalid('pincode')"
-                    placeholder="Enter PIN or ZIP code" />
-                  <div class="invalid-feedback">{{ getFieldError('pincode') }}</div>
+  type="text"               
+  id="pincode"
+  formControlName="pincode"
+  class="form-control"
+  placeholder="Enter PIN or ZIP code"
+  inputmode="numeric"
+  maxlength="12"
+  pattern="[0-9]*"
+  title="Only numeric characters are allowed" />
+
+                 <div *ngIf="form.get('step2.pincode')?.touched && form.get('step2.pincode')?.hasError('required')" class="text-danger small mt-1">
+                Pincode is required.
+              </div>
                 </div>
               </div>
             </div>
@@ -451,25 +482,21 @@
                   This field is required.
                 </div>
               </div> -->
-              <div class="col-md-6 mb-4">
+<div class="col-md-6 mb-4">
   <label for="referencePrefix" class="form-label">Reference Prefix</label>
   <input
     type="text"
     id="referencePrefix"
     class="form-control"
-    formControlName="referencePrefix" />
-    <!-- <input
-  type="number"
-  id="referencePrefix"
-  class="form-control"
-  formControlName="referencePrefix"
-  [readonly]="false"
-/> -->
-
+    formControlName="referencePrefix"
+    maxlength="10"
+    placeholder="Enter Reference Prefix (min 4 chars)" />
   <div *ngIf="isFieldInvalid('step3.referencePrefix')" class="text-danger small mt-1">
-    This field is required.
+    Minimum 4 characters required.
   </div>
 </div>
+
+
 
 
               <div class="col-md-4 mb-0 d-flex align-items-center">
@@ -523,24 +550,17 @@
                   <option value="quaterly">Quarterly</option>
                   <option value="yearly">Yearly</option>
                   <option value="2year">Two-Yearly</option>
+                  <option value="custom">Custom</option>
                 </select>
                 <div *ngIf="isFieldInvalid('step4.licenseDuration')" class="text-danger small mt-1">
                   This field is required.
                 </div>
               </div>
 
-              <div class="col-md-2 mb-3">
-                <label for="renewal" class="form-label">Renewal</label>
-                <select
-                  id="renewal"
-                  class="form-select"
-                  formControlName="renewal">
-                  <option value="">Select</option>
-                  <option value="yes">Yes</option>
-                  <option value="no">No</option>
-                </select>
-              </div>
+
             </div>
+
+            
 
             <div class="row">
               <div class="col-md-4 mb-3">
@@ -568,49 +588,65 @@
               </div>
             </div>
 
-
             <div class="row">
-            <div class="form-check d-flex align-items-center mb-2">
-              <mat-checkbox formControlName="currentStatus"></mat-checkbox>
-              <label class="form-check-label ms-2 mb-0">Current Status</label>
+               <div class="col-md-6 mb-3">
+  <label class="form-label ">You want to renew automatically</label>
+  <div class="form-check">
+    <input
+      type="checkbox"
+      id="renewal"
+      class="form-check-input"
+      formControlName="renewal" />
+    <label class="form-check-label" for="renewal">Yes</label>
+  </div>
+
             </div>
-            <div class="form-check d-flex align-items-center mb-2">
-              <mat-checkbox formControlName="isLegalDocumentationHeld"></mat-checkbox>
-              <label class="form-check-label ms-2 mb-0">Legal Documentation</label>
-            </div>
-            <div class="form-check d-flex align-items-center mb-2">
-              <mat-checkbox formControlName="isTaxReportingExempt"></mat-checkbox>
-              <label class="form-check-label ms-2 mb-0">Tax Exempt</label>
-            </div>
-            <div class="form-check d-flex align-items-center mb-2">
-              <mat-checkbox formControlName="canSendMessages"></mat-checkbox>
-              <label class="form-check-label ms-2 mb-0">Can Send Messages</label>
-            </div>
-            </div>
-            <div class="form-check d-flex align-items-center mb-2">
-              <mat-checkbox formControlName="canReceiveMessages"></mat-checkbox>
-              <label class="form-check-label ms-2 mb-0">Can Receive Messages</label>
-            </div>
-            <div class="form-check d-flex align-items-center mb-2">
-              <mat-checkbox formControlName="isListedInDirectory"></mat-checkbox>
-              <label class="form-check-label ms-2 mb-0">Listed in Directory</label>
-            </div>
-            <div class="form-check d-flex align-items-center mb-2">
-              <mat-checkbox formControlName="isListedOnWebsite"></mat-checkbox>
-              <label class="form-check-label ms-2 mb-0">Listed on Website</label>
-            </div>
-            <div class="form-check d-flex align-items-center mb-2">
-              <mat-checkbox formControlName="isActive"></mat-checkbox>
-              <label class="form-check-label ms-2 mb-0">Active</label>
-            </div>
-            <div class="form-check d-flex align-items-center mb-2">
-              <mat-checkbox formControlName="isLicenseMember"></mat-checkbox>
-              <label class="form-check-label ms-2 mb-0">License Member</label>
-            </div>
-            <div class="form-check d-flex align-items-center mb-3">
-              <mat-checkbox formControlName="hasPermissionToUseInvoiceSystem"></mat-checkbox>
-              <label class="form-check-label ms-2 mb-0">Invoice System Access</label>
-            </div>
+           
+
+<div class="row">
+  <div class="col-md-3 mb-2 d-flex align-items-center">
+    <mat-checkbox formControlName="currentStatus"></mat-checkbox>
+    <label class="form-check-label ms-2 mb-0">Current Status</label>
+  </div>
+  <div class="col-md-3 mb-2 d-flex align-items-center">
+    <mat-checkbox formControlName="isLegalDocumentationHeld"></mat-checkbox>
+    <label class="form-check-label ms-2 mb-0">Legal Documentation</label>
+  </div>
+  <div class="col-md-3 mb-2 d-flex align-items-center">
+    <mat-checkbox formControlName="isTaxReportingExempt"></mat-checkbox>
+    <label class="form-check-label ms-2 mb-0">Tax Exempt</label>
+  </div>
+  <div class="col-md-3 mb-2 d-flex align-items-center">
+    <mat-checkbox formControlName="canSendMessages"></mat-checkbox>
+    <label class="form-check-label ms-2 mb-0">Can Send Messages</label>
+  </div>
+
+  <div class="col-md-3 mb-2 d-flex align-items-center">
+    <mat-checkbox formControlName="canReceiveMessages"></mat-checkbox>
+    <label class="form-check-label ms-2 mb-0">Can Receive Messages</label>
+  </div>
+  <div class="col-md-3 mb-2 d-flex align-items-center">
+    <mat-checkbox formControlName="isListedInDirectory"></mat-checkbox>
+    <label class="form-check-label ms-2 mb-0">Listed in Directory</label>
+  </div>
+  <div class="col-md-3 mb-2 d-flex align-items-center">
+    <mat-checkbox formControlName="isListedOnWebsite"></mat-checkbox>
+    <label class="form-check-label ms-2 mb-0">Listed on Website</label>
+  </div>
+  <div class="col-md-3 mb-2 d-flex align-items-center">
+    <mat-checkbox formControlName="isActive"></mat-checkbox>
+    <label class="form-check-label ms-2 mb-0">Active</label>
+  </div>
+
+  <div class="col-md-3 mb-2 d-flex align-items-center">
+    <mat-checkbox formControlName="isLicenseMember"></mat-checkbox>
+    <label class="form-check-label ms-2 mb-0">License Member</label>
+  </div>
+  <div class="col-md-3 mb-2 d-flex align-items-center">
+    <mat-checkbox formControlName="hasPermissionToUseInvoiceSystem"></mat-checkbox>
+    <label class="form-check-label ms-2 mb-0">Invoice System Access</label>
+  </div>
+</div>
 
             <div class="d-flex justify-content-between mt-3">
               <button type="button" class="btn btn-secondary btn-sm" (click)="prevStep()">Back</button>
