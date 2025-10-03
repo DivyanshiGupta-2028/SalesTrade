@@ -58,10 +58,16 @@ userId: string = '';
   errorMessage: string = '';
   errors$: Observable<string[]> | undefined;
   licenseClientId: number = 0;
+  originalBusinessName: string = '';
+originalLegalName: string = '';
+
 renewal= false  ;
   isLoading = false;
   isCountriesLoading = true;
   isStatesLoading = true;
+  firstName: string = '';
+  lastName: string = '';
+  email: string = '';
   
   countryOptions: { value: number, label: string }[] = [];
   stateOptions: { value: string, label: string }[] = [];
@@ -99,7 +105,7 @@ renewal= false  ;
       if (this.userId) {
           this.licenseService.getUserDetail(this.userId).subscribe(userProfile => {
     this.pageSubtitle = `${userProfile.firstName} ${userProfile.lastName}`;
-  });
+     });
   }
        if (this.licenseId) {
           this.loadBusinessDetails(this.licenseId);
@@ -127,6 +133,11 @@ renewal= false  ;
           if (this.userId) {
             this.licenseService.getUserDetail(this.userId).subscribe(userProfile => {
       this.pageSubtitle = `${userProfile.firstName} ${userProfile.lastName}`;
+      this.firstName = userProfile.firstName; 
+  this.lastName = userProfile.lastName;
+  this.email = userProfile.email;
+  console.log(userProfile.firstName, userProfile.lastName, userProfile.email)
+ 
     });
     }
         });
@@ -142,6 +153,12 @@ renewal= false  ;
           this.licenseId = +params.get('licenseId')!;
           if (this.licenseId) {
             this.loadLicenseDetails(this.licenseId);
+          }
+          if (this.licenseId) {
+            this.loadLicenseAddressDetails(this.licenseId);
+          }
+          if (this.licenseId) {
+            this.loadLicenseContactDetails(this.licenseId);
           }
           if (this.licenseId) {
           this.loadBusinessDetails(this.licenseId);
@@ -235,9 +252,9 @@ renewal= false  ;
         pincode: ['', [Validators.required, Validators.minLength(6),Validators.maxLength(12)]],
       }),
       step3: this.fb.group({
-        website: ['', [Validators.required, Validators.pattern(/^https?:\/\/.+/)]],
-       // mobile: [''],
-        profileDescription: ['', Validators.required],
+        website: ['', [Validators.pattern(/^https?:\/\/.+/)]],
+        mobile: [''],
+        profileDescription: [''],
         currency: ['USD', Validators.required],
         language: ['English', Validators.required],
         localization: ['en-US', Validators.required],
@@ -250,16 +267,15 @@ renewal= false  ;
         startDate: [formatDate(today, 'yyyy-MM-dd', 'en'), Validators.required],
         endDate: [formatDate(nextYear, 'yyyy-MM-dd', 'en'), Validators.required],
         renewal: ['yes'],
-        currentStatus: [''],
-        isLegalDocumentationHeld: [''],
-        isTaxReportingExempt: [''],
-        canSendMessages: [''],
-        canReceiveMessages: [''],
-        isListedInDirectory: [''],
-        isListedOnWebsite: [''],
-        isActive: [''],
-        isLicenseMember: [''],
-        hasPermissionToUseInvoiceSystem: [''],
+        currentStatus: [false],
+        isLegalDocumentationHeld: [false],
+        isTaxReportingExempt: [false],
+        canSendMessages: [false],
+        canReceiveMessages: [false],
+        isListedInDirectory: [false],
+        isListedOnWebsite: [false],
+        isLicenseMember: [false],
+        hasPermissionToUseInvoiceSystem: [false],
       }),
     });
 
@@ -287,20 +303,26 @@ renewal= false  ;
     this.form.get('step3.referencePrefix')?.setValue(acronym, { emitEvent: false });
   });
 
+    // this.form.get('step1.businessName')?.setAsyncValidators(this.businessNameExistsValidator.bind(this));
+    //  this.form.get('step1.legalName')?.setAsyncValidators(this.businessNameExistsValidator.bind(this));
     this.form.get('step1.businessName')?.setAsyncValidators(this.businessNameExistsValidator.bind(this));
-     this.form.get('step1.legalName')?.setAsyncValidators(this.businessNameExistsValidator.bind(this));
+this.form.get('step1.legalName')?.setAsyncValidators(this.businessNameExistsValidator.bind(this));
+this.form.get('step1.businessName')?.updateValueAndValidity();
+this.form.get('step1.legalName')?.updateValueAndValidity();
+
 
 
      this.form.get('step4.licenseDuration')?.valueChanges.subscribe(duration => {
-  const startDateControl = this.form.get('step4.startDate');
-  const endDateControl = this.form.get('step4.endDate');
-  if (duration === 'custom') {
-    startDateControl?.enable();
-    endDateControl?.enable();
-  } else {
-    startDateControl?.disable();
-    endDateControl?.disable();
-  }
+    //  this.form.get('step4.licenseDuration')?.valueChanges.subscribe(duration => {
+  // const startDateControl = this.form.get('step4.startDate');
+  // const endDateControl = this.form.get('step4.endDate');
+  // if (duration === 'custom') {
+  //   startDateControl?.enable();
+  //   endDateControl?.enable();
+  // } else {
+  //   startDateControl?.disable();
+  //   endDateControl?.disable();
+  // }
 });
 
 
@@ -381,16 +403,34 @@ generateRandomString(length: number): string {
 // }
 
 
+// businessNameExistsValidator(control: AbstractControl): Observable<ValidationErrors | null> {
+//   // if (this.licenseId && this.licenseId > 0) {
+//   //   return of(null);
+//   // }
+
+//   // Get legalName from the form's step1 group
+//  // const legalName = this.form?.get('step1.legalName')?.value ?? '';
+
+//  // const businessName = control.value;
+
+//   return this.licenseClientService.checkBusinessNameExists(businessName, legalName, this.licenseId).pipe(
+//     map(exists => (exists ? { businessNameExists: true } : null)),
+//     catchError(() => of(null))
+//   );
+// }
+
 businessNameExistsValidator(control: AbstractControl): Observable<ValidationErrors | null> {
-  if (this.licenseId && this.licenseId > 0) {
+  const businessName = control.value;
+  const legalName = this.form?.get('step1.legalName')?.value ?? '';
+
+  // Skip validation if in edit mode and values are unchanged
+  if (this.licenseId &&
+      businessName === this.originalBusinessName &&
+      legalName === this.originalLegalName) {
     return of(null);
   }
 
-  // Get legalName from the form's step1 group
-  const legalName = this.form?.get('step1.legalName')?.value ?? '';
-
-  const businessName = control.value;
-
+  // Otherwise, check for existence asynchronously
   return this.licenseClientService.checkBusinessNameExists(businessName, legalName).pipe(
     map(exists => (exists ? { businessNameExists: true } : null)),
     catchError(() => of(null))
@@ -405,10 +445,14 @@ businessNameExistsValidator(control: AbstractControl): Observable<ValidationErro
   this.licenseClientService.getBusinessDetail(licenseId).subscribe(data => {
     if (data) {
       this.licenseClientId = data.licenseClientId;
+      this.originalBusinessName = data.businessName || '';
+      this.originalLegalName = data.legalName || '';
       this.form.patchValue({
         step1: {
-          businessName: data.businessName || '',
-          legalName: data.legalName || '',
+         // businessName: data.businessName || '',
+          //legalName: data.legalName || '',
+          businessName: this.originalBusinessName,
+          legalName: this.originalLegalName,
           businessType: data.businessType || '',
           taxReferenceGeneral: data.taxReferenceGeneral || '',
           taxReferenceSales: data.taxReferenceSales || '',
@@ -423,7 +467,8 @@ businessNameExistsValidator(control: AbstractControl): Observable<ValidationErro
         },
         step3: {
           website: data.website || '',
-          profileDescription: data.profileDescription || ''
+          profileDescription: data.profileDescription || '',
+         
         },
 
         step5: {
@@ -434,11 +479,15 @@ businessNameExistsValidator(control: AbstractControl): Observable<ValidationErro
           canReceiveMessages: data.canReceiveMessages || '',
           isListedInDirectory: data.isListedInDirectory || '',
           isListedOnWebsite: data.isListedOnWebsite || '',
-          isActive: data.isActive || '',
           isLicenseMember: data.isLicenseMember || '',
           hasPermissionToUseInvoiceSystem: data.hasPermissionToUseInvoiceSystem || ''
         }
       });
+
+      this.form.get('step1.businessName')?.setAsyncValidators(this.businessNameExistsValidator.bind(this));
+      this.form.get('step1.legalName')?.setAsyncValidators(this.businessNameExistsValidator.bind(this));
+      this.form.get('step1.businessName')?.updateValueAndValidity();
+      this.form.get('step1.legalName')?.updateValueAndValidity();
     } else {
       console.log('No business data found') 
     }
@@ -450,25 +499,25 @@ businessNameExistsValidator(control: AbstractControl): Observable<ValidationErro
     this.licenseService.getLicenseDetail(id).subscribe(data => {
       if (data) {
         
-        this.form.get('step2')?.patchValue({
+        // this.form.get('step2')?.patchValue({
          
-          addressLine1:  data.addressLine1 || '',
-        addressLine2:  data.addressLine2 || '',
-        addressLine3:  data.addressLine3 || '',
-        addressLine4:  data.addressLine4 || '',
-        country: data.country || '',
-        state:  data.state || '',
-        otherState:  data.otherState || '',
-        pincode: data.pincode || '',
+        //   addressLine1:  data.addressLine1 || '',
+        // addressLine2:  data.addressLine2 || '',
+        // addressLine3:  data.addressLine3 || '',
+        // addressLine4:  data.addressLine4 || '',
+        // country: data.country || '',
+        // state:  data.state || '',
+        // otherState:  data.otherState || '',
+        // pincode: data.pincode || '',
 
-        });
+        // });
   
         this.form.get('step3')?.patchValue({
           currency: data.currency || '',
           language: data.language || '',
           localization: data.localization || '',
           referencePrefix: data.referencePrefix || '',
-          isActive: data.isActive ?? false
+          isActive: data.isActive ||''
         });
 
         this.form.get('step4')?.patchValue({
@@ -492,6 +541,49 @@ businessNameExistsValidator(control: AbstractControl): Observable<ValidationErro
         }
       }
     }, error => {
+      this.errorMessage = 'Error fetching License details.';
+    });
+  }
+
+
+  loadLicenseAddressDetails(id: number): void {
+    this.licenseService.getLicenseAddressDetail(id).subscribe(data => {
+      if (data) {
+        
+        this.form.get('step2')?.patchValue({
+         
+          addressLine1:  data.addressLine1 || '',
+        addressLine2:  data.addressLine2 || '',
+        addressLine3:  data.addressLine3 || '',
+        addressLine4:  data.addressLine4 || '',
+        country: data.country || '',
+        state:  data.state || '',
+        otherState:  data.otherState || '',
+        pincode: data.pincode || '',
+
+        });
+
+
+      }
+       }, error => {
+      this.errorMessage = 'Error fetching License details.';
+    });
+  }
+
+
+           loadLicenseContactDetails(id: number): void {
+    this.licenseService.getLicenseContactDetail(id).subscribe(data => {
+      if (data) {
+
+        this.form.get('step3')?.patchValue({
+         
+          mobile:  data.mobile || '',
+       
+
+        });
+
+        }
+       }, error => {
       this.errorMessage = 'Error fetching License details.';
     });
   }
@@ -648,6 +740,7 @@ private formatDateOnly(date: any): string | null {
 saveLicense(): void {
   if (this.form.invalid) {
     this.form.markAllAsTouched();
+     console.log('Form Invalid:', this.form.errors, this.form.controls);
     return;
   }
 
@@ -659,8 +752,12 @@ saveLicense(): void {
   ...this.form.value.step3,
   ...this.form.value.step4,
   userId: this.userId,
+  firstName:this.firstName,
+  lastName: this.lastName,
+  email: this.email,
    startDate: this.formatDateOnly(this.form.value.step4.startDate), 
   endDate: this.formatDateOnly(this.form.value.step4.endDate),
+  license: this.form.value.step4.licenseType,
   dateCreated: this.licenseId ? undefined : new Date(),
   pincode: String(step2.pincode), 
 };

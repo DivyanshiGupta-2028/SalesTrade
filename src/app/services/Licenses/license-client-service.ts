@@ -29,7 +29,7 @@ addLicenseClient(payload: LicenseClient): Observable<LicenseClient> {
   return this.http.post<LicenseClient>(`${this.apiUrl}/License/add-client`, payload);
 }
 
-checkBusinessNameExists(businessName?: string, legalName?: string): Observable<boolean> {
+checkBusinessNameExists(businessName: string, legalName: string, licenseId?: number): Observable<boolean> {
   let params = new HttpParams();
   if (businessName) {
     params = params.set('businessName', businessName);

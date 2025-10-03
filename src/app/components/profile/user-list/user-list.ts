@@ -38,6 +38,7 @@ itemsPerPage = 15;
 totalPages = 0;
 pages: number[] = [];
 viewAll = false;
+searchText = '';
 
   constructor(private fb: FormBuilder,private licenseService: LicenseService, private router: Router, private authService: AuthService,private route: ActivatedRoute) { }
   ngOnInit() {
@@ -75,6 +76,11 @@ viewAll = false;
     this.calculatePagination();
     this.setPage(1);
   }
+
+cancelSearch() {
+  this.searchText = '';
+  this.onSearch(''); // show all users
+}
 
   // calculatePagination() {
   //   if (this.viewAll) {
@@ -196,11 +202,13 @@ toggleViewAll() {
 //     this.setPage(1);
 //   }
 
+selectedPageSize = 15;
 
 onPageSizeChange(event: any) {
   const selectedValue = event.target.value;
+   this.selectedPageSize = selectedValue;
 
-  if (selectedValue === 'all') {
+  if (selectedValue === 'viewAll') {
     this.viewAll = true;
     this.itemsPerPage = this.filteredUsers.length;
   } else {

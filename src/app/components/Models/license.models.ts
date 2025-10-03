@@ -32,6 +32,7 @@ export interface License {
   state:string,
   otherState: string,
   pincode: string,
+  mobile: number,
   latitude: number,
   longitude: number,
 }

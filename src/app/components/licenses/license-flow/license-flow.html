@@ -389,15 +389,12 @@
                     {{ site }}
                   </li>
                 </ul>
-                <div *ngIf="form.get('step3.website')?.touched && form.get('step3.website')?.hasError('required')" class="text-danger small mt-1">
-                  Website is required.
-                </div>
                 <div *ngIf="form.get('step3.website')?.hasError('pattern')" class="text-danger small mt-1">
                   Must be a valid URL (http:// or https://).
                 </div>
               </div>
 
-              <!-- <div class="col-md-4">
+              <div class="col-md-4">
                 <label for="mobile" class="form-label">Phone Number</label>
                 <input
                   type="tel"
@@ -408,7 +405,7 @@
                   class="form-control"
                   [class.is-invalid]="isFieldInvalid('mobile')"
                   placeholder="Enter mobile number" />
-              </div> -->
+              </div>
             </div>
 
             <div class="mb-3">
@@ -420,9 +417,6 @@
                 formControlName="profileDescription"
                 (input)="updateWordCount()"></textarea>
               <small class="text-muted">{{ profileDescriptionWordCount }}/500 words</small>
-              <div *ngIf="form.get('step3.profileDescription')?.touched && form.get('step3.profileDescription')?.hasError('required')" class="text-danger small mt-1">
-                Profile Description is required.
-              </div>
             </div>
 
             <h5 class="mb-2" style="color: grey;">Localization</h5>
@@ -562,7 +556,35 @@
 
             
 
+
             <div class="row">
+          <div class="col-md-4 mb-3">
+            <label for="startDate" class="form-label">Start Date</label>
+            <input
+              type="date"
+              id="startDate"
+              class="form-control"
+              formControlName="startDate"
+              [readonly]="form.get('step4.licenseDuration')?.value !== 'custom'" />
+            <div *ngIf="isFieldInvalid('step4.startDate')" class="text-danger small mt-1">
+              Start Date is required.
+            </div>
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="endDate" class="form-label">End Date</label>
+            <input
+              type="date"
+              id="endDate"
+              class="form-control"
+              formControlName="endDate"
+              [readonly]="form.get('step4.licenseDuration')?.value !== 'custom'" />
+            <div *ngIf="isFieldInvalid('step4.endDate')" class="text-danger small mt-1">
+              End Date is required.
+            </div>
+          </div>
+
+            <!-- <div class="row">
               <div class="col-md-4 mb-3">
                 <label for="startDate" class="form-label">Start Date</label>
                 <input
@@ -585,7 +607,7 @@
                 <div *ngIf="isFieldInvalid('step4.endDate')" class="text-danger small mt-1">
                   End Date is required.
                 </div>
-              </div>
+              </div> -->
             </div>
 
             <div class="row">
@@ -633,10 +655,7 @@
     <mat-checkbox formControlName="isListedOnWebsite"></mat-checkbox>
     <label class="form-check-label ms-2 mb-0">Listed on Website</label>
   </div>
-  <div class="col-md-3 mb-2 d-flex align-items-center">
-    <mat-checkbox formControlName="isActive"></mat-checkbox>
-    <label class="form-check-label ms-2 mb-0">Active</label>
-  </div>
+
 
   <div class="col-md-3 mb-2 d-flex align-items-center">
     <mat-checkbox formControlName="isLicenseMember"></mat-checkbox>
