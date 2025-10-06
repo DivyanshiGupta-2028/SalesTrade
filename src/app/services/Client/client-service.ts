@@ -140,7 +140,7 @@ getCountries(): Observable<Country[]> {
             c.name != null && typeof c.name === 'string' && c.name.trim() !== ''
           );
 
-          filtered.sort((a, b) => (a.name ?? '').localeCompare(b.name ?? ''));
+         // filtered.sort((a, b) => (a.name ?? '').localeCompare(b.name ?? ''));
 
           return filtered;
         }),

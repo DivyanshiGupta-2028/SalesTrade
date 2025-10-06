@@ -165,7 +165,7 @@
                 formControlName="numberOfEmployee"
                 inputmode="numeric"
                 pattern="[0-9]*"
-                (keypress)="allowOnlyNumbers($event,10)" />
+                (keypress)="allowOnlyNumbers($event,8)" />
               <div *ngIf="form.get('step1.numberOfEmployee')?.touched && form.get('step1.numberOfEmployee')?.hasError('required')" class="text-danger small mt-1">
                 Number of Employees is required.
               </div>
@@ -181,9 +181,10 @@
               <div *ngIf="form.get('step1.businessStartDate')?.touched && form.get('step1.businessStartDate')?.hasError('required')" class="text-danger small mt-1">
                 Business Start Date is required.
               </div>
-              <div *ngIf="form.get('step1.businessStartDate')?.hasError('afterLastRenewed')" class="text-danger small mt-1">
-                Business Start Date must be earlier than Last Renewed Date.
-              </div>
+              <div *ngIf="form.get('step1.businessStartDate')?.hasError('notPastDate')" class="text-danger small mt-1">
+  Business Start Date cannot be today or a future date.
+</div>
+
             </div>
           </div>
 
@@ -299,7 +300,9 @@
                     
                     [disabled]="isCountriesLoading">
                     <option value="">{{ isCountriesLoading ? 'Loading countries...' : 'Select Country' }}</option>
-                    <option *ngFor="let country of countryOptions" [value]="country.value">{{ country.label }}</option>
+                    <!-- <option *ngFor="let country of countryOptions" [value]="country.value">{{ country.label }}</option> -->
+                     <option *ngFor="let country of countryOptions" [value]="country.value">{{ country.label }}</option>
+
                   </select>
                   <div *ngIf="form.get('step2.country')?.touched && form.get('step2.country')?.hasError('required')" class="text-danger small mt-1">
                 Country is required.
@@ -564,8 +567,7 @@
               type="date"
               id="startDate"
               class="form-control"
-              formControlName="startDate"
-              [readonly]="form.get('step4.licenseDuration')?.value !== 'custom'" />
+              formControlName="startDate">
             <div *ngIf="isFieldInvalid('step4.startDate')" class="text-danger small mt-1">
               Start Date is required.
             </div>
@@ -583,6 +585,35 @@
               End Date is required.
             </div>
           </div>
+<!-- <div class="row">
+          <div class="col-md-4 mb-3" [formGroup]="step4">
+  <mat-form-field appearance="fill" class="w-100">
+    <mat-label>Start Date</mat-label>
+    <input 
+      matInput 
+      [matDatepicker]="startDatePicker"
+      formControlName="startDate">
+    <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #startDatePicker></mat-datepicker>
+    <mat-error *ngIf="isFieldInvalid('step4.startDate')">Start Date is required.</mat-error>
+  </mat-form-field>
+</div>
+
+<div class="col-md-4 mb-3" [formGroup]="step4">
+  <mat-form-field appearance="fill" class="w-100">
+    <mat-label>End Date</mat-label>
+    <input 
+      matInput 
+      [matDatepicker]="endDatePicker"
+      formControlName="endDate"
+      [readonly]="step4.get('licenseDuration')?.value !== 'custom'">
+    <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #endDatePicker></mat-datepicker>
+    <mat-error *ngIf="isFieldInvalid('step4.endDate')">End Date is required.</mat-error>
+  </mat-form-field>
+</div>
+</div> -->
+
 
             <!-- <div class="row">
               <div class="col-md-4 mb-3">
@@ -608,68 +639,94 @@
                   End Date is required.
                 </div>
               </div> -->
-            </div>
+            
 
-            <div class="row">
-               <div class="col-md-6 mb-3">
-  <label class="form-label ">You want to renew automatically</label>
+<div class="row" [formGroup]="step4">
+                 <div class="col-md-6 mb-2 d-flex align-items-center">
+  
   <div class="form-check">
     <input
       type="checkbox"
       id="renewal"
       class="form-check-input"
       formControlName="renewal" />
-    <label class="form-check-label" for="renewal">Yes</label>
+      <label class="form-label ">You want to renew automatically</label>
   </div>
 
             </div>
            
 
-<div class="row">
+<div class="row" [formGroup]="step4">
   <div class="col-md-3 mb-2 d-flex align-items-center">
-    <mat-checkbox formControlName="currentStatus"></mat-checkbox>
-    <label class="form-check-label ms-2 mb-0">Current Status</label>
+    <div class="form-check">
+      <input type="checkbox" id="currentStatus" class="form-check-input" formControlName="currentStatus" />
+      <label for="currentStatus" class="form-check-label ms-2 mb-0">Current Status</label>
+    </div>
   </div>
-  <div class="col-md-3 mb-2 d-flex align-items-center">
-    <mat-checkbox formControlName="isLegalDocumentationHeld"></mat-checkbox>
-    <label class="form-check-label ms-2 mb-0">Legal Documentation</label>
-  </div>
-  <div class="col-md-3 mb-2 d-flex align-items-center">
-    <mat-checkbox formControlName="isTaxReportingExempt"></mat-checkbox>
-    <label class="form-check-label ms-2 mb-0">Tax Exempt</label>
-  </div>
-  <div class="col-md-3 mb-2 d-flex align-items-center">
-    <mat-checkbox formControlName="canSendMessages"></mat-checkbox>
-    <label class="form-check-label ms-2 mb-0">Can Send Messages</label>
+
+  <div class="col-md-4 mb-2 d-flex align-items-center">
+    <div class="form-check">
+      <input type="checkbox" id="isLegalDocumentationHeld" class="form-check-input" formControlName="isLegalDocumentationHeld" />
+      <label for="isLegalDocumentationHeld" class="form-check-label ms-2 mb-0">Legal Documentation</label>
+    </div>
   </div>
 
   <div class="col-md-3 mb-2 d-flex align-items-center">
-    <mat-checkbox formControlName="canReceiveMessages"></mat-checkbox>
-    <label class="form-check-label ms-2 mb-0">Can Receive Messages</label>
+    <div class="form-check">
+      <input type="checkbox" id="isTaxReportingExempt" class="form-check-input" formControlName="isTaxReportingExempt" />
+      <label for="isTaxReportingExempt" class="form-check-label ms-2 mb-0">Tax Exempt</label>
+    </div>
   </div>
-  <div class="col-md-3 mb-2 d-flex align-items-center">
-    <mat-checkbox formControlName="isListedInDirectory"></mat-checkbox>
-    <label class="form-check-label ms-2 mb-0">Listed in Directory</label>
+
+  <div class="col-md-4 mb-2 d-flex align-items-center">
+    <div class="form-check">
+      <input type="checkbox" id="canSendMessages" class="form-check-input" formControlName="canSendMessages" />
+      <label for="canSendMessages" class="form-check-label ms-2 mb-0">Can Send Messages</label>
+    </div>
   </div>
-  <div class="col-md-3 mb-2 d-flex align-items-center">
-    <mat-checkbox formControlName="isListedOnWebsite"></mat-checkbox>
-    <label class="form-check-label ms-2 mb-0">Listed on Website</label>
+
+  <div class="col-md-4 mb-2 d-flex align-items-center">
+    <div class="form-check">
+      <input type="checkbox" id="canReceiveMessages" class="form-check-input" formControlName="canReceiveMessages" />
+      <label for="canReceiveMessages" class="form-check-label ms-2 mb-0">Can Receive Messages</label>
+    </div>
+  </div>
+
+  <div class="col-md-4 mb-2 d-flex align-items-center">
+    <div class="form-check">
+      <input type="checkbox" id="isListedInDirectory" class="form-check-input" formControlName="isListedInDirectory" />
+      <label for="isListedInDirectory" class="form-check-label ms-2 mb-0">Listed in Directory</label>
+    </div>
+  </div>
+
+  <div class="col-md-4 mb-2 d-flex align-items-center">
+    <div class="form-check">
+      <input type="checkbox" id="isListedOnWebsite" class="form-check-input" formControlName="isListedOnWebsite" />
+      <label for="isListedOnWebsite" class="form-check-label ms-2 mb-0">Listed on Website</label>
+    </div>
+  </div>
+
+  <div class="col-md-4 mb-2 d-flex align-items-center">
+    <div class="form-check">
+      <input type="checkbox" id="isLicenseMember" class="form-check-input" formControlName="isLicenseMember" />
+      <label for="isLicenseMember" class="form-check-label ms-2 mb-0">License Member</label>
+    </div>
+  </div>
+
+  <div class="col-md-4 mb-2 d-flex align-items-center">
+    <div class="form-check">
+      <input type="checkbox" id="hasPermissionToUseInvoiceSystem" class="form-check-input"
+        formControlName="hasPermissionToUseInvoiceSystem" />
+      <label for="hasPermissionToUseInvoiceSystem" class="form-check-label ms-2 mb-0">Invoice System Access</label>
+    </div>
   </div>
 
 
-  <div class="col-md-3 mb-2 d-flex align-items-center">
-    <mat-checkbox formControlName="isLicenseMember"></mat-checkbox>
-    <label class="form-check-label ms-2 mb-0">License Member</label>
-  </div>
-  <div class="col-md-3 mb-2 d-flex align-items-center">
-    <mat-checkbox formControlName="hasPermissionToUseInvoiceSystem"></mat-checkbox>
-    <label class="form-check-label ms-2 mb-0">Invoice System Access</label>
-  </div>
-</div>
+
 
             <div class="d-flex justify-content-between mt-3">
               <button type="button" class="btn btn-secondary btn-sm" (click)="prevStep()">Back</button>
-              <button type="button" class="btn btn-primary btn-sm" (click)="saveLicense()">Save and Continue</button>
+              <button type="button" class="btn btn-primary btn-sm" (click)="saveLicense()">Save</button>
             </div>
           </div>
 

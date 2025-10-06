@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { Currencies } from '../../Models/currencies.models';
 import { Langauges } from '../../Models/langauges.models';
@@ -29,6 +30,8 @@ import { LicenseClientService } from 'src/app/services/Licenses/license-client-s
      ReactiveFormsModule,
   UserBarControl,
      MatCheckboxModule,
+     MatDatepickerModule,MatNativeDateModule,
+     MatInputModule,MatFormFieldModule
    ],
   templateUrl: './license-flow.html',
   styleUrl: './license-flow.scss'
@@ -182,17 +185,40 @@ renewal= false  ;
 
     
     
-        this.form.get('step2.country')?.valueChanges
-          .pipe(takeUntil(this.destroy$))
-          .subscribe(countryId => {
-            if (countryId) {
-              this.selectedCountries = countryId;
-              this.loadStatesByCountry(countryId);
-            } else {
-              this.stateOptions = [];
-            }
-          });
+        // this.form.get('step2.country')?.valueChanges
+        //   .pipe(takeUntil(this.destroy$))
+        //   .subscribe(countryId => {
+        //     if (countryId) {
+        //       this.selectedCountries = countryId;
+        //       this.loadStatesByCountry(countryId);
+        //     } else {
+        //       this.stateOptions = [];
+        //     }
+        //   });
+
+        this.form.get('step2.country')?.valueChanges.subscribe(countryIdRaw => {
+  console.log('Country selected:', countryIdRaw);
+  const countryId = Number(countryIdRaw);
+  if (countryId) {
+    this.selectedCountries = countryId;
+    this.loadStatesByCountry(countryId);
+  } else {
+    this.stateOptions = [];
+  }
+});
+
       }
+
+      pastDateValidator(control: AbstractControl): ValidationErrors | null {
+    const inputDate = new Date(control.value);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (inputDate >= today) {
+      return { notPastDate: true };
+    }
+    return null;
+  }
       ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
@@ -234,13 +260,15 @@ renewal= false  ;
   [
     Validators.required,
     Validators.minLength(1),   // minimum 1 digit
-    Validators.maxLength(10)    // maximum 3 digits, e.g., 0-999 employees
+    Validators.maxLength(8)    // maximum 3 digits, e.g., 0-999 employees
   ]
 ],
-        businessStartDate: [''],
-       // lastRenewedDate: [todayT],
-       // dateRenewal: [''],
-      }, { validators: this.dateOrderValidator }),
+      //   businessStartDate: [''],
+      //  // lastRenewedDate: [todayT],
+      //  // dateRenewal: [''],
+      // }),
+      businessStartDate: ['', [Validators.required, this.pastDateValidator.bind(this)]],
+       }),
       step2: this.fb.group({
         addressLine1: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9]+$/)]],
         addressLine2: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9]+$/)]],
@@ -266,7 +294,7 @@ renewal= false  ;
         licenseDuration: ['', Validators.required],
         startDate: [formatDate(today, 'yyyy-MM-dd', 'en'), Validators.required],
         endDate: [formatDate(nextYear, 'yyyy-MM-dd', 'en'), Validators.required],
-        renewal: ['yes'],
+        renewal: [false],
         currentStatus: [false],
         isLegalDocumentationHeld: [false],
         isTaxReportingExempt: [false],
@@ -312,18 +340,22 @@ this.form.get('step1.legalName')?.updateValueAndValidity();
 
 
 
-     this.form.get('step4.licenseDuration')?.valueChanges.subscribe(duration => {
-    //  this.form.get('step4.licenseDuration')?.valueChanges.subscribe(duration => {
-  // const startDateControl = this.form.get('step4.startDate');
-  // const endDateControl = this.form.get('step4.endDate');
-  // if (duration === 'custom') {
-  //   startDateControl?.enable();
-  //   endDateControl?.enable();
-  // } else {
-  //   startDateControl?.disable();
-  //   endDateControl?.disable();
-  // }
-});
+  this.form.get('step4.licenseDuration')?.valueChanges
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(duration => {
+      this.updateEndDateBasedOnDuration(duration);
+    });
+
+  // Update end date when start date changes (NEW)
+  this.form.get('step4.startDate')?.valueChanges
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(() => {
+      const duration = this.form.get('step4.licenseDuration')?.value;
+      if (duration) {
+        this.updateEndDateBasedOnDuration(duration);
+      }
+    });
+
 
 
   }
@@ -471,17 +503,29 @@ businessNameExistsValidator(control: AbstractControl): Observable<ValidationErro
          
         },
 
-        step5: {
-          currentStatus: data.currentStatus || '',
-          isLegalDocumentationHeld: data.isLegalDocumentationHeld || '',
-          isTaxReportingExempt: data.isTaxReportingExempt || '',
-          canSendMessages: data.canSendMessages || '',
-          canReceiveMessages: data.canReceiveMessages || '',
-          isListedInDirectory: data.isListedInDirectory || '',
-          isListedOnWebsite: data.isListedOnWebsite || '',
-          isLicenseMember: data.isLicenseMember || '',
-          hasPermissionToUseInvoiceSystem: data.hasPermissionToUseInvoiceSystem || ''
-        }
+        // step4: {
+        //   currentStatus: data.currentStatus || '',
+        //   isLegalDocumentationHeld: data.isLegalDocumentationHeld || '',
+        //   isTaxReportingExempt: data.isTaxReportingExempt || '',
+        //   canSendMessages: data.canSendMessages || '',
+        //   canReceiveMessages: data.canReceiveMessages || '',
+        //   isListedInDirectory: data.isListedInDirectory || '',
+        //   isListedOnWebsite: data.isListedOnWebsite || '',
+        //   isLicenseMember: data.isLicenseMember || '',
+        //   hasPermissionToUseInvoiceSystem: data.hasPermissionToUseInvoiceSystem || ''
+        // }
+        step4: {
+  currentStatus: data.currentStatus ?? false,
+  isLegalDocumentationHeld: data.isLegalDocumentationHeld ?? false,
+  isTaxReportingExempt: data.isTaxReportingExempt ?? false,
+  canSendMessages: data.canSendMessages ?? false,
+  canReceiveMessages: data.canReceiveMessages ?? false,
+  isListedInDirectory: data.isListedInDirectory ?? false,
+  isListedOnWebsite: data.isListedOnWebsite ?? false,
+  isLicenseMember: data.isLicenseMember ?? false,
+  hasPermissionToUseInvoiceSystem: data.hasPermissionToUseInvoiceSystem ?? false
+}
+
       });
 
       this.form.get('step1.businessName')?.setAsyncValidators(this.businessNameExistsValidator.bind(this));
@@ -691,18 +735,22 @@ nextStep(): void {
 }
 
 
+
 private loadCountries(): void {
     this.isCountriesLoading = true;
     this.clientService.getCountries()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (countries: any[]) => {
-          this.countryOptions = countries.map(c => ({ value: c.id, label: c.name }));
+           console.log('Countries order from API:', countries);
+          this.countryOptions = countries.map(c => ({ value: c.id, label: c.name  }));
           this.isCountriesLoading = false;
         },
         error: () => { this.countryOptions = []; this.isCountriesLoading = false; }
       });
   }
+
+
 
  private loadStatesByCountry(countryId: number): void {
   if (!countryId) {
@@ -809,32 +857,6 @@ getFieldError(fieldName: string): string {
     return '';
   }
 
-
-  dateOrderValidator: ValidatorFn = (group: AbstractControl): ValidationErrors | null => {
-  const businessStartDate = group.get('businessStartDate')?.value;
-  const lastRenewedDate = group.get('lastRenewedDate')?.value;
-  const dateRenewal = group.get('dateRenewal')?.value;
-
-  if (!businessStartDate || !lastRenewedDate || !dateRenewal) {
-    return null;
-  }
-
-  const start = new Date(businessStartDate);
-  const last = new Date(lastRenewedDate);
-  const renewal = new Date(dateRenewal);
-
-  if (start >= last) {
-    group.get('businessStartDate')?.setErrors({ afterLastRenewed: true });
-    return { invalidOrder: true };
-  }
-
-  if (last >= renewal) {
-    group.get('lastRenewedDate')?.setErrors({ afterRenewal: true });
-    return { invalidOrder: true };
-  }
-
-  return null; 
-};
 
 
   getCurrentStepGroup(): FormGroup {

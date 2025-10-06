@@ -13,7 +13,7 @@ export interface License {
   referencePrefix: string;
   dateCreated?: Date;
   dateModified?: Date;  
-  isActive: boolean;
+  isActive?: boolean;
   licenseType: string;
   licenseDuration: string;
   firstName: string;
@@ -24,7 +24,7 @@ export interface License {
   start: Date;
   title: string;
   parentCompanyName: string;
-  renewal: string;
+  renewal?: boolean;
   addressLine1: string,
   addressLine2: string,
   addressLine3: string,
@@ -93,19 +93,19 @@ export interface LicenseFlow {
   state: string;
   otherState?: string;
   pincode: string;
-  website: string;
-  //mobile?: string;
-  profileDescription: string;
+  website?: string;
+  mobile?: string;
+  profileDescription?: string;
   currency: string;
   language: string;
   localization: string;
   referencePrefix: string;
-  isActive: boolean;
+  isActive?: boolean;
   licenseType: string;
   licenseDuration: string;
   startDate: Date;
   endDate: Date;
-  renewal: string;
+  renewal?: boolean;
   currentStatus: boolean;
   isLegalDocumentationHeld: boolean;
   isTaxReportingExempt: boolean;

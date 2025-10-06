@@ -9,10 +9,8 @@
         <div class="card-body">
           <dl class="row">
             <dt class="col-sm-4"> Name</dt>
-            <dd class="col-sm-8">{{ user.firstName || '-' }}   {{ user.lastName || '-' }}</dd>
+            <dd class="col-sm-8">{{ user.firstName || '-' }}   {{ user.lastName || '' }}</dd>
 
-             <dt class="col-sm-4"> User Name</dt>
-            <dd class="col-sm-8">{{ user.userName || '-' }}</dd>
 
             <dt class="col-sm-4">Email Id</dt>
             <dd class="col-sm-8">{{ user.email || '-' }}</dd> 

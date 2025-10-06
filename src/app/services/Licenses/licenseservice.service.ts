@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Observable, catchError, shareReplay, throwError } from 'rxjs';
 import { BaseService } from '../base.service';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
@@ -64,13 +64,35 @@ getLicensesByStatus(param: string): Observable<License[]> {
 //   return this.http.get<License[]>(`${this.apiUrl}/License/list`, { params });
 // }
 
-  getCurrencySelectedItems(): Observable<Currencies[]> {
-    return this.baseService.get<Currencies[]>(`${this.apiUrl}/License/currencies`);
-  }
+  // getCurrencySelectedItems(): Observable<Currencies[]> {
+  //   return this.baseService.get<Currencies[]>(`${this.apiUrl}/License/currencies`);
+  // }
 
-  getLangaugeSelectedItems(): Observable<Langauges[]> {
-    return this.baseService.get<Langauges[]>(`${this.apiUrl}/License/languages`);
+  // getLangaugeSelectedItems(): Observable<Langauges[]> {
+  //   return this.baseService.get<Langauges[]>(`${this.apiUrl}/License/languages`);
+  // }
+
+
+  private currencyCache$?: Observable<Currencies[]>;
+private languageCache$?: Observable<Langauges[]>;
+
+getCurrencySelectedItems(): Observable<Currencies[]> {
+  if (!this.currencyCache$) {
+    this.currencyCache$ = this.baseService
+      .get<Currencies[]>(`${this.apiUrl}/License/currencies`)
+      .pipe(shareReplay(1)); 
   }
+  return this.currencyCache$;
+}
+
+getLangaugeSelectedItems(): Observable<Langauges[]> {
+  if (!this.languageCache$) {
+    this.languageCache$ = this.baseService
+      .get<Langauges[]>(`${this.apiUrl}/License/languages`)
+      .pipe(shareReplay(1)); 
+  }
+  return this.languageCache$;
+}
 
   getCountrySelectedItems(): Observable<Country[]> {
     return this.baseService.get<Country[]>(`${this.apiUrl}/License/countries`);
@@ -108,15 +130,15 @@ getLicensesByStatus(param: string): Observable<License[]> {
     );
   }
 
-  getLicenseContactDetail(id: number): Observable<License> {
-    console.log(`Fetching contact details for id: ${id}`);
-    return this.baseService.get<any>(`${this.apiUrl}/AccountsAdmin/get-license-client-contacts-by-id`).pipe(
-      catchError((error) => {
-        console.error('Error fetching license detail:', error);
-        return throwError(() => new Error('Error fetching license detail'));
-      })
-    );
-  }
+  // getLicenseContactDetail(id: number): Observable<License> {
+  //   console.log(`Fetching contact details for id: ${id}`);
+  //   return this.baseService.get<any>(`${this.apiUrl}/AccountsAdmin/get-license-client-contacts-by-id`).pipe(
+  //     catchError((error) => {
+  //       console.error('Error fetching license detail:', error);
+  //       return throwError(() => new Error('Error fetching license detail'));
+  //     })
+  //   );
+  // }
 
 
   getUserDetail(userId: string): Observable<UserProfile> {
@@ -128,6 +150,19 @@ getLicensesByStatus(param: string): Observable<License[]> {
       })
     );
   }
+
+
+
+  getLicenseContactDetail(id: number): Observable<License> {
+  console.log(`Fetching contact details for id: ${id}`);
+  return this.baseService.get<any>(`${this.apiUrl}/AccountsAdmin/get-license-client-contacts-by-id?id=${id}`).pipe(
+    catchError((error) => {
+      console.error('Error fetching license detail:', error);
+      return throwError(() => new Error('Error fetching license detail'));
+    })
+  );
+}
+
 
    updateLicense(license: License): Observable<boolean> {  
      return this.baseService.put<boolean>(`${this.apiUrl}/License/modify-license`, license);

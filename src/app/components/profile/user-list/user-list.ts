@@ -118,8 +118,9 @@ cancelSearch() {
       next: () => {
         console.log(`User with ID ${id} deleted successfully.`);
         alert('Succesfully deleted user');
-        this.router.navigate(['/user-list']);
-        this.users$ = this.licenseService.getUsers(); 
+        // this.router.navigate(['/user-list']);
+        // this.users$ = this.licenseService.getUsers(); 
+         window.location.reload();
       },
       error: err => console.error('Error deleting user:', err)
     });

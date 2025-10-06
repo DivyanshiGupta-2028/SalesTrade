@@ -41,16 +41,7 @@ export class LicenseList implements OnInit {
   showActions = false;
   someParamValue: string | null = null;
 
-  licenses: any[] = [];
-filteredLicenses: any[] = [];
-pagedLicenses: any[] = [];
-currentPage = 1;
-itemsPerPage = 15;
-totalPages = 0;
-pages: number[] = [];
-viewAll = false;
-
-  
+  licenses: any[] = []; 
 
   constructor(private fb: FormBuilder,private licenseService: LicenseService, private router: Router, private authService: AuthService,private route: ActivatedRoute) { }
 
@@ -70,12 +61,6 @@ viewAll = false;
     this.licenses$ = this.licenseService.getLicensesByStatus(this.someParamValue);
     this.licenses$.subscribe(data => {
        console.log('Fetched licenses:', data);
-    this.licenses = data; 
-    this.filteredLicenses = [...this.licenses];
-  //  this.totalPages = Math.ceil(this.users.length / this.itemsPerPage);
-   // this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-    this.calculatePagination();
-    this.setPage(1);
   });
   }
       if (this.userId) {
@@ -88,12 +73,6 @@ viewAll = false;
     this.licenses$ = this.licenseService.getLicensesByUserId(this.id);
     this.licenses$.subscribe(data => {
        console.log('Fetched licenses:', data);
-    this.licenses = data; 
-    this.filteredLicenses = [...this.licenses];// ✅ no filter
-  //  this.totalPages = Math.ceil(this.users.length / this.itemsPerPage);
-   // this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-    this.calculatePagination();
-    this.setPage(1);
   });
 } else {
     this.licenses$ = this.licenseService.getLicenses();
@@ -104,30 +83,6 @@ viewAll = false;
 
   
 
-  }
-
-
-  onSearch(searchText: string) {
-    const lowerText = searchText.toLowerCase();
-    this.filteredLicenses = this.licenses.filter(license =>
-      (license.companyName?.toLowerCase().includes(lowerText) ?? false) 
-      //(license.lastName?.toLowerCase().includes(lowerText) ?? false) ||
-      //(license.email?.toLowerCase().includes(lowerText) ?? false)
-    );
-    this.currentPage = 1; // reset to first page when searching
-    this.calculatePagination();
-    this.setPage(1);
-  }
-
-
-  calculatePagination() {
-    if (this.viewAll) {
-      this.totalPages = 1;
-      this.pages = [1];
-    } else {
-      this.totalPages = Math.ceil(this.filteredLicenses.length / this.itemsPerPage);
-      this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-    }
   }
 
 
@@ -202,31 +157,7 @@ onSuspend(license: LicenseActive) {
   });
 }
 
- setPage(page: number) {
-    this.currentPage = page;
-    if (this.viewAll) {
-      this.pagedLicenses = this.filteredLicenses;
-    } else {
-      // const startIndex = (page - 1) * this.itemsPerPage;
-      // const endIndex = startIndex + this.itemsPerPage;
-      // this.pagedLicenses = this.filteredLicenses.slice(startIndex, endIndex);
-    const startIndex = (page - 1) * this.itemsPerPage;
-    this.pagedLicenses = this.filteredLicenses.slice(startIndex, startIndex + this.itemsPerPage);
-  }
-  console.log('Paged licenses:', this.pagedLicenses);
-  }
-
-goToPage(page: number) {
-  if (page < 1 || page > this.totalPages) return;
-  this.setPage(page);
-}
-
-toggleViewAll() {
-  this.viewAll = !this.viewAll;
-  this.calculatePagination();
-  this.setPage(1);
-
-}
+ 
 openAlert(licenseId?: number) {
   console.log('openAlert called with licenseId:', licenseId);
   if (licenseId === undefined || licenseId === 0) {
@@ -240,7 +171,8 @@ openAlert(licenseId?: number) {
 
   onAlertClosed() {
     this.showAlert = false;
-    this.licenses$ = this.licenseService.getLicenses();
+   // this.licenses$ = this.licenseService.getLicenses();
+            window.location.reload();
   }
 
 }
