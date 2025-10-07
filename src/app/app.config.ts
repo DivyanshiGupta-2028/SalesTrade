@@ -6,6 +6,7 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { MatDialogModule } from '@angular/material/dialog';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
+import { provideToastr } from 'ngx-toastr';
 
 
 
@@ -15,10 +16,11 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
+        provideToastr(),
     provideHttpClient(withFetch(), withInterceptorsFromDi()),
     provideClientHydration(),
     provideAnimations(),
-    importProvidersFrom(MatDialogModule),  // ✅ MatDialog works with standalone
+    importProvidersFrom(MatDialogModule),  
 
   ]
 };

@@ -46,24 +46,12 @@ searchText = '';
 
      this.users$.subscribe(data => {
     this.users = data; 
-    this.filteredUsers = [...this.users];// ✅ no filter
-  //  this.totalPages = Math.ceil(this.users.length / this.itemsPerPage);
-   // this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+    this.filteredUsers = [...this.users];
     this.calculatePagination();
     this.setPage(1);
   });
   }
 
-
-//   calculatePagination() {
-//   if (this.viewAll) {
-//     this.totalPages = 1;
-//     this.pages = [1];
-//   } else {
-//     this.totalPages = Math.ceil(this.users.length / this.itemsPerPage);
-//     this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-//   }
-// }
 
   onSearch(searchText: string) {
     const lowerText = searchText.toLowerCase();
@@ -72,25 +60,16 @@ searchText = '';
       (user.lastName?.toLowerCase().includes(lowerText) ?? false) ||
       (user.email?.toLowerCase().includes(lowerText) ?? false)
     );
-    this.currentPage = 1; // reset to first page when searching
+    this.currentPage = 1; 
     this.calculatePagination();
     this.setPage(1);
   }
 
 cancelSearch() {
   this.searchText = '';
-  this.onSearch(''); // show all users
+  this.onSearch(''); 
 }
 
-  // calculatePagination() {
-  //   if (this.viewAll) {
-  //     this.totalPages = 1;
-  //     this.pages = [1];
-  //   } else {
-  //     this.totalPages = Math.ceil(this.filteredUsers.length / this.itemsPerPage);
-  //     this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-  //   }
-  // }
   viewDetails(id: string | undefined) {
     if (id !== undefined) {
       this.router.navigate(['/license-list'], { queryParams: { userId: id } }
@@ -118,8 +97,7 @@ cancelSearch() {
       next: () => {
         console.log(`User with ID ${id} deleted successfully.`);
         alert('Succesfully deleted user');
-        // this.router.navigate(['/user-list']);
-        // this.users$ = this.licenseService.getUsers(); 
+
          window.location.reload();
       },
       error: err => console.error('Error deleting user:', err)
@@ -146,39 +124,6 @@ closeAddProfile() {
 }
 
 
-// setPage(page: number) {
-// //   this.currentPage = page;
-// //   const startIndex = (page - 1) * this.itemsPerPage;
-// //   const endIndex = startIndex + this.itemsPerPage;
-// //   this.pagedUsers = this.users.slice(startIndex, endIndex);
-// // }
-
-// this.currentPage = page;
-//   if (this.viewAll) {
-//     this.pagedUsers = this.users;
-//   } else {
-//     const startIndex = (page - 1) * this.itemsPerPage;
-//     const endIndex = startIndex + this.itemsPerPage;
-//     this.pagedUsers = this.users.slice(startIndex, endIndex);
-//   }
-// }
-
-
-//  setPage(page: number) {
-//     this.currentPage = page;
-//     if (this.viewAll) {
-//       this.pagedUsers = this.filteredUsers;
-//     } else {
-//       const startIndex = (page - 1) * this.itemsPerPage;
-//       const endIndex = startIndex + this.itemsPerPage;
-//       this.pagedUsers = this.filteredUsers.slice(startIndex, endIndex);
-//     }
-//   }
-
-// goToPage(page: number) {
-//   if (page < 1 || page > this.totalPages) return;
-//   this.setPage(page);
-// }
 
 toggleViewAll() {
   this.viewAll = !this.viewAll;
@@ -187,21 +132,6 @@ toggleViewAll() {
 
 }
 
-
-//  onPageSizeChange(event: any) {
-//     const selectedValue = event.target.value;
-
-//     if (selectedValue === 'all') {
-//       this.viewAll = true;
-//       this.itemsPerPage = this.filteredUsers.length; // keep track
-//     } else {
-//       this.viewAll = false;
-//       this.itemsPerPage = +selectedValue; // convert string to number
-//     }
-
-//     this.calculatePagination();
-//     this.setPage(1);
-//   }
 
 selectedPageSize = 15;
 
@@ -220,7 +150,6 @@ onPageSizeChange(event: any) {
   this.calculatePagination();
   this.setPage(1);
 
-  // ✅ update scrollbar logic
   this.updateScrollFlag();
 }
 
@@ -246,7 +175,7 @@ updateScrollFlag() {
   setPage(page: number) {
     this.currentPage = page;
     if (this.viewAll) {
-      this.pagedUsers = this.filteredUsers; // show all
+      this.pagedUsers = this.filteredUsers; 
     } else {
       const startIndex = (page - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;

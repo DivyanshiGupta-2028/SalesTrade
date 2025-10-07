@@ -29,16 +29,29 @@ addLicenseClient(payload: LicenseClient): Observable<LicenseClient> {
   return this.http.post<LicenseClient>(`${this.apiUrl}/License/add-client`, payload);
 }
 
-checkBusinessNameExists(businessName: string, legalName: string, licenseId?: number): Observable<boolean> {
+checkBusinessNameExists(businessName: string, licenseId?: number): Observable<boolean> {
   let params = new HttpParams();
   if (businessName) {
     params = params.set('businessName', businessName);
   }
+  // if (legalName) {
+  //   params = params.set('legalName', legalName);
+  // }
+
+  return this.http.get<boolean>(`${this.apiUrl}/License/check-business-name`, { params });
+}
+
+
+checkLegalNameExists(legalName: string, licenseId?: number): Observable<boolean> {
+  let params = new HttpParams();
   if (legalName) {
     params = params.set('legalName', legalName);
   }
+  // if (legalName) {
+  //   params = params.set('legalName', legalName);
+  // }
 
-  return this.http.get<boolean>(`${this.apiUrl}/License/check-business-name`, { params });
+  return this.http.get<boolean>(`${this.apiUrl}/License/check-legal-name`, { params });
 }
 
 

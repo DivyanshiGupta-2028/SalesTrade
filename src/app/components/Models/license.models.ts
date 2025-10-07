@@ -52,7 +52,7 @@ export interface RenewLicenseModal {
 
 export interface LicenseActive {
   licenseId?: number;
-  isActive: boolean;
+  isActive?: boolean;
 
 }
 

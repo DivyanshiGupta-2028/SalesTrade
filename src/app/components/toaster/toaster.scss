@@ -1,0 +1,25 @@
+.toast-center-center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.toast-success {
+  background-color: #51A351; 
+  color: white;
+}
+
+.toast-error {
+  background-color: #BD362F; 
+  color: white;
+}
+
+.toast-info {
+  background-color: #2F96B4; 
+  color: white;
+}
+
+.toast-warning {
+  background-color: #F89406; 
+  color: white;
+}

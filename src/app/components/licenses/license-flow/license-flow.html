@@ -1,474 +1,364 @@
-
 <br>
 <nav class="navbar navbar-expand-lg navbar-light bg-light px-3 shadow-sm w-100">
   <div class="d-flex justify-content-between align-items-center w-100">
-    <app-user-bar-control
-      [title]="pageTitle"
-      [subtitle]="pageSubtitle"
-      [license]="licenseName"
-      [showBackButton]="showBackFlag"
-      [showSubtitle]="true"
-      [showLicenseName]="true">
+    <app-user-bar-control [title]="pageTitle" [subtitle]="pageSubtitle" [license]="licenseName"
+      [showBackButton]="showBackFlag" [showSubtitle]="true" [showLicenseName]="true">
     </app-user-bar-control>
   </div>
 </nav>
 <br>
 
 
+<div class="card shadow-sm border p-4">
 
+  <!-- Step 1 -->
+  <div class="custom-stepper" [formGroup]="form">
+    <div *ngIf="currentStep === 1" formGroupName="step1">
+      <div class="row">
+        <div class="col-md-6 mb-2">
+          <label class="form-label" for="businessName">Business Name</label>
+          <input type="text" class="form-control form-control-sm" placeholder="Business Name"
+            formControlName="businessName" />
+
+          <div *ngIf="form.get('step1.businessName')?.touched && form.get('step1.businessName')?.hasError('required')"
+            class="text-danger small mt-1">
+            Business Name is required.
+          </div>
+          <div *ngIf="form.get('step1.businessName')?.hasError('businessNameExists')" class="text-danger small mt-1">
+            Business Name already exists.
+          </div>
+
+        </div>
+
+        <div class="col-md-6 mb-2">
+          <label class="form-label" for="legalName">Legal Name</label>
+          <input type="text" class="form-control form-control-sm" placeholder="Legal Name"
+            formControlName="legalName" />
+          <div *ngIf="form.get('step1.legalName')?.touched && form.get('step1.legalName')?.hasError('required')"
+            class="text-danger small mt-1">
+            Legal Name is required.
+          </div>
+          <div *ngIf="form.get('step1.legalName')?.hasError('legalNameExists')" class="text-danger small mt-1">
+            Legal Name already exists.
+          </div>
+        </div>
+      </div>
+      <div class="row">
+
+        <div class="col-md-6 mb-2">
+          <label class="form-label" for="businessType">Business Type</label>
+          <select id="businessType" formControlName="businessType" class="form-select form-select-sm">
+            <option value="">-- Select --</option>
+            <option value="Incorporated Company">Incorporated Company</option>
+            <option value="Individual">Individual</option>
+            <option value="Partnership">Partnership</option>
+            <option value="Sole Trader">Sole Trader</option>
+            <option value="Non Profit">Non Profit</option>
+          </select>
+          <div *ngIf="form.get('step1.businessType')?.touched && form.get('step1.businessType')?.hasError('required')"
+            class="text-danger small mt-1">
+            Business Type is required.
+          </div>
+        </div>
       
-    <div class="container py-3 w-50">
-      <div class="card shadow-sm border p-4">
 
-        <!-- Step 1 -->
-        <div class="custom-stepper" [formGroup]="form">
-          <div *ngIf="currentStep === 1" formGroupName="step1">
-            <div class="row">
-              <div class="col-md-4 mb-2">
-                <label class="form-label" for="businessName">Business Name</label>
-                <!-- <input
-                  type="text"
-                  class="form-control form-control-sm"
-                  placeholder="Business Name"
-                  formControlName="businessName" /> -->
-                  <input
-  type="text"
-  class="form-control form-control-sm"
-  placeholder="Business Name"
-  formControlName="businessName" />
 
-                <div *ngIf="form.get('step1.businessName')?.touched && form.get('step1.businessName')?.hasError('required')" class="text-danger small mt-1">
-                  Business Name is required.
-                </div>
-                <div *ngIf="form.get('step1.businessName')?.hasError('businessNameExists')" class="text-danger small mt-1">
-  Business Name already exists.
+        <div class="col-md-6 mb-2">
+          <label class="form-label" for="taxReferenceGeneral">General Tax Ref</label>
+          <input type="text" class="form-control form-control-sm" placeholder="General Tax Ref"
+            formControlName="taxReferenceGeneral" />
+          <div
+            *ngIf="form.get('step1.taxReferenceGeneral')?.touched && form.get('step1.taxReferenceGeneral')?.hasError('required')"
+            class="text-danger small mt-1">
+            General Tax Ref is required.
+          </div>
+        </div>
 </div>
+<div class="row">
+        <div class="col-md-6 mb-2">
+          <label class="form-label" for="taxReferenceSales">Sales Tax Ref</label>
+          <input type="text" class="form-control form-control-sm" placeholder="Sales Tax Ref"
+            formControlName="taxReferenceSales" />
+          <div
+            *ngIf="form.get('step1.taxReferenceSales')?.touched && form.get('step1.taxReferenceSales')?.hasError('required')"
+            class="text-danger small mt-1">
+            Sales Tax Ref is required.
+          </div>
+        </div>
 
-              </div>
+        <div class="col-md-6 mb-2">
+          <label class="form-label" for="kyc">KYC</label>
+          <input type="text" class="form-control form-control-sm" placeholder="KYC" formControlName="kyc" />
+          <div *ngIf="form.get('step1.kyc')?.touched && form.get('step1.kyc')?.hasError('required')"
+            class="text-danger small mt-1">
+            KYC is required.
+          </div>
+        </div>
+      </div>
 
-              <div class="col-md-4 mb-2">
-                <label class="form-label" for="legalName">Legal Name</label>
-                <input
-                  type="text"
-                  class="form-control form-control-sm"
-                  placeholder="Legal Name"
-                  formControlName="legalName"  />
-                <div *ngIf="form.get('step1.legalName')?.touched && form.get('step1.legalName')?.hasError('required')" class="text-danger small mt-1">
-                  Legal Name is required.
-                </div>
-                <div *ngIf="form.get('step1.legalName')?.hasError('businessNameExists')" class="text-danger small mt-1">
-  Legal Name already exists.
-</div>
-              </div>
 
-              <div class="col-md-4 mb-2">
-                <label class="form-label" for="businessType">Business Type</label>
-                <select
-                  id="businessType"
-                  formControlName="businessType"
-                  class="form-select form-select-sm">
-                  <option value="">-- Select --</option>
-                  <option value="Incorporated Company">Incorporated Company</option>
-                  <option value="Individual">Individual</option>
-                  <option value="Partnership">Partnership</option>
-                  <option value="Sole Trader">Sole Trader</option>
-                  <option value="Non Profit">Non Profit</option>
-                </select>
-                <div *ngIf="form.get('step1.businessType')?.touched && form.get('step1.businessType')?.hasError('required')" class="text-danger small mt-1">
-                  Business Type is required.
-                </div>
-              </div>
-            </div>
+      <div class="row">
+        <div class="col-md-6 mb-2">
+          <label class="form-label" for="cashRevenue">Cash Revenue</label>
+          <input type="text" class="form-control form-control-sm" placeholder="Cash Revenue"
+            formControlName="cashRevenue" inputmode="decimal" pattern="[0-9]*\.?[0-9]*"
+            (keypress)="allowNumbers($event,18)" />
+          <div *ngIf="form.get('step1.cashRevenue')?.touched && form.get('step1.cashRevenue')?.hasError('required')"
+            class="text-danger small mt-1">
+            Cash Revenue is required.
+          </div>
+          <div *ngIf="form.get('step1.cashRevenue')?.hasError('pattern')" class="text-danger small mt-1">
+            Only numbers are allowed.
+          </div>
+        </div>
 
-            <div class="row">
-              <div class="col-md-4 mb-2">
-                <label class="form-label" for="taxReferenceGeneral">General Tax Ref</label>
-                <input
-                  type="text"
-                  class="form-control form-control-sm"
-                  placeholder="General Tax Ref"
-                  formControlName="taxReferenceGeneral" />
-                <div *ngIf="form.get('step1.taxReferenceGeneral')?.touched && form.get('step1.taxReferenceGeneral')?.hasError('required')" class="text-danger small mt-1">
-                  General Tax Ref is required.
-                </div>
-              </div>
+        <div class="col-md-6 mb-2">
+          <label class="form-label" for="total12MonthIncome">12-Month Income</label>
+          <input type="text" class="form-control form-control-sm" placeholder="12-Month Income"
+            formControlName="total12MonthIncome" inputmode="decimal" pattern="[0-9]*\.?[0-9]*"
+            (keypress)="allowNumbers($event,18)" />
+          <div
+            *ngIf="form.get('step1.total12MonthIncome')?.touched && form.get('step1.total12MonthIncome')?.hasError('required')"
+            class="text-danger small mt-1">
+            12-Month Income is required.
+          </div>
+          <div *ngIf="form.get('step1.total12MonthIncome')?.hasError('pattern')" class="text-danger small mt-1">
+            Only numbers are allowed.
+          </div>
+        </div>
+      </div>
+      <div class="row">
 
-              <div class="col-md-4 mb-2">
-                <label class="form-label" for="taxReferenceSales">Sales Tax Ref</label>
-                <input
-                  type="text"
-                  class="form-control form-control-sm"
-                  placeholder="Sales Tax Ref"
-                  formControlName="taxReferenceSales" />
-                <div *ngIf="form.get('step1.taxReferenceSales')?.touched && form.get('step1.taxReferenceSales')?.hasError('required')" class="text-danger small mt-1">
-                  Sales Tax Ref is required.
-                </div>
-              </div>
+        <div class="col-md-6 mb-2">
+          <label class="form-label" for="numberOfEmployee">No. of Employees</label>
+          <input type="number" class="form-control form-control-sm" placeholder="No. of Employees"
+            formControlName="numberOfEmployee" inputmode="numeric" pattern="[0-9]*"
+            (keypress)="allowOnlyNumbers($event,8)" />
+          <div
+            *ngIf="form.get('step1.numberOfEmployee')?.touched && form.get('step1.numberOfEmployee')?.hasError('required')"
+            class="text-danger small mt-1">
+            Number of Employees is required.
+          </div>
 
-              <div class="col-md-4 mb-2">
-                <label class="form-label" for="kyc">KYC</label>
-                <input
-                  type="text"
-                  class="form-control form-control-sm"
-                  placeholder="KYC"
-                  formControlName="kyc" />
-                <div *ngIf="form.get('step1.kyc')?.touched && form.get('step1.kyc')?.hasError('required')" class="text-danger small mt-1">
-                  KYC is required.
-                </div>
-              </div>
-            </div>
-          
+        </div>
 
-          <div class="row">
-            <div class="col-md-3 mb-2">
-              <label class="form-label" for="cashRevenue">Cash Revenue</label>
-              <input
-                type="text"
-                class="form-control form-control-sm"
-                placeholder="Cash Revenue"
-                formControlName="cashRevenue"
-                inputmode="decimal"
-                pattern="[0-9]*\.?[0-9]*"
-                (keypress)="allowNumbers($event,18)" />
-              <div *ngIf="form.get('step1.cashRevenue')?.touched && form.get('step1.cashRevenue')?.hasError('required')" class="text-danger small mt-1">
-                Cash Revenue is required.
-              </div>
-              <div *ngIf="form.get('step1.cashRevenue')?.hasError('pattern')" class="text-danger small mt-1">
-                Only numbers are allowed.
-              </div>
-            </div>
+        <div class="col-md-6 mb-2">
+          <label class="form-label text-black">Business Start Date</label>
+          <div class="input-group border-outline-black">
+            <input matInput [matDatepicker]="picker" formControlName="businessStartDate"
+              class="form-control form-control-sm text-dark" placeholder="MM/DD/YYYY" />
+            <span class="input-group-text bg-white text-dark" style="height: 32px;">
+              <mat-datepicker-toggle matSuffix [for]="picker" class="text-dark"></mat-datepicker-toggle>
+            </span>
+            <mat-datepicker #picker></mat-datepicker>
+          </div>
 
-            <div class="col-md-3 mb-2">
-              <label class="form-label" for="total12MonthIncome">12-Month Income</label>
-              <input
-                type="text"
-                class="form-control form-control-sm"
-                placeholder="12-Month Income"
-                formControlName="total12MonthIncome"
-                inputmode="decimal"
-                pattern="[0-9]*\.?[0-9]*"
-                (keypress)="allowNumbers($event,18)" />
-              <div *ngIf="form.get('step1.total12MonthIncome')?.touched && form.get('step1.total12MonthIncome')?.hasError('required')" class="text-danger small mt-1">
-                12-Month Income is required.
-              </div>
-              <div *ngIf="form.get('step1.total12MonthIncome')?.hasError('pattern')" class="text-danger small mt-1">
-                Only numbers are allowed.
-              </div>
-            </div>
+          <div
+            *ngIf="form.get('step1.businessStartDate')?.touched && form.get('step1.businessStartDate')?.hasError('required')"
+            class="text-danger small mt-1">
+            Business Start Date is required.
+          </div>
+          <div *ngIf="form.get('step1.businessStartDate')?.hasError('notPastDate')" class="text-danger small mt-1">
+            Business Start Date cannot be today or a future date.
+          </div>
+        </div>
+      </div>
 
-            <div class="col-md-3 mb-2">
-              <label class="form-label" for="numberOfEmployee">No. of Employees</label>
-              <input
-                type="number"
-                class="form-control form-control-sm"
-                placeholder="No. of Employees"
-                formControlName="numberOfEmployee"
-                inputmode="numeric"
-                pattern="[0-9]*"
-                (keypress)="allowOnlyNumbers($event,8)" />
-              <div *ngIf="form.get('step1.numberOfEmployee')?.touched && form.get('step1.numberOfEmployee')?.hasError('required')" class="text-danger small mt-1">
-                Number of Employees is required.
-              </div>
 
-            </div>
 
-            <div class="col-md-3 mb-2">
-              <label class="form-label">Business Start Date</label>
-              <input
-                type="date"
-                class="form-control form-control-sm"
-                formControlName="businessStartDate" />
-              <div *ngIf="form.get('step1.businessStartDate')?.touched && form.get('step1.businessStartDate')?.hasError('required')" class="text-danger small mt-1">
-                Business Start Date is required.
-              </div>
-              <div *ngIf="form.get('step1.businessStartDate')?.hasError('notPastDate')" class="text-danger small mt-1">
-  Business Start Date cannot be today or a future date.
-</div>
+      <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-primary btn-sm" (click)="nextStep()">Next</button>
+      </div>
 
+    </div>
+
+
+    <!-- Step 2 -->
+    <div *ngIf="currentStep === 2" formGroupName="step2">
+      <div class="mb-4">
+        <h5 style="color: grey;">
+          <i class="fas fa-map-marker-alt"></i> Address Information
+        </h5>
+        <div class="row mb-2 mt-4">
+          <div class="col-md-6">
+            <label for="addressLine1" class="form-label required">Address Line 1</label>
+            <input type="text" id="addressLine1" formControlName="addressLine1" class="form-control"
+              placeholder="Enter Address Line 1" />
+            <div *ngIf="form.get('step2.addressLine1')?.touched && form.get('step2.addressLine1')?.hasError('required')"
+              class="text-danger small mt-1">
+              Address is required.
             </div>
           </div>
 
-          <!-- <div class="row">
-            <div class="col-md-4 mb-2">
-              <label class="form-label">Last Renewed Date</label>
-              <input
-                type="date"
-                class="form-control form-control-sm"
-                formControlName="lastRenewedDate" />
-              <div *ngIf="form.get('step1.lastRenewedDate')?.touched && form.get('step1.lastRenewedDate')?.hasError('required')" class="text-danger small mt-1">
-                Last Renewed Date is required.
-              </div>
-              <div *ngIf="form.get('step1.lastRenewedDate')?.hasError('afterRenewal')" class="text-danger small mt-1">
-                Last Renewed Date must be earlier than Date Renewal.
-              </div>
+          <div class="col-md-6">
+            <label for="addressLine2" class="form-label required">Address Line 2</label>
+            <input type="text" id="addressLine2" formControlName="addressLine2" class="form-control"
+              placeholder="Enter Address Line 2" />
+            <div *ngIf="form.get('step2.addressLine2')?.touched && form.get('step2.addressLine2')?.hasError('required')"
+              class="text-danger small mt-1">
+              Address is required.
             </div>
-
-            <div class="col-md-4 mb-2">
-              <label class="form-label">Date Renewal</label>
-              <input
-                type="date"
-                class="form-control form-control-sm"
-                formControlName="dateRenewal" />
-              <div *ngIf="form.get('step1.dateRenewal')?.touched && form.get('step1.dateRenewal')?.hasError('required')" class="text-danger small mt-1">
-                Date Renewal is required.
-              </div>
-            </div>
-          </div> -->
-
-          <div class="d-flex justify-content-end">
-            <button type="button" class="btn btn-primary btn-sm" (click)="nextStep()">Next</button>
           </div>
+        </div>
+        <div class="row">
 
+          <div class="col-md-6">
+            <label for="addressLine3" class="form-label required">Address Line 3</label>
+            <input type="text" id="addressLine3" formControlName="addressLine3" class="form-control"
+              placeholder="Enter Address Line 3" />
+            <div *ngIf="form.get('step2.addressLine3')?.touched && form.get('step2.addressLine3')?.hasError('required')"
+              class="text-danger small mt-1">
+              Address is required.
+            </div>
           </div>
 
 
-        <!-- Step 2 -->
-          <div *ngIf="currentStep === 2" formGroupName="step2">
-            <div class="mb-4">
-              <h5 style="color: grey;">
-                <i class="fas fa-map-marker-alt"></i> Address Information
-              </h5>
-              <div class="row mb-2 mt-4">
-                <div class="col-md-4">
-                  <label for="addressLine1" class="form-label required">Address Line 1</label>
-                  <input
-                    type="text"
-                    id="addressLine1"
-                    pattern="[a-zA-Z0-9]+"
-                    title="Only alphanumeric characters are allowed"
-                    formControlName="addressLine1"
-                    class="form-control"
-                    
-                    placeholder="Enter Address Line 1" />
-                  <div *ngIf="form.get('step2.addressLine1')?.touched && form.get('step2.addressLine1')?.hasError('required')" class="text-danger small mt-1">
-                Address is required.
-              </div>
-                </div>
-                <div class="col-md-4">
-                  <label for="addressLine2" class="form-label required">Address Line 2</label>
-                  <input
-                    type="text"
-                    id="addressLine2"
-                    pattern="[a-zA-Z0-9]+"
-                    title="Only alphanumeric characters are allowed"
-                    formControlName="addressLine2"
-                    class="form-control"
-                  
-                    placeholder="Enter Address Line 2" />
-                  <div *ngIf="form.get('step2.addressLine2')?.touched && form.get('step2.addressLine2')?.hasError('required')" class="text-danger small mt-1">
-                Address is required.
-              </div>
-                </div>
-                <div class="col-md-4">
-                  <label for="addressLine3" class="form-label required">Address Line 3</label>
-                  <input
-                    type="text"
-                    id="addressLine3"
-                    pattern="[a-zA-Z0-9]+"
-                    title="Only alphanumeric characters are allowed"
-                    formControlName="addressLine3"
-                    class="form-control"
-                    
-                    placeholder="Enter Address Line 3" />
-                  <div *ngIf="form.get('step2.addressLine3')?.touched && form.get('step2.addressLine3')?.hasError('required')" class="text-danger small mt-1">
-                Address is required.
-              </div>
-                </div>
-              </div>
 
-              <div class="row mb-2">
-                <div class="col-md-4">
-                  <label for="addressLine4" class="form-label">Address Line 4</label>
-                  <input
-                    type="text"
-                    id="addressLine4"
-                    pattern="[a-zA-Z0-9]+"
-                    title="Only alphanumeric characters are allowed"
-                    formControlName="addressLine4"
-                    class="form-control"
-                    
-                    placeholder="Enter address line 4" />
-                  
-                </div>
+          <div class="col-md-6">
+            <label for="addressLine4" class="form-label">Address Line 4</label>
+            <input type="text" id="addressLine4" formControlName="addressLine4" class="form-control"
+              placeholder="Enter address line 4" />
+          </div>
+          </div>
+<div class="row">
 
-                <div class="col-md-4">
-                  <label for="country" class="form-label required">Country</label>
-                  <select
-                    id="country"
-                    formControlName="country"
-                    class="form-select"
-                    
-                    [disabled]="isCountriesLoading">
-                    <option value="">{{ isCountriesLoading ? 'Loading countries...' : 'Select Country' }}</option>
-                    <!-- <option *ngFor="let country of countryOptions" [value]="country.value">{{ country.label }}</option> -->
-                     <option *ngFor="let country of countryOptions" [value]="country.value">{{ country.label }}</option>
+          <div class="col-md-6">
+            <label for="country" class="form-label required">Country</label>
+            <select id="country" formControlName="country" class="form-select" [disabled]="isCountriesLoading">
+              <option value="">{{ isCountriesLoading ? 'Loading countries...' : 'Select Country' }}</option> 
+              <option *ngFor="let country of countryOptions" [value]="country.value">{{ country.label }}</option>
 
-                  </select>
-                  <div *ngIf="form.get('step2.country')?.touched && form.get('step2.country')?.hasError('required')" class="text-danger small mt-1">
-                Country is required.
-              </div>
-                </div>
-
-                <div class="col-md-4">
-                  <label for="state" class="form-label required">State/Province</label>
-                  <select
-                    id="state"
-                    formControlName="state"
-                    class="form-select"
-                    
-                    [disabled]="isStatesLoading || !selectedCountry">
-                    <option value="">{{ isStatesLoading ? 'Loading states...' : (!selectedCountry ? 'Select country first' : 'Select State') }}</option>
-                    <option *ngFor="let state of stateOptions" [value]="state.value">{{ state.label }}</option>
-                    <option value="Other">Other</option>
-                  </select>
-                  <div *ngIf="form.get('step2.state')?.touched && form.get('step2.state')?.hasError('required')" class="text-danger small mt-1">
-                State is required.
-              </div>
-                </div>
-              </div>
-
-              <div class="row mb-2" *ngIf="form.get('state')?.value === 'Other'">
-                <div class="col-md-4">
-                  <label for="otherState" class="form-label required">Specify Other State</label>
-                  <input
-                    type="text"
-                    id="otherState"
-                    pattern="[a-zA-Z]+"
-                    title="Only alphabet characters are allowed"
-                    formControlName="otherState"
-                    class="form-control"
-                    
-                    placeholder="Enter other state" />
-                  
-                </div>
-              </div>
-
-              <div class="row mb-2">
-                <div class="col-md-4">
-                  <label for="pincode" class="form-label required">PIN/ZIP Code</label>
-                  <input
-  type="text"               
-  id="pincode"
-  formControlName="pincode"
-  class="form-control"
-  placeholder="Enter PIN or ZIP code"
-  inputmode="numeric"
-  maxlength="12"
-  pattern="[0-9]*"
-  title="Only numeric characters are allowed" />
-
-                 <div *ngIf="form.get('step2.pincode')?.touched && form.get('step2.pincode')?.hasError('required')" class="text-danger small mt-1">
-                Pincode is required.
-              </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="d-flex justify-content-between">
-              <button type="button" class="btn btn-secondary btn-sm" (click)="prevStep()">Back</button>
-              <button type="button" class="btn btn-primary btn-sm" (click)="nextStep()">Next</button>
+            </select>
+            <div *ngIf="form.get('step2.country')?.touched && form.get('step2.country')?.hasError('required')"
+              class="text-danger small mt-1">
+              Country is required.
             </div>
           </div>
 
-        <!-- Step 3 -->
-          <div *ngIf="currentStep === 3" formGroupName="step3">
-            <div class="row mb-1 ">
-              <div class="col-md-8 position-relative">
-                <label class="form-label" for="website">Website</label>
-                <input
-                  type="text"
-                  class="form-control form-control"
-                  placeholder="Website"
-                  formControlName="website"
-                  (input)="onWebsiteInput()" />
-                <ul
-                  *ngIf="suggestedWebsites.length > 0"
-                  class="list-group position-absolute w-100"
-                  style="z-index: 1000;">
-                  <li
-                    *ngFor="let site of suggestedWebsites"
-                    class="list-group-item list-group-item-action p-1"
-                    (click)="form.get('website')?.setValue(site)">
-                    {{ site }}
-                  </li>
-                </ul>
-                <div *ngIf="form.get('step3.website')?.hasError('pattern')" class="text-danger small mt-1">
-                  Must be a valid URL (http:// or https://).
-                </div>
-              </div>
-
-              <div class="col-md-4">
-                <label for="mobile" class="form-label">Phone Number</label>
-                <input
-                  type="tel"
-                  pattern="[0-9]+"
-                  title="Only numeric characters are allowed"
-                  id="mobile"
-                  formControlName="mobile"
-                  class="form-control"
-                  [class.is-invalid]="isFieldInvalid('mobile')"
-                  placeholder="Enter mobile number" />
-              </div>
+          <div class="col-md-6">
+            <label for="state" class="form-label required">State/Province</label>
+            <select id="state" formControlName="state" class="form-select"
+              [disabled]="isStatesLoading || !selectedCountry">
+              <option value="">{{ isStatesLoading ? 'Loading states...' : (!selectedCountry ? 'Select country first' :
+                'Select State') }}</option>
+              <option *ngFor="let state of stateOptions" [value]="state.value">{{ state.label }}</option>
+              <option value="Other">Other</option>
+            </select>
+            <div *ngIf="form.get('step2.state')?.touched && form.get('step2.state')?.hasError('required')"
+              class="text-danger small mt-1">
+              State is required.
             </div>
+          </div>
+        </div>
 
-            <div class="mb-3">
-              <label class="form-label" for="profileDescription">Profile Description</label>
-              <textarea
-                class="form-control form-control-sm"
-                rows="6"
-                placeholder="Profile Description"
-                formControlName="profileDescription"
-                (input)="updateWordCount()"></textarea>
-              <small class="text-muted">{{ profileDescriptionWordCount }}/500 words</small>
+        <div class="row mb-2" *ngIf="form.get('state')?.value === 'Other'">
+          <div class="col-md-6">
+            <label for="otherState" class="form-label required">Specify Other State</label>
+            <input type="text" id="otherState" pattern="[a-zA-Z]+" title="Only alphabet characters are allowed"
+              formControlName="otherState" class="form-control" placeholder="Enter other state" />
+
+          </div>
+        </div>
+
+        <div class="row mb-2">
+          <div class="col-md-6">
+            <label for="pincode" class="form-label required">PIN/ZIP Code</label>
+            <input type="text" id="pincode" formControlName="pincode" class="form-control"
+              placeholder="Enter PIN or ZIP code" inputmode="numeric" maxlength="12" pattern="[0-9]*"
+              title="Only numeric characters are allowed" />
+
+            <div *ngIf="form.get('step2.pincode')?.touched && form.get('step2.pincode')?.hasError('required')"
+              class="text-danger small mt-1">
+              Pincode is required.
             </div>
-
-            <h5 class="mb-2" style="color: grey;">Localization</h5>
-            <div class="row">
-              <div class="col-md-3 mb-1">
-                <label for="currency" class="form-label">Currency</label>
-                <select
-                  id="currency"
-                  class="form-select"
-                  formControlName="currency">
-                  <option value="">Select</option>
-                  <option *ngFor="let currency of (currencies$ | async)" [value]="currency.currencyId">
-                    {{ currency.currencyId }}
-                  </option>
-                </select>
-                <div *ngIf="isFieldInvalid('step3.currency')" class="text-danger small mt-1">
-                  This field is required.
-                </div>
-              </div>
-
-              <div class="col-md-3 mb-1">
-                <label for="language" class="form-label">Language</label>
-                <select
-                  id="language"
-                  class="form-select"
-                  formControlName="language">
-                  <option value="">Select</option>
-                  <option *ngFor="let language of (languages$ | async)" [value]="language.languageName">
-                    {{ language.languageName }}
-                  </option>
-                </select>
-              </div>
-
-              <div class="col-md-3 mb-2">
-                <label for="localization" class="form-label">Localization</label>
-                <select
-                  id="localization"
-                  class="form-select"
-                  formControlName="localization">
-                  <option value="">Select</option>
-                  <option *ngFor="let currency of (currencies$ | async)" [value]="currency.currencyLocale">
-                    {{ currency.currencyLocale }}
-                  </option>
-                </select>
-              </div>
+            <div *ngIf="form.get('step2.pincode')?.hasError('minlength')" class="text-danger small mt-1">
+              Pincode should be atleast of 6 characters.
             </div>
+          </div>
+        </div>
+      </div>
 
-            <div class="row">
-              <!-- <div class="col-md-6 mb-4">
+      <div class="d-flex justify-content-between">
+        <button type="button" class="btn btn-secondary btn-sm" (click)="prevStep()">Back</button>
+        <button type="button" class="btn btn-primary btn-sm" (click)="nextStep()">Next</button>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div *ngIf="currentStep === 3" formGroupName="step3">
+      <div class="row mb-1 ">
+        <div class="col-md-6 position-relative">
+          <label class="form-label" for="website">Website</label>
+          <input type="text" class="form-control form-control" placeholder="Website" formControlName="website"
+            (input)="onWebsiteInput()" />
+          <ul *ngIf="suggestedWebsites.length > 0" class="list-group position-absolute w-100" style="z-index: 1000;">
+            <li *ngFor="let site of suggestedWebsites" class="list-group-item list-group-item-action p-1"
+              (click)="form.get('website')?.setValue(site)">
+              {{ site }}
+            </li>
+          </ul>
+          <div *ngIf="form.get('step3.website')?.hasError('pattern')" class="text-danger small mt-1">
+            Must be a valid URL (http:// or https://).
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <label for="mobile" class="form-label">Phone Number</label>
+          <input type="tel" pattern="[0-9]+" title="Only numeric characters are allowed" id="mobile"
+            formControlName="mobile" class="form-control" [class.is-invalid]="isFieldInvalid('mobile')"
+            placeholder="Enter mobile number" />
+          <div *ngIf="form.get('step3.mobile')?.touched && form.get('step3.mobile')?.hasError('required')"
+            class="text-danger small mt-1">
+            Phone Number is required.
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="profileDescription">Profile Description</label>
+        <textarea class="form-control form-control-sm" rows="6" placeholder="Profile Description"
+          formControlName="profileDescription" (input)="updateWordCount()"></textarea>
+        <small class="text-muted">{{ profileDescriptionWordCount }}/500 words</small>
+      </div>
+
+      <h5 class="mb-2" style="color: grey;">Localization</h5>
+      <div class="row">
+        <div class="col-md-3 mb-1">
+          <label for="currency" class="form-label">Currency</label>
+          <select id="currency" class="form-select" formControlName="currency">
+            <option value="">Select</option>
+            <option *ngFor="let currency of (currencies$ | async)" [value]="currency.currencyId">
+              {{ currency.currencyId }}
+            </option>
+          </select>
+          <div *ngIf="isFieldInvalid('step3.currency')" class="text-danger small mt-1">
+            This field is required.
+          </div>
+        </div>
+
+        <div class="col-md-3 mb-1">
+          <label for="language" class="form-label">Language</label>
+          <select id="language" class="form-select" formControlName="language">
+            <option value="">Select</option>
+            <option *ngFor="let language of (languages$ | async)" [value]="language.languageName">
+              {{ language.languageName }}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-md-3 mb-2">
+          <label for="localization" class="form-label">Localization</label>
+          <select id="localization" class="form-select" formControlName="localization">
+            <option value="">Select</option>
+            <option *ngFor="let currency of (currencies$ | async)" [value]="currency.currencyLocale">
+              {{ currency.currencyLocale }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <!-- <div class="col-md-6 mb-4">
                 <label for="referencePrefix" class="form-label">Reference Prefix</label>
                 <input
                   type="text"
@@ -479,247 +369,194 @@
                   This field is required.
                 </div>
               </div> -->
-<div class="col-md-6 mb-4">
-  <label for="referencePrefix" class="form-label">Reference Prefix</label>
-  <input
-    type="text"
-    id="referencePrefix"
-    class="form-control"
-    formControlName="referencePrefix"
-    maxlength="10"
-    placeholder="Enter Reference Prefix (min 4 chars)" />
-  <div *ngIf="isFieldInvalid('step3.referencePrefix')" class="text-danger small mt-1">
-    Minimum 4 characters required.
-  </div>
-</div>
-
-
-
-
-              <div class="col-md-4 mb-0 d-flex align-items-center">
-                <div class="form-check">
-                  <input
-                    type="checkbox"
-                    id="isActive"
-                    class="form-check-input"
-                    formControlName="isActive" />
-                  <label for="isActive" class="form-check-label">Is Active</label>
-                </div>
-              </div>
-            </div>
-
-            <div class="d-flex justify-content-between">
-              <button type="button" class="btn btn-secondary btn-sm" (click)="prevStep()">Back</button>
-              <button type="button" class="btn btn-primary btn-sm" (click)="nextStep()">Next</button>
-            </div>
+        <div class="col-md-6 mb-4">
+          <label for="referencePrefix" class="form-label">Reference Prefix</label>
+          <input type="text" id="referencePrefix" class="form-control" formControlName="referencePrefix" maxlength="10"
+            placeholder="Enter Reference Prefix (min 4 chars)" />
+          <div *ngIf="isFieldInvalid('step3.referencePrefix')" class="text-danger small mt-1">
+            Minimum 4 characters required.
           </div>
-
-        <!-- Step 4 -->
-          <div *ngIf="currentStep === 4" formGroupName="step4">
-            <h5 class="mb-3" style="color: grey;">License Details</h5>
-            <div class="row">
-              <div class="col-md-4 mb-3">
-                <label for="licenseType" class="form-label">License Type</label>
-                <select
-                  id="licenseType"
-                  class="form-select"
-                  formControlName="licenseType">
-                  <option value="">Select</option>
-                  <option value="free">Free</option>
-                  <option value="standard">Standard</option>
-                  <option value="premium">Premium</option>
-                  <option value="custom-configurable">Custom-Configurable</option>
-                </select>
-                <div *ngIf="isFieldInvalid('step4.licenseType')" class="text-danger small mt-1">
-                  This field is required.
-                </div>
-              </div>
-
-              <div class="col-md-4 mb-3">
-                <label for="licenseDuration" class="form-label">License Duration</label>
-                <select
-                  id="licenseDuration"
-                  class="form-select"
-                  formControlName="licenseDuration">
-                  <option value="">Select</option>
-                  <option value="trial">Trial</option>
-                  <option value="monthly">Monthly</option>
-                  <option value="quaterly">Quarterly</option>
-                  <option value="yearly">Yearly</option>
-                  <option value="2year">Two-Yearly</option>
-                  <option value="custom">Custom</option>
-                </select>
-                <div *ngIf="isFieldInvalid('step4.licenseDuration')" class="text-danger small mt-1">
-                  This field is required.
-                </div>
-              </div>
+        </div>
 
 
-            </div>
-
-            
 
 
-            <div class="row">
-          <div class="col-md-4 mb-3">
-            <label for="startDate" class="form-label">Start Date</label>
-            <input
-              type="date"
-              id="startDate"
-              class="form-control"
-              formControlName="startDate">
-            <div *ngIf="isFieldInvalid('step4.startDate')" class="text-danger small mt-1">
-              Start Date is required.
-            </div>
+        <div class="col-md-4 mb-0 d-flex align-items-center">
+          <div class="form-check">
+            <input type="checkbox" id="isActive" class="form-check-input" formControlName="isActive" />
+            <label for="isActive" class="form-check-label">Is Active</label>
           </div>
+        </div>
+      </div>
 
-          <div class="col-md-4 mb-3">
+      <div class="d-flex justify-content-between">
+        <button type="button" class="btn btn-secondary btn-sm" (click)="prevStep()">Back</button>
+        <button type="button" class="btn btn-primary btn-sm" (click)="nextStep()">Next</button>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div *ngIf="currentStep === 4" formGroupName="step4">
+      <h5 class="mb-3" style="color: grey;">License Details</h5>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="licenseType" class="form-label">License Type</label>
+          <select id="licenseType" class="form-select" formControlName="licenseType">
+            <option value="">Select</option>
+            <option value="free">Free</option>
+            <option value="standard">Standard</option>
+            <option value="premium">Premium</option>
+            <option value="custom-configurable">Custom-Configurable</option>
+          </select>
+          <div *ngIf="isFieldInvalid('step4.licenseType')" class="text-danger small mt-1">
+            This field is required.
+          </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label for="licenseDuration" class="form-label">License Duration</label>
+          <select id="licenseDuration" class="form-select" formControlName="licenseDuration">
+            <option value="">Select</option>
+            <option value="trial">Trial</option>
+            <option value="monthly">Monthly</option>
+            <option value="quaterly">Quarterly</option>
+            <option value="yearly">Yearly</option>
+            <option value="2year">Two-Yearly</option>
+            <option value="custom">Custom</option>
+          </select>
+          <div *ngIf="isFieldInvalid('step4.licenseDuration')" class="text-danger small mt-1">
+            This field is required.
+          </div>
+        </div>
+
+
+      </div>
+
+
+
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <!-- <label for="startDate" class="form-label">Start Date</label>
+          <input type="date" id="startDate" class="form-control" formControlName="startDate"> -->
+          <label for="startDate" class="form-label">Start Date</label>
+                    <div class="input-group border-outline-black">
+            <input matInput [matDatepicker]="picker" formControlName="startDate"
+              class="form-control form-control-sm text-dark" placeholder="MM/DD/YYYY" />
+            <span class="input-group-text bg-white text-dark" style="height: 32px;">
+              <mat-datepicker-toggle matSuffix [for]="picker" class="text-dark"></mat-datepicker-toggle>
+            </span>
+            <mat-datepicker #picker></mat-datepicker>
+          </div>
+          <div *ngIf="isFieldInvalid('step4.startDate')" class="text-danger small mt-1">
+            Start Date is required.
+          </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <!-- <label for="endDate" class="form-label">End Date</label>
+          <input type="date" id="endDate" class="form-control" formControlName="endDate"
+            [readonly]="form.get('step4.licenseDuration')?.value !== 'custom'" /> -->
             <label for="endDate" class="form-label">End Date</label>
-            <input
-              type="date"
-              id="endDate"
-              class="form-control"
-              formControlName="endDate"
-              [readonly]="form.get('step4.licenseDuration')?.value !== 'custom'" />
-            <div *ngIf="isFieldInvalid('step4.endDate')" class="text-danger small mt-1">
-              End Date is required.
-            </div>
+            <div class="input-group border-outline-black">
+            <input matInput [matDatepicker]="picker" formControlName="endDate"
+            [readonly]="form.get('step4.licenseDuration')?.value !== 'custom'"
+              class="form-control form-control-sm text-dark" placeholder="MM/DD/YYYY" />
+            <span class="input-group-text bg-white text-dark" style="height: 32px;">
+              <mat-datepicker-toggle matSuffix [for]="picker" class="text-dark"></mat-datepicker-toggle>
+            </span>
+            <mat-datepicker #picker></mat-datepicker>
           </div>
-<!-- <div class="row">
-          <div class="col-md-4 mb-3" [formGroup]="step4">
-  <mat-form-field appearance="fill" class="w-100">
-    <mat-label>Start Date</mat-label>
-    <input 
-      matInput 
-      [matDatepicker]="startDatePicker"
-      formControlName="startDate">
-    <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
-    <mat-datepicker #startDatePicker></mat-datepicker>
-    <mat-error *ngIf="isFieldInvalid('step4.startDate')">Start Date is required.</mat-error>
-  </mat-form-field>
-</div>
-
-<div class="col-md-4 mb-3" [formGroup]="step4">
-  <mat-form-field appearance="fill" class="w-100">
-    <mat-label>End Date</mat-label>
-    <input 
-      matInput 
-      [matDatepicker]="endDatePicker"
-      formControlName="endDate"
-      [readonly]="step4.get('licenseDuration')?.value !== 'custom'">
-    <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
-    <mat-datepicker #endDatePicker></mat-datepicker>
-    <mat-error *ngIf="isFieldInvalid('step4.endDate')">End Date is required.</mat-error>
-  </mat-form-field>
-</div>
-</div> -->
+          <div *ngIf="isFieldInvalid('step4.endDate')" class="text-danger small mt-1">
+            End Date is required.
+          </div>
+        </div>
 
 
-            <!-- <div class="row">
-              <div class="col-md-4 mb-3">
-                <label for="startDate" class="form-label">Start Date</label>
-                <input
-                  type="date"
-                  id="startDate"
-                  class="form-control"
-                  formControlName="startDate" />
-                <div *ngIf="isFieldInvalid('step4.startDate')" class="text-danger small mt-1">
-                  Start Date is required.
-                </div>
-              </div>
 
-              <div class="col-md-4 mb-3">
-                <label for="endDate" class="form-label">End Date</label>
-                <input
-                  type="date"
-                  id="endDate"
-                  class="form-control"
-                  formControlName="endDate" />
-                <div *ngIf="isFieldInvalid('step4.endDate')" class="text-danger small mt-1">
-                  End Date is required.
-                </div>
-              </div> -->
-            
+        <div class="row" [formGroup]="step4">
+          <div class="col-md-6 mb-2 d-flex align-items-center">
 
-<div class="row" [formGroup]="step4">
-                 <div class="col-md-6 mb-2 d-flex align-items-center">
-  
-  <div class="form-check">
-    <input
-      type="checkbox"
-      id="renewal"
-      class="form-check-input"
-      formControlName="renewal" />
-      <label class="form-label ">You want to renew automatically</label>
-  </div>
-
+            <div class="form-check">
+              <input type="checkbox" id="renewal" class="form-check-input" formControlName="renewal" />
+              <label class="form-label ">You want to renew automatically</label>
             </div>
-           
 
-<div class="row" [formGroup]="step4">
-  <div class="col-md-3 mb-2 d-flex align-items-center">
-    <div class="form-check">
-      <input type="checkbox" id="currentStatus" class="form-check-input" formControlName="currentStatus" />
-      <label for="currentStatus" class="form-check-label ms-2 mb-0">Current Status</label>
-    </div>
-  </div>
+          </div>
 
-  <div class="col-md-4 mb-2 d-flex align-items-center">
-    <div class="form-check">
-      <input type="checkbox" id="isLegalDocumentationHeld" class="form-check-input" formControlName="isLegalDocumentationHeld" />
-      <label for="isLegalDocumentationHeld" class="form-check-label ms-2 mb-0">Legal Documentation</label>
-    </div>
-  </div>
 
-  <div class="col-md-3 mb-2 d-flex align-items-center">
-    <div class="form-check">
-      <input type="checkbox" id="isTaxReportingExempt" class="form-check-input" formControlName="isTaxReportingExempt" />
-      <label for="isTaxReportingExempt" class="form-check-label ms-2 mb-0">Tax Exempt</label>
-    </div>
-  </div>
+          <div class="row" [formGroup]="step4">
+            <div class="col-md-3 mb-2 d-flex align-items-center">
+              <div class="form-check">
+                <input type="checkbox" id="currentStatus" class="form-check-input" formControlName="currentStatus" />
+                <label for="currentStatus" class="form-check-label ms-2 mb-0">Current Status</label>
+              </div>
+            </div>
 
-  <div class="col-md-4 mb-2 d-flex align-items-center">
-    <div class="form-check">
-      <input type="checkbox" id="canSendMessages" class="form-check-input" formControlName="canSendMessages" />
-      <label for="canSendMessages" class="form-check-label ms-2 mb-0">Can Send Messages</label>
-    </div>
-  </div>
+            <div class="col-md-4 mb-2 d-flex align-items-center">
+              <div class="form-check">
+                <input type="checkbox" id="isLegalDocumentationHeld" class="form-check-input"
+                  formControlName="isLegalDocumentationHeld" />
+                <label for="isLegalDocumentationHeld" class="form-check-label ms-2 mb-0">Legal Documentation</label>
+              </div>
+            </div>
 
-  <div class="col-md-4 mb-2 d-flex align-items-center">
-    <div class="form-check">
-      <input type="checkbox" id="canReceiveMessages" class="form-check-input" formControlName="canReceiveMessages" />
-      <label for="canReceiveMessages" class="form-check-label ms-2 mb-0">Can Receive Messages</label>
-    </div>
-  </div>
+            <div class="col-md-3 mb-2 d-flex align-items-center">
+              <div class="form-check">
+                <input type="checkbox" id="isTaxReportingExempt" class="form-check-input"
+                  formControlName="isTaxReportingExempt" />
+                <label for="isTaxReportingExempt" class="form-check-label ms-2 mb-0">Tax Exempt</label>
+              </div>
+            </div>
 
-  <div class="col-md-4 mb-2 d-flex align-items-center">
-    <div class="form-check">
-      <input type="checkbox" id="isListedInDirectory" class="form-check-input" formControlName="isListedInDirectory" />
-      <label for="isListedInDirectory" class="form-check-label ms-2 mb-0">Listed in Directory</label>
-    </div>
-  </div>
+            <div class="col-md-4 mb-2 d-flex align-items-center">
+              <div class="form-check">
+                <input type="checkbox" id="canSendMessages" class="form-check-input"
+                  formControlName="canSendMessages" />
+                <label for="canSendMessages" class="form-check-label ms-2 mb-0">Can Send Messages</label>
+              </div>
+            </div>
 
-  <div class="col-md-4 mb-2 d-flex align-items-center">
-    <div class="form-check">
-      <input type="checkbox" id="isListedOnWebsite" class="form-check-input" formControlName="isListedOnWebsite" />
-      <label for="isListedOnWebsite" class="form-check-label ms-2 mb-0">Listed on Website</label>
-    </div>
-  </div>
+            <div class="col-md-4 mb-2 d-flex align-items-center">
+              <div class="form-check">
+                <input type="checkbox" id="canReceiveMessages" class="form-check-input"
+                  formControlName="canReceiveMessages" />
+                <label for="canReceiveMessages" class="form-check-label ms-2 mb-0">Can Receive Messages</label>
+              </div>
+            </div>
 
-  <div class="col-md-4 mb-2 d-flex align-items-center">
-    <div class="form-check">
-      <input type="checkbox" id="isLicenseMember" class="form-check-input" formControlName="isLicenseMember" />
-      <label for="isLicenseMember" class="form-check-label ms-2 mb-0">License Member</label>
-    </div>
-  </div>
+            <div class="col-md-4 mb-2 d-flex align-items-center">
+              <div class="form-check">
+                <input type="checkbox" id="isListedInDirectory" class="form-check-input"
+                  formControlName="isListedInDirectory" />
+                <label for="isListedInDirectory" class="form-check-label ms-2 mb-0">Listed in Directory</label>
+              </div>
+            </div>
 
-  <div class="col-md-4 mb-2 d-flex align-items-center">
-    <div class="form-check">
-      <input type="checkbox" id="hasPermissionToUseInvoiceSystem" class="form-check-input"
-        formControlName="hasPermissionToUseInvoiceSystem" />
-      <label for="hasPermissionToUseInvoiceSystem" class="form-check-label ms-2 mb-0">Invoice System Access</label>
-    </div>
-  </div>
+            <div class="col-md-4 mb-2 d-flex align-items-center">
+              <div class="form-check">
+                <input type="checkbox" id="isListedOnWebsite" class="form-check-input"
+                  formControlName="isListedOnWebsite" />
+                <label for="isListedOnWebsite" class="form-check-label ms-2 mb-0">Listed on Website</label>
+              </div>
+            </div>
+
+            <div class="col-md-4 mb-2 d-flex align-items-center">
+              <div class="form-check">
+                <input type="checkbox" id="isLicenseMember" class="form-check-input"
+                  formControlName="isLicenseMember" />
+                <label for="isLicenseMember" class="form-check-label ms-2 mb-0">License Member</label>
+              </div>
+            </div>
+
+            <div class="col-md-4 mb-2 d-flex align-items-center">
+              <div class="form-check">
+                <input type="checkbox" id="hasPermissionToUseInvoiceSystem" class="form-check-input"
+                  formControlName="hasPermissionToUseInvoiceSystem" />
+                <label for="hasPermissionToUseInvoiceSystem" class="form-check-label ms-2 mb-0">Invoice System
+                  Access</label>
+              </div>
+            </div>
 
 
 
@@ -730,6 +567,7 @@
             </div>
           </div>
 
-      </div>
-    </div>
-
+        </div>
+        <!-- </div>
+          </div>
+        </div> -->

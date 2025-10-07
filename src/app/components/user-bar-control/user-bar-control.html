@@ -1,10 +1,10 @@
-<nav class="navbar d-flex align-items-center">
+<nav class="navbar d-flex align-items-center compact-navbar">
   <button *ngIf="showBackButton" (click)="onBack()" class="btn p-0 me-2">
     <i class="bi bi-arrow-left-circle big-up-icon"></i>
   </button>
 
   <div>
-    <h3 class="m-0">{{ title }}</h3>
+    <h4 class="m-0">{{ title }}</h4>
 
     <div *ngIf="showSubtitle">
       <small><b>User</b> - {{ subtitle }}</small>

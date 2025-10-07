@@ -2,11 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, shareReplay, throwError } from 'rxjs';
 import { BaseService } from '../base.service';
 import { HttpClient, HttpParams } from '@angular/common/http';
-
-
-
-//import { FilterOptionCodeModel } from '../../models/optioncode.models';
-//import { OptionSettingModel, UpdateOptionModel } from '../../models/optionsetting.Models';
 import { License,  LicenseActive,  LicenseFlow,  RenewLicenseModal } from '../../components/Models/license.models';
 import { environment } from '../../environments/environment';
 import { Currencies } from '../../components/Models/currencies.models';
@@ -57,20 +52,6 @@ getLicensesByStatus(param: string): Observable<License[]> {
   return this.http.get<License[]>(`${this.apiUrl}/License/status`, { params });
 }
 
-//   getLicensesByStatus(): Observable<License[]> {
-//   const params = { status: status }; // or use HttpParams as shown below
-//   // const params = new HttpParams().set('status', status);
-  
-//   return this.http.get<License[]>(`${this.apiUrl}/License/list`, { params });
-// }
-
-  // getCurrencySelectedItems(): Observable<Currencies[]> {
-  //   return this.baseService.get<Currencies[]>(`${this.apiUrl}/License/currencies`);
-  // }
-
-  // getLangaugeSelectedItems(): Observable<Langauges[]> {
-  //   return this.baseService.get<Langauges[]>(`${this.apiUrl}/License/languages`);
-  // }
 
 
   private currencyCache$?: Observable<Currencies[]>;
@@ -130,17 +111,6 @@ getLangaugeSelectedItems(): Observable<Langauges[]> {
     );
   }
 
-  // getLicenseContactDetail(id: number): Observable<License> {
-  //   console.log(`Fetching contact details for id: ${id}`);
-  //   return this.baseService.get<any>(`${this.apiUrl}/AccountsAdmin/get-license-client-contacts-by-id`).pipe(
-  //     catchError((error) => {
-  //       console.error('Error fetching license detail:', error);
-  //       return throwError(() => new Error('Error fetching license detail'));
-  //     })
-  //   );
-  // }
-
-
   getUserDetail(userId: string): Observable<UserProfile> {
     console.log(`Fetching user details for userId: ${userId}`);
     return this.baseService.get<any>(`${this.apiUrl}/License/${userId}/user-detail`).pipe(
@@ -177,7 +147,6 @@ getLangaugeSelectedItems(): Observable<Langauges[]> {
 
   renewLicense(licenseId: number, newEndDate: string): Observable<any> {
     const url = `${this.apiUrl}/License/${licenseId}/renew-license`;
-    // Sending only the updated end date in the request body
     return this.http.put(url, { endDate: newEndDate });
   }
   
@@ -189,21 +158,10 @@ getLangaugeSelectedItems(): Observable<Langauges[]> {
     return this.http.delete<void>(`${this.apiUrl}/License/delete-user/${id}`);
   }
 
-  // suspendLicense(license: { ExchangeId: number }): Observable<{ message: string }> {
-  //   return this.http.put<{ message: string }>(`${this.apiUrl}/Exchanges/suspend-license`, license);
-  // }
-
 suspendLicense(payload: LicenseActive & { Renewal: string }): Observable<{ message: string }> {
   return this.http.put<{ message: string }>(`${this.apiUrl}/License/suspend-license`, payload);
 }
 
-
-
-  // getExchangeOptionSettings(exchangeId: number): Observable<OptionSettingModel[]> {
-  //   return this.http.get<OptionSettingModel[]>(`${this.apiUrl}/Exchanges`, {
-  //     queryParams: { exchangeId: exchangeId.toString() }
-  //   });
-  // }
   saveLicenseOptionSettings(optionSettings: UpdateOptionModel[]): Observable<void> {
     return this.http.post<void>(`${this.apiUrl}/License/save-option-settings`, optionSettings);
   }

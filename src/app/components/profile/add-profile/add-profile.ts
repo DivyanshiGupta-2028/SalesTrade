@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClientService } from 'src/app/services/Client/client-service';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-add-profile',
@@ -16,10 +17,21 @@ export class AddProfile {
   @Input() title = 'Add User';
 showModal = false;
 isAddUserModalOpen = false;
+//  toastrOptions = {
+//   //positionClass: 'toast-center-center', 
+//   toastClass:'toast-bottom',
+//   timeOut: 3000, 
+//   extendedTimeOut: 1000,
+//   tapToDismiss: true,
+//   closeButton: true,
+//   progressBar: true,
+
+// };
+
 
 @Output() closed: EventEmitter<void> = new EventEmitter<void>();
  errorMessage: string = ''; 
-constructor(private fb: FormBuilder, private clientService: ClientService, private router: Router) {
+constructor(private fb: FormBuilder, private clientService: ClientService, private router: Router, private toastr: ToastrService) {
   this.guestForm = this.fb.group({
     firstName: ['', Validators.required],
     lastName: [''],
@@ -39,32 +51,6 @@ constructor(private fb: FormBuilder, private clientService: ClientService, priva
      this.errorMessage = '';
       this.closed.emit();
   }
-// onGuestSubmit(): void {
-//   if (this.guestForm.valid) {
-//     this.clientService.createGuest(this.guestForm.value).subscribe({
-//       next: (res) => {
-//         console.log("Guest creation response:", res);
-//         const newUserId =  res.userId; 
-//         if (newUserId) {
-//           this.router.navigate(['/user-list']).then(() => {
-//     window.location.reload();
-//   });
-          
-//         } else {
-//           console.error('No UserId found in response');
-//         }
-//       },
-//       error: (err) => {
-//           console.error("Error:", err);
-//           // 👇 Display backend error message in modal
-//           this.errorMessage = err?.error?.message || 'Something went wrong.';
-//       }
-//     });
-//      this.closed.emit(); 
-//   } else {
-//     this.guestForm.markAllAsTouched();
-//   }
-// }
 
 
 onGuestSubmit(): void {
@@ -82,13 +68,21 @@ onGuestSubmit(): void {
         }
       },
       error: (err) => {
-        console.error("Error:", err);
-        const msg = err?.error?.message || 'Something went wrong.';
-        // 👇 Use alert for now
-        alert(msg);
-        // Or assign to errorMessage if you want inline display
-        this.errorMessage = msg;
-      }
+  if (err.error?.message) {
+     this.toastr.error('Email already registered. Please use a different email.', 'Error',
+ {
+   timeOut: 3000
+ }
+);
+
+  } else {
+    this.toastr.error('An error occurred. Please try again.', 'Error', {
+      positionClass: 'toast-bottom',
+      timeOut: 3000,
+    });
+  }
+}
+
     });
   } else {
     this.guestForm.markAllAsTouched();
