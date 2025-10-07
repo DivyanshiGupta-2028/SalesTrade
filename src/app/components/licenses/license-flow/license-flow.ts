@@ -277,11 +277,11 @@ renewal= false  ;
         country: ['', Validators.required],
         state: ['', Validators.required],
         otherState: [''],
-        pincode: ['', [Validators.required, Validators.minLength(6),Validators.maxLength(12)]],
+        pincode: ['', [Validators.required, Validators.minLength(6),Validators.maxLength(10)]],
       }),
       step3: this.fb.group({
         website: ['', [Validators.pattern(/^https?:\/\/.+/)]],
-        mobile: [''],
+        mobile: ['', Validators.required],
         profileDescription: [''],
         currency: ['USD', Validators.required],
         language: ['English', Validators.required],
@@ -492,8 +492,6 @@ businessNameExistsValidator(control: AbstractControl): Observable<ValidationErro
           cashRevenue: data.cashRevenue || null,
           total12MonthIncome: data.total12MonthIncome || null,
           numberOfEmployee: data.numberOfEmployee || '',
-           dateRenewal: data.renewal || '',
-          lastRenewedDate: data.lastRenewed || '',
           businessStartDate: data.businessStarted || ''
 
         },
@@ -561,7 +559,7 @@ businessNameExistsValidator(control: AbstractControl): Observable<ValidationErro
           language: data.language || '',
           localization: data.localization || '',
           referencePrefix: data.referencePrefix || '',
-          isActive: data.isActive ||''
+          isActive: data.isActive  ?? false,
         });
 
         this.form.get('step4')?.patchValue({
@@ -569,7 +567,7 @@ businessNameExistsValidator(control: AbstractControl): Observable<ValidationErro
         licenseDuration: data.licenseDuration || '',
         startDate:  data.start || '',
         endDate:  data.expiry || '',
-        renewal:  data.renewal || '',
+        renewal:  data.renewal  ?? false,
         });
   
   

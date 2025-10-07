@@ -42,6 +42,17 @@ export class RenewLicense implements OnInit, OnChanges, OnDestroy {
         .subscribe(duration => {
           this.updateEndDateBasedOnDuration(duration);
         });
+
+  // Update end date when start date changes (NEW)
+  this.renewForm.get('startDate')?.valueChanges
+   // .pipe(takeUntil(this.destroy$))
+    .subscribe(() => {
+      const duration = this.renewForm.get('licenseDuration')?.value;
+      if (duration) {
+        this.updateEndDateBasedOnDuration(duration);
+      }
+    });
+
   }
 
   ngOnChanges(changes: SimpleChanges) {
