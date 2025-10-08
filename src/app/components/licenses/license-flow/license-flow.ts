@@ -222,6 +222,7 @@ export class LicenseFlow implements OnInit, OnDestroy {
       step3: this.fb.group({
         website: ['', [Validators.pattern(/^https?:\/\/.+/)]],
         mobile: ['', Validators.required],
+        mobile: ['', Validators.required],
         profileDescription: [''],
         currency: ['USD', Validators.required],
         language: ['English', Validators.required],
