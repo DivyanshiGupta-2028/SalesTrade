@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RenewLicense } from '../renew-license/renew-license';
 import { UserBarControl } from '../../user-bar-control/user-bar-control';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -43,7 +44,7 @@ export class LicenseList implements OnInit {
 
   licenses: any[] = []; 
 
-  constructor(private fb: FormBuilder,private licenseService: LicenseService, private router: Router, private authService: AuthService,private route: ActivatedRoute) { }
+  constructor(private fb: FormBuilder,private licenseService: LicenseService, private router: Router, private authService: AuthService,private route: ActivatedRoute,  private toastr: ToastrService) { }
 
   ngOnInit() {
     this.canAddLicense = this.authService.hasPermission('License_Add');
@@ -110,17 +111,50 @@ viewDetails(licenseId?: number) {
 });
   }
 
-  deleteLicense(id: number): void {
-    this.licenseService.deleteLicense(id).subscribe({
-      next: () => {
-        console.log(`License with ID ${id} deleted successfully.`);
-        alert('Succesfully deleted license');
-        this.licenses$ = this.licenseService.getLicenses(); 
-         window.location.reload();
-      },
-      error: err => console.error('Error deleting license:', err)
-    });
-  }
+//   deleteLicense(id: number): void {
+//     this.licenseService.deleteLicense(id).subscribe({
+//        next: (res) => {
+//       //console.log(res.message);
+//      // license.isActive = false;
+//      // next: (res) => {
+//      // console.log(res.message);
+//      //  console.log(`License with ID ${id} deleted successfully.`);
+//        // this.toastr.success('Succesfully deleted license');
+//              this.toastr.success('Succesfully deleted license', 'Success',
+//  {
+//    timeOut: 3000
+//  }
+// );
+//         this.licenses$ = this.licenseService.getLicenses(); 
+//          window.location.reload();
+//       },
+//       error: err => console.error('Error deleting license:', err)
+//     });
+//   }
+
+
+deleteLicense(id: number): void {
+  console.log('Calling deleteLicense with ID:', id); // Debug: Log before API call
+  this.licenseService.deleteLicense(id).subscribe({
+    next: (res) => {
+      console.log('Delete API Response:', res); // Debug: Log response
+      this.toastr.success('Successfully deleted license', 'Success', {
+        timeOut: 3000
+      });
+    },
+    error: (err) => {
+      console.error('Delete failed:', err); 
+      this.toastr.error('Failed to delete license', 'Error', {
+        timeOut: 3000
+      });
+      this.licenses$ = this.licenseService.getLicenses(); 
+                window.location.reload();
+    },
+    complete: () => {
+      console.log('Delete API call completed'); 
+    }
+  });
+}
   toggleActions() {
     this.showActions = !this.showActions;
   }
@@ -148,11 +182,16 @@ onSuspend(license: LicenseActive) {
     next: (res) => {
       console.log(res.message);
       license.isActive = false;
-      alert('Succesfully suspended license');
+     // alert('Succesfully suspended license');
+     this.toastr.success('Succesfully suspended license', 'Success',
+ {
+   timeOut: 3000
+ }
+);
     },
     error: (err) => {
       console.error('Suspend failed', err);
-      alert('Failed to suspend license');
+      this.toastr.error('Failed to suspend license');
     },
   });
 }
@@ -171,7 +210,6 @@ openAlert(licenseId?: number) {
 
   onAlertClosed() {
     this.showAlert = false;
-   // this.licenses$ = this.licenseService.getLicenses();
             window.location.reload();
   }
 

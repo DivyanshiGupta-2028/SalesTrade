@@ -60,7 +60,7 @@
             Business Type is required.
           </div>
         </div>
-      
+
 
 
         <div class="col-md-6 mb-2">
@@ -73,8 +73,8 @@
             General Tax Ref is required.
           </div>
         </div>
-</div>
-<div class="row">
+      </div>
+      <div class="row">
         <div class="col-md-6 mb-2">
           <label class="form-label" for="taxReferenceSales">Sales Tax Ref</label>
           <input type="text" class="form-control form-control-sm" placeholder="Sales Tax Ref"
@@ -98,11 +98,11 @@
 
 
       <div class="row">
-        <div class="col-md-6 mb-2">
+        <div class="col-12 col-md-3 mb-2">
           <label class="form-label" for="cashRevenue">Cash Revenue</label>
-          <input type="text" class="form-control form-control-sm" placeholder="Cash Revenue"
+          <input type="text" class="form-control form-control-sm-small-input " placeholder="Cash Revenue"
             formControlName="cashRevenue" inputmode="decimal" pattern="[0-9]*\.?[0-9]*"
-            (keypress)="allowNumbers($event,18)" />
+            (keypress)="allowNumbers($event, 18)" />
           <div *ngIf="form.get('step1.cashRevenue')?.touched && form.get('step1.cashRevenue')?.hasError('required')"
             class="text-danger small mt-1">
             Cash Revenue is required.
@@ -112,11 +112,11 @@
           </div>
         </div>
 
-        <div class="col-md-6 mb-2">
+        <div class="col-12 col-md-3 mb-2">
           <label class="form-label" for="total12MonthIncome">12-Month Income</label>
-          <input type="text" class="form-control form-control-sm" placeholder="12-Month Income"
+          <input type="text" class="form-control form-control-sm-small-input " placeholder="12-Month Income"
             formControlName="total12MonthIncome" inputmode="decimal" pattern="[0-9]*\.?[0-9]*"
-            (keypress)="allowNumbers($event,18)" />
+            (keypress)="allowNumbers($event, 18)" />
           <div
             *ngIf="form.get('step1.total12MonthIncome')?.touched && form.get('step1.total12MonthIncome')?.hasError('required')"
             class="text-danger small mt-1">
@@ -127,47 +127,66 @@
           </div>
         </div>
       </div>
-      <div class="row">
 
-        <div class="col-md-6 mb-2">
+      <div class="row">
+        <div class="col-12 col-md-3 mb-2">
           <label class="form-label" for="numberOfEmployee">No. of Employees</label>
-          <input type="number" class="form-control form-control-sm" placeholder="No. of Employees"
+          <input type="number" class="form-control form-control-sm-small-input " placeholder="No. of Employees"
             formControlName="numberOfEmployee" inputmode="numeric" pattern="[0-9]*"
-            (keypress)="allowOnlyNumbers($event,8)" />
+            (keypress)="allowOnlyNumbers($event, 8)" />
           <div
             *ngIf="form.get('step1.numberOfEmployee')?.touched && form.get('step1.numberOfEmployee')?.hasError('required')"
             class="text-danger small mt-1">
             Number of Employees is required.
           </div>
-
         </div>
 
-        <div class="col-md-6 mb-2">
-          <label class="form-label text-black">Business Start Date</label>
-          <div class="input-group border-outline-black">
-            <input matInput [matDatepicker]="picker" formControlName="businessStartDate"
-              class="form-control form-control-sm text-dark" placeholder="MM/DD/YYYY" />
-            <span class="input-group-text bg-white text-dark" style="height: 32px;">
+        <!-- <div class="col-12 col-md-3 mb-2">
+      <label class="form-label text-black">Business Start Date</label>
+      <div class="input-group border-outline-black form-control-dt">
+        <input
+          matInput
+          [matDatepickerFilter]="myFilter"
+          [matDatepicker]="picker"
+          formControlName="businessStartDate"
+          class=" form-control form-control-dt form-control-sm-sm text-dark"
+          placeholder="MM/DD/YYYY"
+          [readonly]="true"
+        />
+        <span class="input-group-text bg-white text-dark " >
+          <mat-datepicker-toggle matSuffix [for]="picker" class="text-dark"></mat-datepicker-toggle>
+        </span>
+        <mat-datepicker #picker></mat-datepicker>
+      </div>
+      <div
+        *ngIf="form.get('step1.businessStartDate')?.touched && form.get('step1.businessStartDate')?.hasError('required')"
+        class="text-danger small mt-1"
+      >
+        Business Start Date is required.
+      </div>
+    </div> -->
+
+        <div class="col-12 col-md-3 mb-2">
+          <label class="form-label text-black" for="businessStartDate">Business Start Date</label>
+          <div class="input-group border-outline-black ">
+            <input matInput [matDatepickerFilter]="myFilter" [matDatepicker]="picker"
+              formControlName="businessStartDate" class="form-control form-control-sm text-dark"
+              placeholder="MM/DD/YYYY" [readonly]="true" />
+            <span class="input-group-text bg-white text-dark">
               <mat-datepicker-toggle matSuffix [for]="picker" class="text-dark"></mat-datepicker-toggle>
             </span>
             <mat-datepicker #picker></mat-datepicker>
           </div>
-
           <div
             *ngIf="form.get('step1.businessStartDate')?.touched && form.get('step1.businessStartDate')?.hasError('required')"
             class="text-danger small mt-1">
             Business Start Date is required.
           </div>
-          <div *ngIf="form.get('step1.businessStartDate')?.hasError('notPastDate')" class="text-danger small mt-1">
-            Business Start Date cannot be today or a future date.
-          </div>
         </div>
-      </div>
 
-
-
-      <div class="d-flex justify-content-end">
-        <button type="button" class="btn btn-primary btn-sm" (click)="nextStep()">Next</button>
+        <div class="d-flex justify-content-end">
+          <button type="button" class="btn btn-primary btn-sm" (click)="nextStep()">Next</button>
+        </div>
       </div>
 
     </div>
@@ -219,13 +238,13 @@
             <input type="text" id="addressLine4" formControlName="addressLine4" class="form-control"
               placeholder="Enter address line 4" />
           </div>
-          </div>
-<div class="row">
+        </div>
+        <div class="row">
 
           <div class="col-md-6">
             <label for="country" class="form-label required">Country</label>
             <select id="country" formControlName="country" class="form-select" [disabled]="isCountriesLoading">
-              <option value="">{{ isCountriesLoading ? 'Loading countries...' : 'Select Country' }}</option> 
+              <option value="">{{ isCountriesLoading ? 'Loading countries...' : 'Select Country' }}</option>
               <option *ngFor="let country of countryOptions" [value]="country.value">{{ country.label }}</option>
 
             </select>
@@ -261,9 +280,9 @@
         </div>
 
         <div class="row mb-2">
-          <div class="col-md-6">
+          <div class="col-md-3">
             <label for="pincode" class="form-label required">PIN/ZIP Code</label>
-            <input type="text" id="pincode" formControlName="pincode" class="form-control"
+            <input type="text" id="pincode" formControlName="pincode" class="form-control form-control-sm-small-input"
               placeholder="Enter PIN or ZIP code" inputmode="numeric" maxlength="12" pattern="[0-9]*"
               title="Only numeric characters are allowed" />
 
@@ -302,11 +321,11 @@
           </div>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-3">
           <label for="mobile" class="form-label">Phone Number</label>
           <input type="tel" pattern="[0-9]+" title="Only numeric characters are allowed" id="mobile"
-            formControlName="mobile" class="form-control" [class.is-invalid]="isFieldInvalid('mobile')"
-            placeholder="Enter mobile number" />
+            formControlName="mobile" class="form-control form-control-sm-small-input"
+            [class.is-invalid]="isFieldInvalid('mobile')" placeholder="Enter mobile number" />
           <div *ngIf="form.get('step3.mobile')?.touched && form.get('step3.mobile')?.hasError('required')"
             class="text-danger small mt-1">
             Phone Number is required.
@@ -369,10 +388,10 @@
                   This field is required.
                 </div>
               </div> -->
-        <div class="col-md-6 mb-4">
+        <div class="col-md-2 mb-4">
           <label for="referencePrefix" class="form-label">Reference Prefix</label>
-          <input type="text" id="referencePrefix" class="form-control" formControlName="referencePrefix" maxlength="10"
-            placeholder="Enter Reference Prefix (min 4 chars)" />
+          <input type="text" id="referencePrefix" class="form-control form-control-sm-small-input"
+            formControlName="referencePrefix" maxlength="10" placeholder="Enter Reference Prefix (min 4 chars)" />
           <div *ngIf="isFieldInvalid('step3.referencePrefix')" class="text-danger small mt-1">
             Minimum 4 characters required.
           </div>
@@ -419,7 +438,7 @@
             <option value="">Select</option>
             <option value="trial">Trial</option>
             <option value="monthly">Monthly</option>
-            <option value="quaterly">Quarterly</option>
+            <option value="quarterly">Quarterly</option>
             <option value="yearly">Yearly</option>
             <option value="2year">Two-Yearly</option>
             <option value="custom">Custom</option>
@@ -435,42 +454,38 @@
 
 
 
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <!-- <label for="startDate" class="form-label">Start Date</label>
-          <input type="date" id="startDate" class="form-control" formControlName="startDate"> -->
+      <div class="row" [formGroup]="step4">
+        <div class="col-md-3 mb-3">
           <label for="startDate" class="form-label">Start Date</label>
-                    <div class="input-group border-outline-black">
-            <input matInput [matDatepicker]="picker" formControlName="startDate"
+          <div class="input-group border-outline-black">
+            <input matInput [matDatepicker]="startPicker" formControlName="startDate"
               class="form-control form-control-sm text-dark" placeholder="MM/DD/YYYY" />
             <span class="input-group-text bg-white text-dark" style="height: 32px;">
-              <mat-datepicker-toggle matSuffix [for]="picker" class="text-dark"></mat-datepicker-toggle>
+              <mat-datepicker-toggle matSuffix [for]="startPicker" class="text-dark"></mat-datepicker-toggle>
             </span>
-            <mat-datepicker #picker></mat-datepicker>
+            <mat-datepicker #startPicker></mat-datepicker>
           </div>
           <div *ngIf="isFieldInvalid('step4.startDate')" class="text-danger small mt-1">
             Start Date is required.
           </div>
         </div>
 
-        <div class="col-md-6 mb-3">
-          <!-- <label for="endDate" class="form-label">End Date</label>
-          <input type="date" id="endDate" class="form-control" formControlName="endDate"
-            [readonly]="form.get('step4.licenseDuration')?.value !== 'custom'" /> -->
-            <label for="endDate" class="form-label">End Date</label>
-            <div class="input-group border-outline-black">
-            <input matInput [matDatepicker]="picker" formControlName="endDate"
-            [readonly]="form.get('step4.licenseDuration')?.value !== 'custom'"
-              class="form-control form-control-sm text-dark" placeholder="MM/DD/YYYY" />
+        <div class="col-md-3 mb-3">
+          <label for="endDate" class="form-label">End Date</label>
+          <div class="input-group border-outline-black">
+            <input matInput [matDatepicker]="endPicker" formControlName="endDate"
+              class="form-control form-control-sm text-dark" placeholder="MM/DD/YYYY"
+              [disabled]="form.get('step4.licenseDuration')?.value !== 'custom'" />
             <span class="input-group-text bg-white text-dark" style="height: 32px;">
-              <mat-datepicker-toggle matSuffix [for]="picker" class="text-dark"></mat-datepicker-toggle>
+              <mat-datepicker-toggle matSuffix [for]="endPicker" class="text-dark"></mat-datepicker-toggle>
             </span>
-            <mat-datepicker #picker></mat-datepicker>
+            <mat-datepicker #endPicker></mat-datepicker>
           </div>
           <div *ngIf="isFieldInvalid('step4.endDate')" class="text-danger small mt-1">
             End Date is required.
           </div>
         </div>
+      </div>
 
 
 
@@ -566,8 +581,21 @@
               <button type="button" class="btn btn-primary btn-sm" (click)="saveLicense()">Save</button>
             </div>
           </div>
-
         </div>
-        <!-- </div>
+      </div>
+                <div *ngIf="currentStep === 5">
+  <div class="text-center">
+    <h5 class="text-success mb-3">
+      <i class="fas fa-check-circle"></i> Success!
+    </h5>
+    <p>License Information has been saved successfully.</p>
+    <div class="d-flex justify-content-center gap-2">
+      <button type="button" class="btn btn-primary btn-sm" (click)="goToLicenseList()">Go To License List</button>
+    </div>
+  </div>
+</div>
+  </div>
+</div>
+  <!-- </div>
           </div>
         </div> -->

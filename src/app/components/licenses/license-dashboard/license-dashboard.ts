@@ -93,6 +93,8 @@ months = ['Jan','Feb','March','April','May','June','July','August','September','
   ) { }
 
 ngOnInit(): void {
+//   const token = localStorage.getItem('token');
+// console.log('JWT Token:', token);
     this.dashboardService.getAllDashboardCardEntries().subscribe({
       next: (data) => {
         this.dasboardCards = data.length > 0 ? data[0] : null;

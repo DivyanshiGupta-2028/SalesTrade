@@ -158,7 +158,7 @@ getLangaugeSelectedItems(): Observable<Langauges[]> {
     return this.http.delete<void>(`${this.apiUrl}/License/delete-user/${id}`);
   }
 
-suspendLicense(payload: LicenseActive & { Renewal: string }): Observable<{ message: string }> {
+suspendLicense(payload: LicenseActive & { Renewal: boolean }): Observable<{ message: string }> {
   return this.http.put<{ message: string }>(`${this.apiUrl}/License/suspend-license`, payload);
 }
 

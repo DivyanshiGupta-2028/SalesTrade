@@ -86,7 +86,7 @@ export class LicenseSummary {
     this.licenseService.suspendLicense({
     licenseId: license.licenseId ?? 0,
     isActive: license.isActive,
-    Renewal: "someStringValue"
+    Renewal: false
   }).subscribe({
       next: (res) => {
         console.log(res.message);
