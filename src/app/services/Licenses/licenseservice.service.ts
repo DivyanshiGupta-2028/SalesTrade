@@ -9,6 +9,7 @@ import { Langauges } from '../../components/Models/langauges.models';
 import { Country } from '../../components/Models/country.models';
 import { OptionSettingModel, UpdateOptionModel } from '../../components/Models/optionsetting.Models';
 import { UserProfile } from 'src/app/components/Models/Client.model';
+import { AuthService } from '../auth.service';
 
 
 @Injectable({
@@ -18,7 +19,7 @@ export class LicenseService {
   
   private apiUrl = `${environment.apiUrl}`;
 
-  constructor(private baseService: BaseService, private http: HttpClient) { }
+  constructor(private baseService: BaseService, private http: HttpClient, private authService: AuthService) { }
 
   addLicense(license: License): Observable<License> {
     return this.baseService.post<License>(`${this.apiUrl}/License/add-license`, license);
@@ -51,8 +52,6 @@ getLicensesByStatus(param: string): Observable<License[]> {
 
   return this.http.get<License[]>(`${this.apiUrl}/License/status`, { params });
 }
-
-
 
   private currencyCache$?: Observable<Currencies[]>;
 private languageCache$?: Observable<Langauges[]>;

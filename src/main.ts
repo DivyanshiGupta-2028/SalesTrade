@@ -5,11 +5,13 @@ import { provideToastr, ToastrModule } from 'ngx-toastr';
 import { importProvidersFrom, inject } from '@angular/core';
 import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
 import { RoleService } from './app/services/Roles/role-service';
-import { HttpClient, provideHttpClient } from '@angular/common/http';
+import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { routes } from './app/app.routes';
 import { APP_INITIALIZER } from '@angular/core';
 import { environment } from './app/environments/environment.development';
+import { authInterceptor } from './app/services/auth.interceptor';
+import { AuthService } from './app/services/auth.service';
 
 
 export function initApp(roleService: RoleService, http: HttpClient) {
@@ -39,6 +41,9 @@ export function initApp(roleService: RoleService, http: HttpClient) {
 bootstrapApplication(App, {
   ...appConfig,
   providers: [
+    provideHttpClient(withInterceptors([authInterceptor])),
+    AuthService,
+  
 
     provideClientHydration(),
          provideAnimations(),

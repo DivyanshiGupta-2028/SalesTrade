@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogContentComponent } from '../../components/dialog-content-component/dialog-content-component';
+import { AuthService } from '../auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PopupService {
 
- constructor(private dialog: MatDialog) {}
+ constructor(private dialog: MatDialog, private authService: AuthService) {}
 
 
 

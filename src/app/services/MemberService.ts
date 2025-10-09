@@ -9,6 +9,6 @@ export class MemberService {
   constructor(private http: HttpClient) {}
 
   getMember() {
-    return this.http.get('/api/member'); // adjust URL accordingly
+    return this.http.get('/api/member'); 
   }
 }

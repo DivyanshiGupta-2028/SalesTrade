@@ -60,7 +60,7 @@ export const routes: Routes = [
       { path: 'profile', component: Profile , canActivate: [RoleGuard], data: { role: 'SuperAdmin' } },
       { path: 'license-list', component: LicenseList , canActivate: [RoleGuard], data: { role: 'SuperAdmin' } },
       { path: 'dashboard', component: Dashboard , canActivate: [RoleGuard], data: { role: 'Admin' } },
-      { path: 'create-invoice', component: CreateInvoice, canActivate: [RoleGuard], data: { role: 'SuperAdmin,Admin' } },
+      { path: 'create-invoice', component: CreateInvoice, canActivate: [RoleGuard], data: { role: 'Admin' } },
       { path: 'invoice-list', component: InvoiceList, canActivate: [RoleGuard], data: { role: 'SuperAdmin,Admin' }  },
       { path: 'view-estimate', component: ViewEstimate, canActivate: [RoleGuard], data: { role: 'SuperAdmin,Admin' }  },
       { path: 'add-client', component: AddClient, canActivate: [RoleGuard], data: { role: 'SuperAdmin,' }  },

@@ -7,9 +7,6 @@ import { BaseService } from './base.service';
 import { PlatformService } from './platform.service';
 import { environment } from '../environments/environment.development';
 
-// import { platformServer } from '@angular/platform-server';
-// import { SsrCookieService } from 'ngx-cookie-service-ssr';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -34,7 +31,6 @@ export class AuthService extends BaseService {
     this.loadStoredRoleAndPermissions();
   }
 
-  // Call the API to validate the username
   validateLoginRequest(username: string): Observable<any> {
     return this.post<any>(`${this.apiUrl}/validate-login-request`, { username });
   }
@@ -46,7 +42,6 @@ export class AuthService extends BaseService {
     return this.post<any>(`${this.apiUrl}/login`, { username, password, temporaryToken }).pipe(
       tap(response => {
         if (response.requiresTwoFactor) {
-          // Handle 2FA token prompt
         } else {
           this.storeTokens(response.token, response.refreshToken, rememberMe);
           this.setRoleAndPermissions(response.roles, response.permissions);
@@ -119,28 +114,6 @@ export class AuthService extends BaseService {
     return this.userInfo.asObservable();
   }
 
-  // Method to load role and permissions from the backend (API call)
-  // loadUserPermissions(): Observable<any> {
-  //   // If role and permissions are already loaded, avoid making an API call
-  //   const storedRole = this.roleSubject.getValue();
-  //   const storedPermissions = this.permissionsSubject.getValue();
-
-  //   if (storedRole && storedPermissions) {
-  //     // If already available, return an observable with the current values
-  //     return of({ role: storedRole, permissions: storedPermissions });
-  //   }
-
-  //   // Otherwise, make the backend call to load role and permissions
-  //   return this.get(`${this.apiUrl}/permissions`).pipe(
-  //     tap(response => {
-  //       const { roles, permissions } = response;
-  //       this.setRoleAndPermissions(roles, permissions);
-  //     })
-  //   );
-  // }
-
-
-
   getAuthToken() {
     if (this.platformService.isBrowser()) {
       if (sessionStorage.getItem("token")) {
@@ -155,7 +128,7 @@ export class AuthService extends BaseService {
     }
   }
 
-  // Check if user is logged in
+
   isLoggedIn(): boolean {
     return !!this.getAuthToken();
   }
@@ -175,7 +148,6 @@ export class AuthService extends BaseService {
     }
   }
 
-  // Load stored role and permissions from sessionStorage
   private loadStoredRoleAndPermissions(): void {
     if (this.platformService.isBrowser()) {
       const storedRole = sessionStorage.getItem('roles');
@@ -243,12 +215,12 @@ export class AuthService extends BaseService {
 
   hasRole(role: string): boolean {
     const roles = this.roleSubject.getValue();
-    if (!role) return false; // If no role is provided, deny access
+    if (!role) return false;
     const roleArray = role.split(',').map(r => r.trim());
     return roleArray.some(r => roles.includes(r));
   }
 
-//Using it in header
+
   hasRoleObservable(role: string) {
   return this.roleSubject.asObservable().pipe(
     map(roles => {

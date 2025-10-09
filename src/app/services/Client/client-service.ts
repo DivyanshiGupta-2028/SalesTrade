@@ -5,6 +5,7 @@ import { catchError, map, switchMap } from 'rxjs/operators';
 import { environment } from '../../environments/environment.development';
 import { AccountsCountry, ApiResponse, Client, ClientResponse, Country, ExchangeClientAddress, LicenseClientContact, State, UserProfile } from '../../components/Models/Client.model';
 import { NetRoles } from '../../components/Models/NetRoles.models';
+import { AuthService } from '../auth.service';
 
 
 
@@ -20,7 +21,7 @@ export class ClientService {
     })
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
     addUser(userData: UserProfile): Observable<UserProfile> {
     return this.http.post<UserProfile>(`${this.apiUrl}/License/add-user`, userData);
   }

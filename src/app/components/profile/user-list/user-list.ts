@@ -8,6 +8,7 @@ import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserProfile } from '../../Models/Client.model';
 import { AddProfile } from '../add-profile/add-profile';
 import { UserBarControl } from '../../user-bar-control/user-bar-control';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-user-list',
   standalone: true,
@@ -40,7 +41,7 @@ pages: number[] = [];
 viewAll = false;
 searchText = '';
 
-  constructor(private fb: FormBuilder,private licenseService: LicenseService, private router: Router, private authService: AuthService,private route: ActivatedRoute) { }
+  constructor(private fb: FormBuilder,private licenseService: LicenseService, private router: Router, private authService: AuthService,private route: ActivatedRoute, private toastr:ToastrService) { }
   ngOnInit() {
     this.users$ = this.licenseService.getUsers();
 
@@ -91,16 +92,24 @@ cancelSearch() {
   }
 }
 
-
-  deleteUser(id: string): void {
+deleteUser(id: string): void {
     this.licenseService.deleteUser(id).subscribe({
       next: () => {
         console.log(`User with ID ${id} deleted successfully.`);
-        alert('Succesfully deleted user');
+        this.toastr.success('Successfully deleted user', 'Success', {
+          timeOut: 2000
+        });
 
-         window.location.reload();
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000); 
       },
-      error: err => console.error('Error deleting user:', err)
+      error: (err) => {
+        console.error('Error deleting user:', err);
+        this.toastr.error('Failed to delete user', 'Error', {
+          timeOut: 3000
+        });
+      }
     });
   }
   toggleActions() {

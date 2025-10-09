@@ -19,7 +19,6 @@ export class AuthStateService {
     this.loginData = {};
   }
 
-    // User permissions methods
     setUserPermissions(permissions: any) {
       this.userPermissions = permissions;
     }
@@ -32,7 +31,7 @@ export class AuthStateService {
       this.userPermissions = null;
     }
 
-    // Clear all data
+
     clearAll() {
       this.clearLoginData();
       this.clearUserPermissions();

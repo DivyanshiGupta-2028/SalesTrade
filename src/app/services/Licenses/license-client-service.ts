@@ -3,6 +3,7 @@ import { environment } from '../../environments/environment.development';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { catchError, Observable } from 'rxjs';
 import { LicenseClient, LicenseClientView } from '../../components/Models/LicenseClient';
+import { AuthService } from '../auth.service';
 
 
 @Injectable({
@@ -10,7 +11,7 @@ import { LicenseClient, LicenseClientView } from '../../components/Models/Licens
 })
 export class LicenseClientService {
 private apiUrl = `${environment.apiUrl}`;
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
 
 

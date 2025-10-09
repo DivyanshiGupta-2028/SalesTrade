@@ -3,7 +3,8 @@ import { BaseService } from '../base.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-//import { environment } from '../../../environments/environment';
+import { AuthService } from '../auth.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class MasterService {
   private apiUrl = `${environment.apiUrl}`;
 
   // Inject BaseService
-  constructor(private baseService: BaseService, private http: HttpClient) { }
+  constructor(private baseService: BaseService, private http: HttpClient, private authService: AuthService) { }
 
   getCurrencySelectedItems(): Observable<any[]> {
     return this.baseService.get<any[]>(`${this.apiUrl}/License/currencies`);

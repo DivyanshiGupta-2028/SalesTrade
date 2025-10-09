@@ -75,10 +75,7 @@ export class LicenseList implements OnInit {
     this.licenses$.subscribe(data => {
        console.log('Fetched licenses:', data);
   });
-} else {
-    this.licenses$ = this.licenseService.getLicenses();
-    
-  }
+} 
   
   });
 
@@ -139,15 +136,19 @@ deleteLicense(id: number): void {
     next: (res) => {
       console.log('Delete API Response:', res); // Debug: Log response
       this.toastr.success('Successfully deleted license', 'Success', {
-        timeOut: 3000
-      });
-    },
+                  timeOut: 1000
+        });
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000); 
+      },
     error: (err) => {
       console.error('Delete failed:', err); 
       this.toastr.error('Failed to delete license', 'Error', {
         timeOut: 3000
       });
-      this.licenses$ = this.licenseService.getLicenses(); 
+     // this.licenses$ = this.licenseService.getLicenses(); 
                 window.location.reload();
     },
     complete: () => {
@@ -188,15 +189,19 @@ onSuspend(license: LicenseActive) {
    timeOut: 3000
  }
 );
+ setTimeout(() => {
+          window.location.reload();
+        }, 2000); 
     },
     error: (err) => {
       console.error('Suspend failed', err);
-      this.toastr.error('Failed to suspend license');
+      this.toastr.error('Failed to suspend license', 'Error', {
+          timeOut: 3000
+        });
     },
   });
 }
 
- 
 openAlert(licenseId?: number) {
   console.log('openAlert called with licenseId:', licenseId);
   if (licenseId === undefined || licenseId === 0) {

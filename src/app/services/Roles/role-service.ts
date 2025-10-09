@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class RoleService {
   private roles: string[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,private authService: AuthService) {}
 
   loadUserRoles(userId: string): Promise<void> {
     return new Promise((resolve, reject) => {
