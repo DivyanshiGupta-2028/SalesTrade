@@ -1,49 +1,3 @@
-// exchange-client.model.ts
-
-// import { ExchangeClientAddress } from "./ExchangeClientAddress";
-// import { ExchangeClientContact } from "./ExchangeClientContact";
-
-// export interface ExchangeClient {
-//   exchangeClientId: number;
-//   publicGUID: string| null;
-//   exchangeID: number;
-//   parentClientID?: number;
-//   businessType: string;
-//   referingClientId?: number;
-//   businessName: string;
-//   legalName: string;
-//   taxReferenceGeneral?: string;
-//   taxReferenceSales?: string;
-//   kyc?: string;
-//   cashRevenue?: number | null;
-//   website?: string;
-//   profileDescription?: string;
-//   currentStatus: boolean;       // ✅ Required - यह string है, boolean नहीं!
-//   isLegalDocumentationHeld: boolean;
-//   isTaxReportingExempt: boolean;
-//   total12MonthIncome?: number | null;
-//   numberOfEmployee?: number | null;
-//   canSendMessages: boolean;
-//   canReceiveMessages: boolean;
-//   isListedInDirectory: boolean;
-//   isListedOnWebsite: boolean;
-//   isActive: boolean;
-//   isExchangeMember: boolean;
-//   hasPermissionToUseInvoiceSystem: boolean;
-//   dateSignup?: string | null;         // ISO format expected
-//   dateRenewal?: string | null;
-//   lastRenewedDate?: string | null;
-//   businessStartDate?: string | null;
-//   dateCreated: string;
-//   dateModified?: string;
-// }
-
-// export interface ExchangeClientPayload {
-//   exchangeClient: ExchangeClient;
-//   addresses: ExchangeClientAddress[];
-//   contacts: ExchangeClientContact[];
-// }
-
 
 export interface LicenseClient {
   licenseClientId: number;
@@ -81,7 +35,6 @@ export interface LicenseClient {
 
 export interface LicenseClientView {
   licenseClientId: number;
-  //publicGUID: string | null;
   licenseID: number;
   parentClientID?: number;
   businessType: string;

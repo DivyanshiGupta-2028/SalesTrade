@@ -53,13 +53,6 @@ export class LicenseSummary {
   })
 );
   }
-  // viewDetails(licenseId: number | undefined) {
-  //   if (licenseId !== undefined) {
-  //     this.router.navigate(['/edit-license', licenseId]);
-  //   } else {
-  //     console.error('License ID is undefined');
-  //   }
-  // }
 
   viewDetails(licenseId?: number) {
   this.router.navigate(['/license-add'], {

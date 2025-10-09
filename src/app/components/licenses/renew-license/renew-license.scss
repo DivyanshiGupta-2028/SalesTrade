@@ -1,4 +1,4 @@
-/* in app-renew-license.component.scss or styles */
+
 :host {
   position: fixed;
   top: 0;
@@ -8,8 +8,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1050; /* above most content */
-  background: rgba(0, 0, 0, 0.3);  /* translucent dark backdrop */
+  z-index: 1050; 
+  background: rgba(0, 0, 0, 0.3); 
 }
 
 .dialog-box {

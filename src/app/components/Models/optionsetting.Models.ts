@@ -6,8 +6,8 @@ export interface OptionSettingModel {
   optionId: number;
   optionTitle: string;
   type: string;
-  typeValues: string | undefined; // This holds the list of radio/dropdown options (JSON or CSV)
-  selectedValue?: string;        // ✅ Add this to hold current selection
+  typeValues: string | undefined;
+  selectedValue?: string;        
   description?: string;
   optionValue?: string;
   optionCode: string;

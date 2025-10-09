@@ -1,4 +1,4 @@
-// src/app/components/Models/ExtendedInvoiceFormat.ts
+
 import { InvoiceFormat } from './InvoiceFormat';
 
 export interface ExtendedInvoiceFormat extends InvoiceFormat {

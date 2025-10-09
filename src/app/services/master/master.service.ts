@@ -13,7 +13,6 @@ export class MasterService {
 
   private apiUrl = `${environment.apiUrl}`;
 
-  // Inject BaseService
   constructor(private baseService: BaseService, private http: HttpClient, private authService: AuthService) { }
 
   getCurrencySelectedItems(): Observable<any[]> {

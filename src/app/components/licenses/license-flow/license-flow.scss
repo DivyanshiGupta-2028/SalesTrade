@@ -1,21 +1,20 @@
-/* Remove transparency and set light gray background for the datepicker */
+
 ::ng-deep .mat-datepicker-content {
-  background-color: #e0e0e0 !important; /* Light gray background */
-  opacity: 1 !important; /* Ensure no transparency */
+  background-color: #e0e0e0 !important; 
+  opacity: 1 !important;
 }
 
-/* Optional: Style the calendar text and cells for better contrast */
 ::ng-deep .mat-calendar-body-cell-content {
-  color: #333 !important; /* Darker text for readability */
+  color: #333 !important; 
 }
 
 ::ng-deep .mat-calendar-body-selected {
-  background-color: #007bff !important; /* Selected date color (blue for contrast) */
+  background-color: #007bff !important; 
   color: white !important;
 }
 
 ::ng-deep .mat-calendar-body-today {
-  border: 1px solid #007bff !important; /* Highlight today's date */
+  border: 1px solid #007bff !important;
 }
 
 
@@ -126,20 +125,20 @@
 }
 
 .form-control {
-  font-size: 0.875rem; /* Default input size */
+  font-size: 0.875rem; 
   padding: 0.25rem 0.5rem;
 }
 
 .input-group {
-  width: 100%; /* Ensure input-group fills parent column */
-  display: flex; /* Ensure proper alignment */
-  align-items: center; /* Vertically align input and toggle */
+  width: 100%; 
+  display: flex; 
+  align-items: center;
 }
 
 .input-group-text {
   font-size: 0.875rem;
   padding: 0.25rem 0.5rem;
-  height: 32px; /* Consistent height */
+  height: 32px; 
   display: flex;
   align-items: center;
 }
@@ -148,24 +147,6 @@
   font-size: 0.7rem;
 }
 
-/* Datepicker styles */
-::ng-deep .mat-datepicker-content {
-  background-color: #e0e0e0 !important;
-  opacity: 1 !important;
-}
-
-::ng-deep .mat-calendar-body-cell-content {
-  color: #333 !important;
-}
-
-::ng-deep .mat-calendar-body-selected {
-  background-color: #007bff !important;
-  color: white !important;
-}
-
-::ng-deep .mat-calendar-body-today {
-  border: 1px solid #007bff !important;
-}
 
 /* Responsive styles for screens <1200px */
 @media (max-width: 1200px) {

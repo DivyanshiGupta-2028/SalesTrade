@@ -6,6 +6,5 @@ export interface InvoiceFormat {
   taxDetails: string;
   itemColumns: string;
   createdAt: string;
-isDefault?: boolean; // ✅ Add this line
-
+isDefault?: boolean; 
 }

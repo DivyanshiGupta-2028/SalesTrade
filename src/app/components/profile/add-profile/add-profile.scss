@@ -10,7 +10,7 @@
 }
 
 .toast-info {
-  background-color: #2F96B4; /* blue */
+  background-color: #2F96B4; 
   color: white;
 }
 
@@ -18,19 +18,6 @@
   background-color: #F89406; 
   color: white;
 }
-// .toast-center-center {
-//   top: 90%;
-//   left: 50%;
-//   transform: translate(-50%, -50%);
-// }
-
-// .custom-toast-position {
-//   margin-bottom: 5px;
-//   margin-right: 10px;
-//   margin-left: 50%;
-// //   position: fixed !important; 
-// }
-
 .toast-bottom {
     position:absolute !important;
     top:90%;

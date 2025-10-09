@@ -17,17 +17,6 @@ export class AddProfile {
   @Input() title = 'Add User';
 showModal = false;
 isAddUserModalOpen = false;
-//  toastrOptions = {
-//   //positionClass: 'toast-center-center', 
-//   toastClass:'toast-bottom',
-//   timeOut: 3000, 
-//   extendedTimeOut: 1000,
-//   tapToDismiss: true,
-//   closeButton: true,
-//   progressBar: true,
-
-// };
-
 
 @Output() closed: EventEmitter<void> = new EventEmitter<void>();
  errorMessage: string = ''; 

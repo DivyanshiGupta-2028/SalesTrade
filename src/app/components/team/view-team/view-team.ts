@@ -12,7 +12,7 @@ import { TeamService } from '../../../services/Team/team-service';
 export class ViewTeam implements OnInit {
   teamMembers: any[] = [];
 
-  private teamService = inject(TeamService); // ✅ inject service (Angular 14+ syntax)
+  private teamService = inject(TeamService); 
 
   ngOnInit(): void {
     this.teamService.getAllTeam().subscribe({

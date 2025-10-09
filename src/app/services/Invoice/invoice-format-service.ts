@@ -31,33 +31,6 @@ getInvoiceFormatsById(id: number) {
   return this.http.get<InvoiceFormat>(`${this.apiUrl}/AccountsAdmin/get-invoice-formats-by-id/${id}`);
 }
 
-
-// getInvoiceFormatsyId(id:number): Observable<InvoiceFormat> {
-//   console.log('Fetching client by ID:', id);
-
-//   return this.http.get<ApiResponse<InvoiceFormat>>(`${this.apiUrl}/AccountsAdmin/get-invoice-formats-by-id/${id}`)
-//   .pipe(
-//       map(response => {
-//         console.log('API response for getFormatById:', response);
-
-//         if (!response) {
-//           console.error('No response received from API');
-//           throw new Error('No response received from API');
-//         }
-
-//         if (response.data) {
-//           console.log('Invoice data from response.data:', response.data);
-//           return response.data;
-//         } else {
-
-//           console.log('Invoice data from response directly:', response);
-//           return response as any;
-//         }
-//       }),
-
-//     );
-// }
-
 deleteInvoiceFormat(id: number) {
   return this.http.delete(`${this.apiUrl}/AccountsAdmin/delete/${id}`);
 }

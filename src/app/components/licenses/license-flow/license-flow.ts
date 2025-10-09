@@ -192,16 +192,6 @@ export class LicenseFlow implements OnInit, OnDestroy {
 
   }
 
-  // pastDateValidator(control: AbstractControl): ValidationErrors | null {
-  //   const inputDate = new Date(control.value);
-  //   const today = new Date();
-  //   today.setHours(0, 0, 0, 0);
-
-  //   if (inputDate >= today) {
-  //     return { notPastDate: true };
-  //   }
-  //   return null;
-  // }
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
@@ -536,59 +526,6 @@ export class LicenseFlow implements OnInit, OnDestroy {
   prevStep(): void {
     if (this.currentStep > 1) this.currentStep--;
   }
-
-  // updateEndDateBasedOnDuration(duration: string | null): void {
-  //   if (!duration) {
-  //     return;
-  //   }
-  //   const startDateControl = this.form.get('step4.startDate');
-  //   const endDateControl = this.form.get('step4.endDate');
-
-  //   if (!startDateControl || !endDateControl) {
-  //     return;
-  //   }
-
-  //   const startDateValue = startDateControl.value;
-  //   if (!startDateValue) {
-  //     return;
-  //   }
-
-  //   const startDate = new Date(startDateValue);
-  //   let newEndDate: Date;
-
-  //   switch (duration) {
-  //     case 'trial':
-  //       newEndDate = new Date(startDate);
-  //       newEndDate.setDate(newEndDate.getDate() + 14);
-  //       break;
-  //     case 'monthly':
-  //       newEndDate = new Date(startDate);
-  //       newEndDate.setMonth(newEndDate.getMonth() + 1);
-  //       break;
-  //     case 'quaterly':
-  //       newEndDate = new Date(startDate);
-  //       newEndDate.setMonth(newEndDate.getMonth() + 3);
-  //       break;
-  //     case 'yearly':
-  //       newEndDate = new Date(startDate);
-  //       newEndDate.setFullYear(newEndDate.getFullYear() + 1);
-  //       break;
-  //     case '2year':
-  //       newEndDate = new Date(startDate);
-  //       newEndDate.setFullYear(newEndDate.getFullYear() + 2);
-  //       break;
-  //       case 'custom':
-  //         newEndDate = new Date(startDate);
-  //         newEndDate.setFullYear(startDate.getFullYear() + 1);
-  //       break;
-  //     default:
-  //       return;
-  //   }
-  //   const formattedEndDate = newEndDate.toISOString().substring(0, 10);
-  //   endDateControl.setValue(formattedEndDate);
-  // }
-
-
   updateEndDateBasedOnDuration(duration: string | null): void {
   if (!duration) {
     return;
@@ -619,7 +556,7 @@ export class LicenseFlow implements OnInit, OnDestroy {
       newEndDate = new Date(startDate);
       newEndDate.setMonth(newEndDate.getMonth() + 1);
       break;
-    case 'quarterly': // Fixed typo: 'quaterly' to 'quarterly'
+    case 'quarterly': 
       newEndDate = new Date(startDate);
       newEndDate.setMonth(newEndDate.getMonth() + 3);
       break;
@@ -632,7 +569,6 @@ export class LicenseFlow implements OnInit, OnDestroy {
       newEndDate.setFullYear(newEndDate.getFullYear() + 2);
       break;
     case 'custom':
-      // Enable endDate and use existing value if present
       endDateControl.enable();
       if (!endDateControl.value) {
         newEndDate = new Date(startDate);
@@ -640,7 +576,7 @@ export class LicenseFlow implements OnInit, OnDestroy {
         const formattedEndDate = this.formatDateOnly(newEndDate);
         endDateControl.setValue(formattedEndDate);
       }
-      return; // Preserve user input
+      return;
     default:
       newEndDate = new Date(startDate);
       newEndDate.setFullYear(newEndDate.getFullYear() + 1);
@@ -737,7 +673,7 @@ export class LicenseFlow implements OnInit, OnDestroy {
       defaultEndDate.setFullYear(startDate.getFullYear() + 1);
         break;
       default:
-        defaultEndDate.setFullYear(startDate.getFullYear() + 1); // Fallback
+        defaultEndDate.setFullYear(startDate.getFullYear() + 1); 
     }
     endDate = this.formatDateOnly(defaultEndDate);
   }
@@ -752,14 +688,13 @@ export class LicenseFlow implements OnInit, OnDestroy {
       lastName: this.lastName,
       email: this.email,
       startDate: this.formatDateOnly(this.form.value.step4.startDate),
-      //endDate: this.formatDateOnly(this.form.value.step4.endDate),
       endDate: endDate,
       license: this.form.value.step4.licenseType,
       dateCreated: this.licenseId ? undefined : new Date(),
       pincode: String(step2.pincode),
     };
 
-console.log('License Payload:', JSON.stringify(licensePayload, null, 2)); // Debug payload
+console.log('License Payload:', JSON.stringify(licensePayload, null, 2)); 
 this.isLoading = true;
     this.errorMessage = '';
     this.cdr.markForCheck();    
@@ -772,16 +707,13 @@ if (this.licenseId) {
             this.currentStep = 5;
             this.isLoading = false;
             this.cdr.detectChanges();
-           // this.router.navigate(['/license-list'], {
-            //  queryParams: { licenseId: this.licenseId, userId: this.userId }
-           // });
           }
         },
         error: (err) => {
           this.errorMessage = 'Failed to update license: ' + (err.error?.title || 'Unknown error');
           this.isLoading = false;
           console.error('Error updating license:', err);
-          this.cdr.detectChanges(); // Force change detection
+          this.cdr.detectChanges(); 
         }
       });
     } else {
@@ -791,15 +723,12 @@ if (this.licenseId) {
           this.currentStep = 5;
           this.isLoading = false;
           this.cdr.detectChanges();
-          //this.router.navigate(['/license-list'], {
-          //  queryParams: { licenseId: newLicenseId, userId: this.userId }
-          //});
         },
         error: (err) => {
           this.errorMessage = 'Failed to add license: ' + (err.error?.title || 'Unknown error');
           this.isLoading = false;
           console.error('Error adding license:', err);
-          this.cdr.detectChanges(); // Force change detection
+          this.cdr.detectChanges(); 
         }
       });
     }

@@ -107,34 +107,11 @@ viewDetails(licenseId?: number) {
   queryParams: { userId: this.userId }
 });
   }
-
-//   deleteLicense(id: number): void {
-//     this.licenseService.deleteLicense(id).subscribe({
-//        next: (res) => {
-//       //console.log(res.message);
-//      // license.isActive = false;
-//      // next: (res) => {
-//      // console.log(res.message);
-//      //  console.log(`License with ID ${id} deleted successfully.`);
-//        // this.toastr.success('Succesfully deleted license');
-//              this.toastr.success('Succesfully deleted license', 'Success',
-//  {
-//    timeOut: 3000
-//  }
-// );
-//         this.licenses$ = this.licenseService.getLicenses(); 
-//          window.location.reload();
-//       },
-//       error: err => console.error('Error deleting license:', err)
-//     });
-//   }
-
-
 deleteLicense(id: number): void {
-  console.log('Calling deleteLicense with ID:', id); // Debug: Log before API call
+  console.log('Calling deleteLicense with ID:', id); 
   this.licenseService.deleteLicense(id).subscribe({
     next: (res) => {
-      console.log('Delete API Response:', res); // Debug: Log response
+      console.log('Delete API Response:', res); 
       this.toastr.success('Successfully deleted license', 'Success', {
                   timeOut: 1000
         });
@@ -148,7 +125,6 @@ deleteLicense(id: number): void {
       this.toastr.error('Failed to delete license', 'Error', {
         timeOut: 3000
       });
-     // this.licenses$ = this.licenseService.getLicenses(); 
                 window.location.reload();
     },
     complete: () => {
@@ -183,7 +159,6 @@ onSuspend(license: LicenseActive) {
     next: (res) => {
       console.log(res.message);
       license.isActive = false;
-     // alert('Succesfully suspended license');
      this.toastr.success('Succesfully suspended license', 'Success',
  {
    timeOut: 3000

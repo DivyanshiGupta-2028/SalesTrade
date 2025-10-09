@@ -78,16 +78,6 @@ getLangaugeSelectedItems(): Observable<Langauges[]> {
     return this.baseService.get<Country[]>(`${this.apiUrl}/License/countries`);
   }
 
-  // getExchangeDetail(id: number): Observable<License> {
-  //   console.log(`Fetching exchange details for id: ${id}`);
-  //   return this.baseService.get<any>(`${this.apiUrl}/License/${id}/detail`).pipe(
-  //     catchError((error) => {
-  //       console.error('Error fetching exchange detail:', error);
-  //       return throwError(() => new Error('Error fetching exchange detail'));
-  //     })
-  //   );
-  // }
-
     getLicenseDetail(id: number): Observable<License> {
     console.log(`Fetching license details for id: ${id}`);
     return this.baseService.get<any>(`${this.apiUrl}/License/${id}/license-detail`).pipe(

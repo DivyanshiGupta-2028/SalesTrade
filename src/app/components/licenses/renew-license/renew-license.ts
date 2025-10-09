@@ -38,13 +38,12 @@ export class RenewLicense implements OnInit, OnChanges, OnDestroy {
       companyName:['']
     });
         this.renewForm.get('licenseDuration')?.valueChanges
-        //.pipe(takeUntil(this.destroy$))
+  
         .subscribe(duration => {
           this.updateEndDateBasedOnDuration(duration);
         });
 
           this.renewForm.get('startDate')?.valueChanges
-   // .pipe(takeUntil(this.destroy$))
     .subscribe(() => {
       const duration = this.renewForm.get('licenseDuration')?.value;
       if (duration) {

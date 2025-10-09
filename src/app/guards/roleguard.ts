@@ -17,8 +17,8 @@ export class RoleGuard implements CanActivate {
         this.router.navigate(['/validate-login-request']);
         return false;
       }
-      const requiredRoles = route.data['role'] as string; // Comma-separated roles
-      const roleArray = requiredRoles.split(',').map(role => role.trim()); // Convert to array
+      const requiredRoles = route.data['role'] as string;
+      const roleArray = requiredRoles.split(',').map(role => role.trim()); 
       const hasRequiredRole = roleArray.some(role => this.authService.hasRole(role));
       if (!hasRequiredRole) {
         this.router.navigate(['/denied']);

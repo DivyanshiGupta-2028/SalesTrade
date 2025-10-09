@@ -63,8 +63,6 @@ export class ValidateTokenPassword implements OnInit {
     return;
   }
 
-  //const username = this.usernameForm.value.username;
-  //const rememberMe = this.usernameForm.value.rememberMe;
     if (this.passwordForm.valid) {
       const password = this.passwordForm.value.password;
       this.authService.login(this.username, password, this.tempToken, this.rememberMe).subscribe(

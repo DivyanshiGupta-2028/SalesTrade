@@ -1,4 +1,4 @@
-// models/client.model.ts
+
 export interface Client {
   id?: number;
   name: string;
@@ -16,11 +16,6 @@ export interface Client {
   user_id: number;
 }
 
-// export interface Country {
-//   id: number;
-//   name: string;
-//   code?: string;
-// }
 
 export interface Country {
   id: number;
@@ -74,7 +69,6 @@ export interface LicenseClientContact {
   title?: string;
   firstname: string;
   lastname?: string;
-  //positionTitle?: string;
   otherPositionTitle?: string;
   emailAddress: string;
   telephone1?: string;
@@ -117,16 +111,11 @@ export interface ClientAddress {
 export interface ExchangeClientAddress {
   addressID?: number | null;
   exchangeClientId: number |null;
-  //exchangeClientContactId: number | null;
   clientAddressId?: number |null;
-
-  // addressType: string;
-
   addressLine1?: string;
   addressLine2?: string;
   addressLine3?: string;
   addressLine4?: string;
-
   country?: number;
   state?: string;
   pincode?: string;

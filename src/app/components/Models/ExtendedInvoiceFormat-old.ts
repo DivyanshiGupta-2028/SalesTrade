@@ -9,6 +9,5 @@ export interface ExtendedInvoiceFormat extends InvoiceFormat {
   };
   itemColumnsParsed?: {
     key: string;
-    // label: string;
   }[];
 }

@@ -53,10 +53,10 @@
   display: block !important;
 }
 
-/* When sidebar is open - button goes INSIDE the black sidebar area */
+
 .sidebar-toggle-button.sidebar-open {
-  left: 20px !important; /* Inside the sidebar, not at the edge */
-  background-color: #444 !important; /* Slightly different color */
+  left: 20px !important;
+  background-color: #444 !important; 
   border-radius: 4px !important;
 }
 
@@ -106,7 +106,7 @@
 fa-icon {
   font-size: 18px !important;
   min-width: 20px !important;
-  color: #f1c40f !important; /* golden color */
+  color: #f1c40f !important; 
   display: inline-block;
 }
 //Header css

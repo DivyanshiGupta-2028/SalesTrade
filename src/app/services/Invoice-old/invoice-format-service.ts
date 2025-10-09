@@ -9,7 +9,7 @@ import { InvoiceFormat } from '../../components/Models/InvoiceFormat';
 })
 export class InvoiceFormatService {
 
-   private apiUrl = `${environment.apiUrl}`; // update if different
+   private apiUrl = `${environment.apiUrl}`; 
 
   constructor(private http: HttpClient) {}
 

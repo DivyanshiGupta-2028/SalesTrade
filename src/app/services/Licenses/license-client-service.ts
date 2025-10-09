@@ -13,19 +13,6 @@ export class LicenseClientService {
 private apiUrl = `${environment.apiUrl}`;
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-
-
-// addExchangeClient(clientData: ExchangeClient): Observable<{ ExchangeClientId: number }> {
-//     return this.http.post<{ ExchangeClientId: number }>(
-//       `${this.apiUrl}/exchanges/add-client`,
-//       clientData
-//     );
-//   }
-
-// addExchangeClient(payload: ExchangeClientPayload): Observable<ExchangeClientPayload> {
-//   return this.http.post<ExchangeClientPayload>(`${this.apiUrl}/Exchanges/add-client`, payload);
-// }
-
 addLicenseClient(payload: LicenseClient): Observable<LicenseClient> {
   return this.http.post<LicenseClient>(`${this.apiUrl}/License/add-client`, payload);
 }
@@ -35,9 +22,7 @@ checkBusinessNameExists(businessName: string, licenseId?: number): Observable<bo
   if (businessName) {
     params = params.set('businessName', businessName);
   }
-  // if (legalName) {
-  //   params = params.set('legalName', legalName);
-  // }
+
 
   return this.http.get<boolean>(`${this.apiUrl}/License/check-business-name`, { params });
 }
@@ -48,9 +33,7 @@ checkLegalNameExists(legalName: string, licenseId?: number): Observable<boolean>
   if (legalName) {
     params = params.set('legalName', legalName);
   }
-  // if (legalName) {
-  //   params = params.set('legalName', legalName);
-  // }
+
 
   return this.http.get<boolean>(`${this.apiUrl}/License/check-legal-name`, { params });
 }

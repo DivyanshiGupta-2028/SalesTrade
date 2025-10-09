@@ -79,7 +79,7 @@ export interface LicenseFlow {
   taxReferenceGeneral: string;
   taxReferenceSales: string;
   kyc: string;
-  cashRevenue: number; // numeric string as per pattern /^\d*$/
+  cashRevenue: number;
   total12MonthIncome: number;
   numberOfEmployee: number;
   businessStartDate: Date;

@@ -25,7 +25,6 @@ export class AuthService extends BaseService {
 
   constructor(http: HttpClient, private router: Router,
     private platformService: PlatformService,
-    // private cookieService: SsrCookieService
     ) {
     super(http);
     this.loadStoredRoleAndPermissions();

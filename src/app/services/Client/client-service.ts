@@ -141,7 +141,6 @@ getCountries(): Observable<Country[]> {
             c.name != null && typeof c.name === 'string' && c.name.trim() !== ''
           );
 
-         // filtered.sort((a, b) => (a.name ?? '').localeCompare(b.name ?? ''));
 
           return filtered;
         }),
@@ -152,12 +151,6 @@ getCountries(): Observable<Country[]> {
       );
   }
 
-
-
-  // getRoles(): Observable<NetRoles[]> {
-  //   return this.http.get<NetRoles[]>(`${this.apiUrl}/Exchanges/roles`)   
-  //  }
-  
    getRoles(): Observable<any> {
     return this.http.get<any[]>(`${this.apiUrl}/License/roles`);
   }
@@ -260,7 +253,6 @@ getLicenseContactClientById(licenseId: number ): Observable<LicenseClientContact
   console.log('Fetching client by ID:', licenseId);
  const params: any = {};
   if (licenseId !== undefined && licenseId !== null) params.licenseId = licenseId;
-  //if (exchangeClientId !== undefined && exchangeClientId !== null) params.exchangeClientId = exchangeClientId;
   return this.http.get<ApiResponse<LicenseClientContact>>(`${this.apiUrl}/AccountsAdmin/get-license-client-contacts-by-id`,
       { params })
     .pipe(
@@ -290,7 +282,6 @@ getLicenseContactClientById(licenseId: number ): Observable<LicenseClientContact
 getLicenseContactClientByLicenseId( licenseClientId?: number): Observable<LicenseClientContact> {
   console.log('Fetching client by ID:',  licenseClientId);
   const params: any = {};
-  //if (id !== undefined && id !== null) params.id = id;
   if (licenseClientId !== undefined && licenseClientId !== null) params.licenseClientId = licenseClientId;
 
   return this.http.get<ApiResponse<LicenseClientContact>>(
