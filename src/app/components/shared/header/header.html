@@ -22,6 +22,7 @@
           <a class="nav-link dropdown-toggle d-flex align-items-center"  (click)="toggleDropdown()" tabindex="0" (blur)="closeDropdown()" role="button"  aria-expanded="false">
             <i class="fa-solid fa-user-circle user-icon me-2"></i>
             <span>{{ firstName }} {{ lastName }}</span>
+            <span>{{ email }}</span>
           </a>
           <ul class="dropdown-menu dropdown-menu-end" [class.show]="showDropdown">
              <li>

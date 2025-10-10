@@ -42,6 +42,8 @@ import { AddProfile } from './components/profile/add-profile/add-profile';
 import { Profile } from './components/profile/profile/profile';
 import { ViewUser } from './components/profile/view-user/view-user';
 import { LicenseFlow } from './components/licenses/license-flow/license-flow';
+import { AdminLicenseList } from './components/Admin/license-list/license-list';
+import { UserLicenseSummary } from './components/Admin/license-summary/license-summary';
 
 
 export const routes: Routes = [
@@ -92,7 +94,8 @@ export const routes: Routes = [
    //   { path: 'exchangelist', component:ExchangeList, canActivate: [RoleGuard], data: { role:'SuperAdmin'}},
       { path: 'add-license', component:AddLicense, canActivate: [RoleGuard], data: { role:'SuperAdmin'}},
       { path: 'edit-license/:id', component:EditLicense, canActivate: [RoleGuard], data: { role:'SuperAdmin'}},
-      { path: 'license-summary', component:LicenseSummary, canActivate: [RoleGuard], data: { role:'SuperAdmin'}},
+      { path: 'license-summary', component:LicenseSummary, canActivate: [RoleGuard], data: { role:'SuperAdmin,Admin'}},
+      { path: 'user-license-summary', component:UserLicenseSummary, canActivate: [RoleGuard], data: { role:'Admin'}},
       //{ path: 'add-exchange-flow', component:AddLFlow, canActivate: [RoleGuard], data: { role:'SuperAdmin'}},
       { path: 'left-menu', component:LeftMenu, canActivate: [RoleGuard], data: { role:'SuperAdmin, Admin'}},
      // { path: 'blog', component:Blog, canActivate: [RoleGuard], data: { role:'SuperAdmin'}},
@@ -105,6 +108,8 @@ export const routes: Routes = [
         {
           path: 'license-add', component:LicenseFlow, canActivate: [RoleGuard], data: {role: 'SuperAdmin'}
         },
+        { path: 'user-license-list', component: AdminLicenseList, canActivate: [RoleGuard], data: {role: 'Admin'}
+      },
 
         
       {

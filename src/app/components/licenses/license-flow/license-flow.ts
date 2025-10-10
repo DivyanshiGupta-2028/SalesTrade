@@ -251,6 +251,7 @@ export class LicenseFlow implements OnInit, OnDestroy {
         isListedOnWebsite: [false],
         isLicenseMember: [false],
         hasPermissionToUseInvoiceSystem: [false],
+        isPrimary: [false]
       }),
     });
 
@@ -414,7 +415,8 @@ export class LicenseFlow implements OnInit, OnDestroy {
             isListedInDirectory: data.isListedInDirectory ?? false,
             isListedOnWebsite: data.isListedOnWebsite ?? false,
             isLicenseMember: data.isLicenseMember ?? false,
-            hasPermissionToUseInvoiceSystem: data.hasPermissionToUseInvoiceSystem ?? false
+            hasPermissionToUseInvoiceSystem: data.hasPermissionToUseInvoiceSystem ?? false,
+            isPrimary: data.isPrimary ?? false
           }
 
         });
@@ -448,6 +450,7 @@ export class LicenseFlow implements OnInit, OnDestroy {
           startDate: data.start || '',
           endDate: data.expiry || '',
           renewal: data.renewal ?? false,
+          isPrimary: data.isPrimary ?? false
         });
 
 
@@ -482,6 +485,7 @@ export class LicenseFlow implements OnInit, OnDestroy {
           state: data.state || '',
           otherState: data.otherState || '',
           pincode: data.pincode || '',
+          isPrimary: data.isPrimary ?? false,
 
         });
 

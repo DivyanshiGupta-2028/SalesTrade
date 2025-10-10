@@ -20,6 +20,7 @@ export class Header implements OnInit {
    userId : string ='';
    firstName: string = '';
    lastName: string = '';
+   email: string = '';
    showAddUserButton = false;
   constructor(
     private popupService: PopupService,
@@ -35,6 +36,11 @@ export class Header implements OnInit {
 
 
   ngOnInit(): void {
+    const user = sessionStorage.getItem('userinfo');
+    const parsedUser = user ? JSON.parse(user) : null;
+  if (parsedUser &&  parsedUser?.id) {
+    this.email = parsedUser?.email || '';
+  }
      this.route.queryParams.subscribe(params => {
     this. userId =  params['userId'];
     console.log('UserId from query params:', this.userId);
@@ -46,6 +52,7 @@ export class Header implements OnInit {
     }
   
   }
+  
 
 )}
 

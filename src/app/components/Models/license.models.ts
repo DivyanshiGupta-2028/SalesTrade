@@ -35,6 +35,7 @@ export interface License {
   mobile: number,
   latitude: number,
   longitude: number,
+  isPrimary?: boolean;
 }
 
 
@@ -115,6 +116,7 @@ export interface LicenseFlow {
   isListedOnWebsite: boolean;
   isLicenseMember: boolean;
   hasPermissionToUseInvoiceSystem: boolean;
+  isPrimary?: boolean;
 }
 
 

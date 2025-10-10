@@ -65,6 +65,7 @@ export interface LicenseClientView {
   canSendMessages: boolean;
   canReceiveMessages: boolean;
   hasPermissionToUseInvoiceSystem: boolean;
+  isPrimary?: boolean;
 }
 
 

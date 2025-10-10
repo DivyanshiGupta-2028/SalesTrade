@@ -16,6 +16,11 @@
 ::ng-deep .mat-calendar-body-today {
   border: 1px solid #007bff !important;
 }
+::ng-deep .mat-calendar-body-disabled .mat-calendar-body-cell-content {
+  //background-color: #f0f0f0 !important;
+  color: #cfcdcd !important;
+  cursor: not-allowed !important;
+}
 
 
 

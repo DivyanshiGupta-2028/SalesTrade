@@ -1,0 +1,77 @@
+<div class="row">
+    <div class="d-flex justify-content-between align-items-center my-4">
+     <app-user-bar-control
+        [title]="pageTitle"
+        [subtitle]="pageSubtitle"
+        [showBackButton]="showBackFlag"
+       [showSubtitle] = true>
+      </app-user-bar-control>
+    </div>
+</div>
+
+ <div *ngIf="license$ | async as license" class="card shadow-sm mt-0">
+    <div class="card-header text-black">
+      <h5 class="mb-0">License Summary</h5>
+    </div>
+    <div class="card-body">
+      <dl class="row">
+        <dt class="col-sm-4">License Parent Company:</dt>
+        <dd class="col-sm-8">{{ license.parentCompanyName || '-' }}</dd>
+
+        <dt class="col-sm-4">Company Name:</dt>
+        <dd class="col-sm-8">{{ license.companyName || '-' }}</dd>
+
+        <dt class="col-sm-4">License Owner:</dt>
+        <dd class="col-sm-8">{{ license.title }} {{ license.firstName }} {{ license.lastName }}</dd>
+
+        <dt class="col-sm-4">License Type:</dt>
+        <dd class="col-sm-8 text-capitalize">{{ license.licenseType || '-' }}</dd>
+
+        <dt class="col-sm-4">License Expiry:</dt>
+        <dd class="col-sm-8">{{ license.expiry | date:'mediumDate' }}</dd>
+
+        <dt class="col-sm-4">License Start Date:</dt>
+        <dd class="col-sm-8">{{ license.start | date:'mediumDate' }}</dd>
+
+        <dt class="col-sm-4">License Active:</dt>
+        <dd class="col-sm-8">
+          <span class="badge" [ngClass]="license.isActive ? 'bg-success' : 'bg-danger'">
+            {{ license.isActive ? 'Active' : 'Suspended' }}
+          </span>
+        </dd>
+
+        <dt class="col-sm-4">License Renewal:</dt>
+        <dd class="col-sm-8 text-capitalize">{{ license.renewal || '-' }}</dd>
+
+        <dt class="col-sm-4">Address:</dt>
+        <dd class="col-sm-8 text-wrap">
+          {{ license.addressLine1 }} {{ license.addressLine2 }} {{ license.addressLine3 }} {{ license.addressLine4 }},
+          {{ license.stateName }}, {{ license.countryName }}, {{ license.pincode }}
+        </dd>
+
+        <dt class="col-sm-4">Currency:</dt>
+        <dd class="col-sm-8">{{ license.currency || '-' }}</dd>
+
+        <dt class="col-sm-4">Language:</dt>
+        <dd class="col-sm-8">{{ license.language || '-' }}</dd>
+
+        <dt class="col-sm-4">Reference:</dt>
+        <dd class="col-sm-8">{{ license.referencePrefix || '-' }}</dd>
+      </dl>
+    </div>
+    <div class="card-footer d-flex justify-content-end gap-2">
+      <button (click)="viewDetails(license.licenseId)" class="btn btn-primary btn-sm">
+        Modify
+      </button>
+      <button (click)="openAlert(license.licenseId ?? 0)" class="btn btn-warning btn-sm">
+        Renew License
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="errors$ | async as errors" class="alert alert-danger mt-3">
+    <ul class="mb-0">
+      <li *ngFor="let error of errors">{{ error }}</li>
+    </ul>
+  </div>
+
