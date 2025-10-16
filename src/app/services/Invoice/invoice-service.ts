@@ -13,6 +13,6 @@ export class InvoiceService {
   constructor(private http: HttpClient) {}
 
   getAllRecordPayments(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/AccountsAdmin/record-payments`);
+    return this.http.get<any>(`${this.apiUrl}/AccountsAdmin/get-record-payments`);
   }
 }

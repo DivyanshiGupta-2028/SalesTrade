@@ -36,13 +36,15 @@
         <td>{{ est.member_Name }}</td>
         <td>{{ est.invoice_Date | date: 'shortDate' }}</td>
        <td>
-  <span [ngClass]="{
+<!-- Debug version - यह add करें -->
+<span [ngClass]="{
     'status-pill': true,
-    'pending': est.payment_Status?.toLowerCase() === 'pending',
-    'done': est.payment_Status?.toLowerCase() === 'payment done'
-  }">
-    {{ est.payment_Status }}
-  </span>
+    'pending': normalizeStatus(est?.payment_Status) === 'PENDING',
+    'done': normalizeStatus(est?.payment_Status) === 'PAYMENT DONE'
+  }"
+  title="Raw: '{{est?.payment_Status}}' | Normalized: '{{normalizeStatus(est?.payment_Status)}}'">
+ {{normalizeStatus(est?.payment_Status)}}
+</span>
 </td>
 
         <td>⋮</td>

@@ -23,6 +23,9 @@ export class ViewEstimate implements OnInit {
     });
   }
 
+  normalizeStatus(status: string | null | undefined): string {
+  return (status?.toUpperCase().trim() || '').toUpperCase();
+}
   switchTab(tab: string): void {
     this.activeTab = tab;
   }

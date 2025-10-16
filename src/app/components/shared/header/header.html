@@ -9,10 +9,64 @@
 
   <div [class.collapse]="!menuOpen" class="navbar-collapse" id="navbarNavDropdown">
 <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-  <li class="nav-item" *ngIf="authService.hasRoleObservable('SuperAdmin') | async">
-    <a class="nav-link" routerLink="/user-list" routerLinkActive="active">Manage Users</a>
+<li class="nav-item" *ngIf="authService.hasRoleObservable('SuperAdmin') | async">
+    <a 
+      class="nav-link px-3 py-2 rounded text-center fw-semibold"
+      routerLink="/user-list"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <i class="fa-solid fa-users me-2"></i> Manage Users
+    </a>
   </li>
-  <li class="nav-item" *ngIf="authService.hasRoleObservable('manager,admin,user') | async">Manager/Admin Menu</li>
+
+  <!-- Admin: Expenses -->
+  <li class="nav-item" *ngIf="authService.hasRoleObservable('Admin') | async">
+    <a 
+      class="nav-link px-3 py-2 rounded text-center fw-semibold"
+      routerLink="/view-expenses"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <i class="fa-solid fa-indian-rupee-sign me-2"></i> Expenses
+    </a>
+  </li>
+
+  <!-- Admin: Estimates -->
+  <li class="nav-item" *ngIf="authService.hasRoleObservable('Admin') | async">
+    <a 
+      class="nav-link px-3 py-2 rounded text-center fw-semibold"
+      routerLink="/view-estimate"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <i class="fa-solid fa-file-invoice-dollar me-2"></i> Estimates
+    </a>
+  </li>
+
+  <!-- Admin: Invoices -->
+  <li class="nav-item" *ngIf="authService.hasRoleObservable('Admin') | async">
+    <a 
+      class="nav-link px-3 py-2 rounded text-center fw-semibold"
+      routerLink="/invoice-list"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <i class="fa-solid fa-file-invoice me-2"></i> Invoices
+    </a>
+  </li>
+
+  <!-- Admin: Clients -->
+  <li class="nav-item" *ngIf="authService.hasRoleObservable('Admin') | async">
+    <a 
+      class="nav-link px-3 py-2 rounded text-center fw-semibold"
+      routerLink="/manage-client-list"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <i class="fa-solid fa-user-tie me-2"></i> Clients
+    </a>
+  </li>
 </ul>
 
 </div>

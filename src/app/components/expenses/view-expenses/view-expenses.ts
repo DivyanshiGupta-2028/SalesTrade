@@ -12,7 +12,7 @@ import { ExpensesService } from '../../../services/Expenses/expenses-service';
 export class ViewExpenses implements OnInit {
   expenses: any[] = [];
 
-  private expensesService = inject(ExpensesService); // ✅ inject service (Angular 14+ syntax)
+  private expensesService = inject(ExpensesService); 
 
   ngOnInit(): void {
     this.expensesService.getAllExpenses().subscribe({

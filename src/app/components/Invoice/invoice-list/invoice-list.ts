@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { InvoiceService } from '../../services/Invoice/invoice-service';
+import { InvoiceService } from '../../../services/Invoice/invoice-service';
 
 
 

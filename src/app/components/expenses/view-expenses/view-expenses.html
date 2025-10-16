@@ -19,9 +19,13 @@
     <button><i class="fas fa-search"></i></button>
   </div>
 
- <div class="table-container">
-  <table class="expenses-table">
-    <thead>
+ <!-- <div class="table-container">
+  <table class="expenses-table"> -->
+    <div class="table-responsive">
+      <!-- <table class="table text-nowrap"> -->
+        <table class="expenses-table"> 
+ 
+    <thead >
       <tr>
         <th>Date</th>
         <th>Paid to</th>
@@ -38,7 +42,7 @@
         <td colspan="8" class="empty-row">No data available in table</td>
       </tr>
       <tr *ngFor="let expense of expenses">
-      <td>{{ expense.payment_Date }}</td>
+      <td>{{ expense.date }}</td>
        <td>{{ expense.vendor_Name }}</td>
        <td>{{ expense.amount }}</td>
        <td>{{ expense.bill_Amount }}</td>

@@ -46,6 +46,7 @@ export class ManageClientList implements OnInit {
         }
       }
     });
+    this.getContacts();
   }
 
 

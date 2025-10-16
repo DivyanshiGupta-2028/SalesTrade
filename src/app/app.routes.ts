@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { CreateInvoice} from './components/create-invoice/create-invoice';
-import { InvoiceList} from './components/invoice-list/invoice-list';
+import { InvoiceList} from './components/Invoice/invoice-list/invoice-list';
 import { ViewEstimate } from './components/estimate/view-estimate/view-estimate';
 import { AddClient } from './components/client/add-client/add-client';
 import { ViewClient } from './components/client/view-client/view-client';
@@ -79,14 +79,14 @@ export const routes: Routes = [
       { path: 'license-client-list', component:LicenseClientList, canActivate: [RoleGuard], data: { role: 'SuperAdmin' } },
       { path: 'license-client-flow', component:LicenseClientFlow, canActivate: [RoleGuard], data: { role: 'SuperAdmin' } },
       { path: 'license-client-flow/:id', component:LicenseClientFlow, canActivate: [RoleGuard], data: { role: 'SuperAdmin' } },
-      { path: 'view-user', component:ViewUser, canActivate: [RoleGuard], data: { role: 'SuperAdmin' } },
+      { path: 'view-user', component:ViewUser, canActivate: [RoleGuard], data: { role: 'SuperAdmin,Admin' } },
       // { path: 'license-client-view/:id', component:ExchangeClientView , canActivate: [RoleGuard], data: { role: 'SuperAdmin' } },
       //{ path: 'license-client-edit/:id', component:ExchangeClientEdit, canActivate: [RoleGuard], data: { role: 'SuperAdmin,Admin' } },
      // { path: 'manage-clients/:contactId', component: ManageClients, canActivate: [RoleGuard], data: { role: 'SuperAdmin,Admin' } },
      { path: 'manage-clients/:id', component: ManageClients, canActivate: [RoleGuard], data: { role: 'SuperAdmin'  } },
       { path: 'manage-clients', component: ManageClients , canActivate: [RoleGuard], data: { role: 'SuperAdmin' } },
       { path: 'has-permission', component: HasPermission , canActivate: [RoleGuard], data: { role: 'SuperAdmin' } },
-      { path: 'manage-client-list', component: ManageClientList, canActivate: [RoleGuard], data: { role: 'SuperAdmin' } },
+      { path: 'manage-client-list', component: ManageClientList, canActivate: [RoleGuard], data: { role: 'SuperAdmin,Admin' } },
       { path: 'manage-client-address/:id', component: ManageClientAddress, canActivate: [RoleGuard], data: { role: 'SuperAdmin' } },
       { path: 'manage-client-address', component: ManageClientAddress, canActivate: [RoleGuard], data: { role: 'SuperAdmin' } },
       { path: 'manage-client-address-list', component: ManageClientAddressList, canActivate: [RoleGuard], data: { role: 'SuperAdmin' } },

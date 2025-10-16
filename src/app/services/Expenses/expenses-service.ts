@@ -13,6 +13,6 @@ export class ExpensesService {
   constructor(private http: HttpClient) {}
 
   getAllExpenses(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/AccountsAdmin/expenses`);
+    return this.http.get<any>(`${this.apiUrl}/AccountsAdmin/get-expenses`);
   }
 }
