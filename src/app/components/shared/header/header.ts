@@ -36,11 +36,14 @@ export class Header implements OnInit {
 
 
   ngOnInit(): void {
-    const user = sessionStorage.getItem('userinfo');
-    const parsedUser = user ? JSON.parse(user) : null;
-  if (parsedUser &&  parsedUser?.id) {
-    this.email = parsedUser?.email || '';
-  }
+   setTimeout(() => {
+    this.loadUserFromSession();
+  }, 500);
+  //   const user = sessionStorage.getItem('userinfo');
+  //   const parsedUser = user ? JSON.parse(user) : null;
+  // if (parsedUser &&  parsedUser?.id) {
+  //   this.email = parsedUser?.email || '';
+  // }
      this.route.queryParams.subscribe(params => {
     this. userId =  params['userId'];
     console.log('UserId from query params:', this.userId);
@@ -51,10 +54,31 @@ export class Header implements OnInit {
       });
     }
   
-  }
-  
+  });
 
-)}
+  // this.router.events.subscribe(event => {
+  //   if (event instanceof NavigationEnd) {
+  //     this.loadUserFromSession();
+  //   }
+  // });
+
+
+}
+
+private loadUserFromSession(): void {
+  const user = sessionStorage.getItem('userinfo');
+  if (user) {
+    try {
+      const parsedUser = JSON.parse(user);
+      if (parsedUser && parsedUser.id) {
+        this.email = parsedUser.email || '';
+        console.log('User loaded from session:', this.email); 
+      }
+    } catch (error) {
+      console.error('Error parsing session user:', error);
+    }
+  }
+}
 
 
 toggleMenu() {
