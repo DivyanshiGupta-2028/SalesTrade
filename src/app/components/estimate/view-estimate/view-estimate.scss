@@ -491,9 +491,12 @@
         &.export-btn {
           background: #fff;
           color: #4b2ec3;
+          font-weight:470;
 
           &:hover {
             background: #3a1fa5;
+            color:white;
+            font-weight:470;
           }
         }
       }

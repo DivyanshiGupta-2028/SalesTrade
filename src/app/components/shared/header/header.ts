@@ -38,7 +38,7 @@ export class Header implements OnInit {
   ngOnInit(): void {
    setTimeout(() => {
     this.loadUserFromSession();
-  }, 500);
+  }, 100);
   //   const user = sessionStorage.getItem('userinfo');
   //   const parsedUser = user ? JSON.parse(user) : null;
   // if (parsedUser &&  parsedUser?.id) {
