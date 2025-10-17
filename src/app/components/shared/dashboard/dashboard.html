@@ -3,10 +3,20 @@
   <div class="month-selector">
     <label for="month">Month</label>
    <select id="month" [(ngModel)]="selectedMonth">
-  <option *ngFor="let month of ['July', 'June', 'May']">{{ month }}</option>
+  <option *ngFor="let month of ['January', 'February', 'March', 'April','May','June','July', 'August', 'September', 'October', 'November','December' ]">{{ month }}</option>
+</select>
+
+<div class="year-selector">
+    <label for="year">Year</label>
+   <select id="year" [(ngModel)]="selectedYear">
+  <option *ngFor="let year of ['2013', '2014', '2015', '2016','2017','2018','2019', '2020', '2021', '2022', '2023','2024', '2025' ]">{{ year }}</option>
 </select>
 
   </div>
+
+  </div>
+
+    
 
   <!-- Summary Cards -->
   <div class="summary-cards">

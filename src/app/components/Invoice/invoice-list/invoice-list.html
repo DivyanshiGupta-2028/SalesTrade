@@ -1,20 +1,25 @@
-<div class="invoice-wrapper">
+<!-- <div class="invoice-wrapper"> -->
   <!-- Tabs -->
-  <div class="tabs">
+  <!-- <div class="tabs">
     <span [class.active]="activeTab === 'all'" (click)="switchTab('all')">All invoices</span>
     <span [class.active]="activeTab === 'gst'" (click)="switchTab('gst')">GST Invoices</span>
     <span [class.active]="activeTab === 'intl'" (click)="switchTab('intl')">International Invoices</span>
-  </div>
+  </div> -->
 
   <!-- Search -->
-  <div class="search-bar">
+  <!-- <div class="search-bar">
     <input type="text" [(ngModel)]="searchText" placeholder="Search invoice..." />
     <button><i class="fas fa-search"></i></button>
-  </div>
+  </div> -->
 
   <!-- Table -->
-  <div class="table-container">
-   <table class="invoice-table">
+  <!-- <div class="table-container">
+   <table class="invoice-table"> -->
+
+    <!-- <div class="row">
+    <div class="col-12"> -->
+<!-- <div class="table-wrapper"> -->
+  <!-- <table class=" table  table-striped w-100">
     <thead>
       <tr>
         <th>Invoice No.</th>
@@ -36,7 +41,7 @@
         <td>{{ record.estimate_Amount }}</td>
         <td>{{ record.name }}</td>
         <td>{{ record.tds }}</td>
-        <td>{{ record.amount_Date | date: 'shortDate' }}</td>
+        <td>{{ record.date  }}</td>
         <td>{{ record.amount }}</td>
         <td><span class="tag-pill">{{ record.categoryTitle }}</span></td>
         <td>⋮</td>
@@ -44,4 +49,71 @@
     </tbody>
    </table>
 </div>
+</div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="invoice-wrapper">
+  <!-- Tabs -->
+  <div class="tabs">
+    <span [class.active]="activeTab === 'all'" (click)="switchTab('all')">All invoices</span>
+    <span [class.active]="activeTab === 'gst'" (click)="switchTab('gst')">GST Invoices</span>
+    <span [class.active]="activeTab === 'intl'" (click)="switchTab('intl')">International Invoices</span>
+  </div>
+
+  <!-- Search -->
+  <div class="search-bar">
+    <input type="text" [(ngModel)]="searchText" placeholder="Search invoice..." />
+    <button><i class="fas fa-search"></i></button>
+  </div>
+
+  <!-- Table - Add table-wrapper -->
+  <div class="table-wrapper">
+    <table class="table table-striped w-100">
+      <thead>
+        <tr>
+          <th>Invoice No.</th>
+          <th>Amount</th>
+          <th>Client Name</th>
+          <th>TDS Deducted</th>
+          <th>Date</th>
+          <th>₹ Received</th>
+          <th>Tag</th>
+          <th>...</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let record of filteredPayments">
+          <td>
+            {{ record.id }}
+            <span *ngIf="record.type === 'GST'" class="label">GST</span>
+          </td>
+          <td>{{ record.estimate_Amount }}</td>
+          <td>{{ record.name }}</td>
+          <td>{{ record.tds }}</td>
+          <td>{{ record.date }}</td>
+          <td>{{ record.amount }}</td>
+          <td><span class="tag-pill">{{ record.categoryTitle }}</span></td>
+          <td>⋮</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

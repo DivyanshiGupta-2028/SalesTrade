@@ -1,6 +1,6 @@
-<div class="expenses-wrapper">
+<!-- <div class="expenses-wrapper">
   <div class="tabs-header">
-    <div class="tabs">
+    <div class="tabs"> -->
       <!-- <span
         [class.active]="activeTab === 'all'"
         (click)="switchTab('all')"
@@ -9,7 +9,7 @@
         [class.active]="activeTab === 'gst'"
         (click)="switchTab('gst')"
       >GST Claimable Expenses</span> -->
-    </div>
+    <!-- </div>
 
     <button class="add-btn">Add Expense</button>
   </div>
@@ -17,13 +17,17 @@
   <div class="search-bar">
     <input type="text"  placeholder="Search expenses..." />
     <button><i class="fas fa-search"></i></button>
-  </div>
+  </div> -->
 
  <!-- <div class="table-container">
   <table class="expenses-table"> -->
-    <div class="table-responsive">
-      <!-- <table class="table text-nowrap"> -->
-        <table class="expenses-table"> 
+    <!-- <div class="table-responsive">
+       <table class="table text-nowrap"> -->
+        <!-- <table class="expenses-table">  --> 
+             <!-- <div class="row"> -->
+    <!-- <div class="col-12"> -->
+<!-- <div class="table-wrapper"> -->
+  <!-- <table class=" table  table-striped w-100">
  
     <thead >
       <tr>
@@ -52,6 +56,53 @@
          <td><span class="tag-pill">{{  expense.categoryTitle }}</span></td>
       </tr>
     </tbody>
-  </table>
-</div>
+  </table> -->
+<!-- </div> -->
+             <!-- </div> -->
+<!-- </div> -->
+<div class="expenses-wrapper">
+  <div class="tabs-header">
+    <div class="tabs">
+      <!-- Uncomment when needed -->
+    </div>
+    <button class="add-btn">Add Expense</button>
+  </div>
+
+  <div class="search-bar">
+    <input type="text" placeholder="Search expenses..." />
+    <button><i class="fas fa-search"></i></button>
+  </div>
+
+  <!-- Add this wrapper -->
+  <div class="table-wrapper">
+    <table class="table table-striped w-100">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Paid to</th>
+          <th>₹ Paid Amt</th>
+          <th>₹ Bill Amt</th>
+          <th>₹ TDS</th>
+          <th>Purpose</th>
+          <th>Paid By</th>
+          <th>Category</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="expenses.length === 0">
+          <td colspan="8" class="empty-row">No data available in table</td>
+        </tr>
+        <tr *ngFor="let expense of expenses">
+          <td>{{ expense.date }}</td>
+          <td>{{ expense.vendor_Name }}</td>
+          <td>{{ expense.amount }}</td>
+          <td>{{ expense.bill_Amount }}</td>
+          <td>{{ expense.tds }}</td>
+          <td>{{ expense.payment_Purpose }}</td>
+          <td>{{ expense.added_By }}</td>
+          <td><span class="tag-pill">{{ expense.categoryTitle }}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

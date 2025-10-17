@@ -13,7 +13,8 @@ import { DashboardService } from '../../../services/Dashboard/dashboard-service'
   styleUrl: './dashboard.scss'
 })
 export class Dashboard implements OnInit{
-  selectedMonth = 'July';
+  selectedMonth = 'October';
+  selectedYear = '2025'
   faArrowDown = faArrowDown;
    dashboardExpenses: any[] = [];
    recordPayments: any[] = [];
