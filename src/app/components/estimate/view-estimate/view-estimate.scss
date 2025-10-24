@@ -430,9 +430,368 @@
 
 
 
+// .estimates-wrapper {
+//   padding: 20px;
+//   background-color: #fff;
+//   border-radius: 8px;
+//   margin-top: 30px;
+
+//   .top-bar {
+//     display: flex;
+//     justify-content: space-between;
+//     align-items: center;
+//     margin-bottom: 15px;
+//     gap: 20px;
+
+//     .tabs {
+//       display: flex;
+//       gap: 20px;
+
+//       span {
+//         cursor: pointer;
+//         font-weight: 500;
+//         color: #333;
+//         padding: 8px 0;
+//         transition: all 0.2s ease;
+
+//         &.active {
+//           color: #4b2ec3;
+//           border-bottom: 2px solid #4b2ec3;
+//           padding-bottom: 6px;
+//         }
+//       }
+//     }
+
+//     .actions {
+//       display: flex;
+//       gap: 10px;
+
+//       .btn {
+//         padding: 8px 16px;
+//         border: 1px solid #4b2ec3;
+//         background: transparent;
+//         color: #4b2ec3;
+//         border-radius: 4px;
+//         font-weight: 400;
+//         cursor: pointer;
+//         transition: all 0.2s ease;
+//         white-space: nowrap;
+
+//         &:hover {
+//           background: #4b2ec3;
+//           color: #fff;
+//         }
+
+//         &.icon-btn {
+//           padding: 8px 12px;
+//           min-width: 30px;
+//           justify-content: center;
+//         }
+
+//         &.export-btn {
+//           background: #fff;
+//           color: #4b2ec3;
+//           font-weight:470;
+
+//           &:hover {
+//             background: #3a1fa5;
+//             color:white;
+//             font-weight:470;
+//           }
+//         }
+//       }
+//     }
+//   }
+
+//   // Table wrapper for responsive scrolling
+//   .table-wrapper {
+//     overflow-x: auto;
+//     -webkit-overflow-scrolling: touch;
+//     border-radius: 6px;
+//     border: 1px solid #e9ecef;
+//     background: #fff;
+//     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+//     margin-top: 20px;
+//   }
+
+//   .table {
+//     // width: 100%;
+//     min-width: 800px; // Minimum width for horizontal scroll
+//     border-collapse: collapse;
+//     margin: 0;
+//     background: #fff;
+
+//     th, td {
+//       padding: 12px 10px;
+//       text-align: left;
+//       vertical-align: middle;
+//       white-space: nowrap;
+//       border: 1px solid #dee2e6;
+//       font-size: 14px;
+//     }
+
+//     th {
+//       background-color: #fafafa;
+//       font-weight: 700;
+//       color: #000000;
+//       position: sticky;
+//       top: 0;
+//       z-index: 10;
+//       text-transform: uppercase;
+//       font-size: 14px;
+//       letter-spacing: 0.5px;
+//     }
+
+//     tbody tr {
+//       transition: background-color 0.2s ease;
+
+//       &:hover {
+//         background-color: #f8f9fa;
+//       }
+
+//       &:nth-child(even) {
+//         background-color: #f8f9fa;
+//       }
+//     }
+
+//     .status-pill {
+//       padding: 6px 12px;
+//       border-radius: 20px;
+//       font-weight: bold;
+//       font-size: 12px;
+//       color: white;
+//       display: inline-block;
+//       text-transform: uppercase;
+//       letter-spacing: 0.5px;
+//     }
+
+//     .pending {
+//       background-color: #ff6b6b;
+//       color: white;
+//     }
+
+//     .done {
+//       background-color: #4cd137;
+//       color: white;
+//     }
+//   }
+// }
+
+// // Tablet and Mobile responsiveness
+// @media (max-width: 768px) {
+//   .estimates-wrapper {
+//     padding: 16px;
+
+//     .top-bar {
+//       flex-direction: column;
+//       align-items: stretch;
+//       gap: 15px;
+
+//       .tabs {
+//         flex-wrap: wrap;
+//         gap: 15px;
+//         justify-content: center;
+
+//         span {
+//           font-size: 14px;
+//           flex: 1;
+//           text-align: center;
+//           padding: 10px 0;
+//         }
+//       }
+
+//       .actions {
+//         justify-content: center;
+//         flex-wrap: wrap;
+//         gap: 10px;
+
+//         .btn {
+//           font-size: 14px;
+//           padding: 10px 16px;
+//           flex: 1;
+//           min-width: 120px;
+//           text-align: center;
+//           // width:30%;
+
+//           &.icon-btn {
+//             min-width: auto;
+//             padding: 10px;
+//           }
+//         }
+//       }
+//     }
+
+//     .table-wrapper {
+//       border-radius: 4px;
+//       margin-top: 15px;
+//     }
+
+//     .table {
+//       min-width: 750px;
+
+//       th, td {
+//         padding: 10px 6px;
+//         font-size: 13px;
+//       }
+
+//       th {
+//         font-size: 11px;
+//       }
+
+//       .status-pill {
+//         padding: 4px 8px;
+//         font-size: 11px;
+//       }
+//     }
+//   }
+// }
+
+// @media (max-width: 480px) {
+//   .estimates-wrapper {
+//     padding: 12px;
+
+//     // .top-bar {
+//     //   .tabs {
+//     //     flex-direction: column;
+//     //     gap: 10px;
+//     //     width: 30%
+
+//     //     span {
+//     //       padding: 10px;
+//     //       border: 1px solid #eee;
+//     //       border-radius: 4px;
+//     //       background: #f8f9fa;
+//     //       text-align: center;
+//     //     }
+//     //   }
+
+//     //   .actions {
+//     //     flex-direction: row;
+//     //     justify-content: center;
+//     //     flex-wrap: wrap;
+//     //     gap: 8px;
+
+//     //     .btn {
+//     //       padding: 8px 12px;
+//     //       font-size: 13px;
+//     //       min-width: 100px;
+
+//     //       &.icon-btn {
+//     //         min-width: 44px;
+//     //         padding: 8px;
+//     //       }
+//     //     }
+//     //   }
+//     // }
+
+
+//      .top-bar {
+//       flex-direction: column;
+//       align-items: stretch;
+//       gap: 15px;
+
+//       .tabs {
+//         flex-wrap: wrap;
+//         gap: 15px;
+//         justify-content: center;
+
+//         span {
+//           font-size: 14px;
+//           flex: 1;
+//           text-align: center;
+//           padding: 10px 0;
+//         }
+//       }
+
+//       .actions {
+//         justify-content: center;
+//         flex-wrap: wrap;
+//         gap: 10px;
+
+//         .btn {
+//           font-size: 14px;
+//           padding: 10px 16px;
+//           flex: 1;
+//           min-width: 120px;
+//           text-align: center;
+//           // width:30%;
+
+//           &.icon-btn {
+//             min-width: auto;
+//             padding: 10px;
+//           }
+//         }
+//       }
+//     }
+
+//     .table {
+//       min-width: 700px;
+
+//       th, td {
+//         padding: 8px 4px;
+//         font-size: 12px;
+//       }
+
+//       th {
+//         font-size: 10px;
+//         padding: 8px 4px;
+//       }
+
+//       .status-pill {
+//         padding: 3px 6px;
+//         font-size: 10px;
+//       }
+//     }
+//   }
+// }
+
+// // Extra small screens
+// @media (max-width: 360px) {
+//   .estimates-wrapper {
+//     padding: 8px;
+
+//     .table {
+//       min-width: 650px;
+
+//       th, td {
+//         padding: 6px 2px;
+//         font-size: 11px;
+//       }
+//     }
+//   }
+// }   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .estimates-wrapper {
   padding: 20px;
-  background-color: #fff;
+  background-color: #ebeaea; // Soft cream background
   border-radius: 8px;
   margin-top: 30px;
 
@@ -450,13 +809,13 @@
       span {
         cursor: pointer;
         font-weight: 500;
-        color: #333;
+        color: #333333; // Dark charcoal
         padding: 8px 0;
         transition: all 0.2s ease;
 
         &.active {
-          color: #4b2ec3;
-          border-bottom: 2px solid #4b2ec3;
+          color: #D4AF37; // Luxurious gold
+          border-bottom: 2px solid #D4AF37; // Luxurious gold
           padding-bottom: 6px;
         }
       }
@@ -468,9 +827,9 @@
 
       .btn {
         padding: 8px 16px;
-        border: 1px solid #4b2ec3;
+        border: 1px solid #1A2A44; // Deep navy blue
         background: transparent;
-        color: #4b2ec3;
+        color: #1A2A44; // Deep navy blue
         border-radius: 4px;
         font-weight: 400;
         cursor: pointer;
@@ -478,7 +837,7 @@
         white-space: nowrap;
 
         &:hover {
-          background: #4b2ec3;
+          background: #15233A; // Darker navy blue
           color: #fff;
         }
 
@@ -489,37 +848,35 @@
         }
 
         &.export-btn {
-          background: #fff;
-          color: #4b2ec3;
-          font-weight:470;
+          background: #FFF5E1; // Soft cream
+          color: #1A2A44; // Deep navy blue
+          font-weight: 470;
 
           &:hover {
-            background: #3a1fa5;
-            color:white;
-            font-weight:470;
+            background: #D4AF37; // Luxurious gold
+            color: #333333; // Dark charcoal
+            font-weight: 470;
           }
         }
       }
     }
   }
 
-  // Table wrapper for responsive scrolling
   .table-wrapper {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     border-radius: 6px;
     border: 1px solid #e9ecef;
-    background: #fff;
+    background: #FFF5E1; // Soft cream
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     margin-top: 20px;
   }
 
   .table {
-    // width: 100%;
-    min-width: 800px; // Minimum width for horizontal scroll
+    min-width: 800px;
     border-collapse: collapse;
     margin: 0;
-    background: #fff;
+    background: #FFF5E1; // Soft cream
 
     th, td {
       padding: 12px 10px;
@@ -528,12 +885,13 @@
       white-space: nowrap;
       border: 1px solid #dee2e6;
       font-size: 14px;
+      color: #333333; // Dark charcoal
     }
 
     th {
-      background-color: #fafafa;
+      background-color: #F9F1E0; // Lighter soft cream
       font-weight: 700;
-      color: #000000;
+      color: #800020; // Rich burgundy
       position: sticky;
       top: 0;
       z-index: 10;
@@ -546,11 +904,11 @@
       transition: background-color 0.2s ease;
 
       &:hover {
-        background-color: #f8f9fa;
+        background-color: #FDF6E9; // Even lighter soft cream
       }
 
       &:nth-child(even) {
-        background-color: #f8f9fa;
+        background-color: #F9F1E0; // Lighter soft cream
       }
     }
 
@@ -566,18 +924,18 @@
     }
 
     .pending {
-      background-color: #ff6b6b;
+      background-color: #FF6F61; // Coral (adjusted to match your earlier preference)
       color: white;
     }
 
     .done {
-      background-color: #4cd137;
-      color: white;
+      background-color: #D4AF37; // Luxurious gold
+      color: #333333; // Dark charcoal
     }
   }
 }
 
-// Tablet and Mobile responsiveness
+// Tablet and Mobile responsiveness (unchanged, only adjusting colors if needed)
 @media (max-width: 768px) {
   .estimates-wrapper {
     padding: 16px;
@@ -611,7 +969,6 @@
           flex: 1;
           min-width: 120px;
           text-align: center;
-          // width:30%;
 
           &.icon-btn {
             min-width: auto;
@@ -650,42 +1007,7 @@
   .estimates-wrapper {
     padding: 12px;
 
-    // .top-bar {
-    //   .tabs {
-    //     flex-direction: column;
-    //     gap: 10px;
-    //     width: 30%
-
-    //     span {
-    //       padding: 10px;
-    //       border: 1px solid #eee;
-    //       border-radius: 4px;
-    //       background: #f8f9fa;
-    //       text-align: center;
-    //     }
-    //   }
-
-    //   .actions {
-    //     flex-direction: row;
-    //     justify-content: center;
-    //     flex-wrap: wrap;
-    //     gap: 8px;
-
-    //     .btn {
-    //       padding: 8px 12px;
-    //       font-size: 13px;
-    //       min-width: 100px;
-
-    //       &.icon-btn {
-    //         min-width: 44px;
-    //         padding: 8px;
-    //       }
-    //     }
-    //   }
-    // }
-
-
-     .top-bar {
+    .top-bar {
       flex-direction: column;
       align-items: stretch;
       gap: 15px;
@@ -714,7 +1036,6 @@
           flex: 1;
           min-width: 120px;
           text-align: center;
-          // width:30%;
 
           &.icon-btn {
             min-width: auto;
@@ -745,7 +1066,6 @@
   }
 }
 
-// Extra small screens
 @media (max-width: 360px) {
   .estimates-wrapper {
     padding: 8px;
