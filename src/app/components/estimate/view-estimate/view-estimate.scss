@@ -852,6 +852,7 @@
 
   .table {
     min-width: 800px;
+    min-width: 800px;
     border-collapse: collapse;
     margin: 0;
     background: #FFF5E1;
@@ -986,6 +987,7 @@
     padding: 12px;
 
     .top-bar {
+    .top-bar {
       flex-direction: column;
       align-items: stretch;
       gap: 15px;
@@ -1057,4 +1059,5 @@
       }
     }
   }
+}
 }
