@@ -216,8 +216,9 @@
 
 .expenses-wrapper {
   padding: 20px;
-  background: #fff;
+  background-color: #ebeaea; 
   border-radius: 8px;
+  margin-top: 30px;
 
   .tabs-header {
     display: flex;
@@ -234,22 +235,22 @@
         margin-right: 0;
         cursor: pointer;
         font-weight: 500;
-        color: #333;
+        color: #333333;
         padding: 8px 0;
         position: relative;
         transition: all 0.2s ease;
 
         &.active {
-          color: #4b2ec3;
-          border-bottom: 2px solid #4b2ec3;
+          color: #D4AF37; 
+          border-bottom: 2px solid #D4AF37; ;
           padding-bottom: 6px;
         }
       }
     }
 
     .add-btn {
-      border: 1px solid #4b2ec3;
-      color: #4b2ec3;
+      border: 1px solid #1A2A44;
+      color: #1A2A44;
       background: transparent;
       border-radius: 4px;
       padding: 8px 16px;
@@ -260,7 +261,7 @@
       margin-left: 60%;
 
       &:hover {
-        background: #4b2ec3;
+        background: #15233A;
         color: #fff;
       }
     }
@@ -281,7 +282,7 @@
       outline: none;
 
       &:focus {
-        border-color: #4b2ec3;
+        border-color: #800020;;
       }
     }
 
@@ -304,22 +305,22 @@
     }
   }
 
-  // Table wrapper for responsive scrolling
+
   .table-wrapper {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     border-radius: 6px;
     border: 1px solid #e9ecef;
-    background: #fff;
+    background: #FFF5E1;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   }
 
   .table {
     // width: 100%;
-    min-width: 800px; // Minimum width for horizontal scroll
+    min-width: 800px;
     border-collapse: collapse;
     margin: 0;
-    background: #fff;
+     background: #FFF5E1;
 
     th, td {
       padding: 12px 10px;
@@ -328,12 +329,13 @@
       white-space: nowrap;
       border: 1px solid #dee2e6;
       font-size: 14px;
+      color: #333333;
     }
 
     th {
-      background-color: #fafafa;
+      background-color: #F9F1E0;
       font-weight: 700;
-      color: #020202;
+      color: #800020;
       position: sticky;
       top: 0;
       z-index: 10;
@@ -346,11 +348,11 @@
       transition: background-color 0.2s ease;
 
       &:hover {
-        background-color: #f8f9fa;
+        background-color: #FDF6E9;
       }
 
       &:nth-child(even) {
-        background-color: #f8f9fa;
+        background-color: #F9F1E0;
       }
     }
 
@@ -365,8 +367,8 @@
     .tag-pill {
       padding: 5px 12px;
       border-radius: 20px;
-      border: 1px solid #4b2ec3;
-      color: #4b2ec3;
+      border: 1px solid #1A2A44;;
+      color: #1A2A44;;
       font-size: 14px;
       font-weight: 500;
       background: #f0f2ff;
@@ -382,7 +384,7 @@
   }
 }
 
-// Tablet and Mobile responsiveness
+
 @media (max-width: 768px) {
   .expenses-wrapper {
     padding: 16px;
@@ -409,8 +411,8 @@
       //   font-size: 14px;
       // }
       .add-btn {
-      border: 1px solid #4b2ec3;
-      color: #4b2ec3;
+      border: 1px solid #1A2A44;
+      color: #1A2A44;
       background: transparent;
       border-radius: 4px;
       padding: 8px 16px;
@@ -422,11 +424,12 @@
       margin-left: 60%;
 
       &:hover {
-        background: #4b2ec3;
+        background: #15233A;
         color: #fff;
       }
     }
     }
+   
 
     // .search-bar {
     //   max-width: 100%;
@@ -460,7 +463,7 @@
       outline: none;
 
       &:focus {
-        border-color: #4b2ec3;
+        border-color:  #15233A;;
       }
     }
 
@@ -471,10 +474,11 @@
       border-radius: 0 4px 4px 0;
       background: #f8f9fa;
       cursor: pointer;
-      transition: background 0.2s ease;
+     // transition: ;
+      background: 0.2s ease;
 
       &:hover {
-        background: #e9ecef;
+        background:  #15233A;;
       }
 
       i {
@@ -535,8 +539,8 @@
       // }
 
       .add-btn {
-      border: 1px solid #4b2ec3;
-      color: #4b2ec3;
+      border: 1px solid #1A2A44;
+      color: #1A2A44;
       background: transparent;
       border-radius: 4px;
       padding: 8px 16px;
@@ -548,7 +552,7 @@
       margin-left: 60%;
 
       &:hover {
-        background: #4b2ec3;
+        background:  #15233A;;
         color: #fff;
       }
     }
@@ -576,7 +580,7 @@
       outline: none;
 
       &:focus {
-        border-color: #4b2ec3;
+        border-color: #15233A;
       }
     }
 
@@ -587,10 +591,11 @@
       border-radius: 0 4px 4px 0;
       background: #f8f9fa;
       cursor: pointer;
-      transition: background 0.2s ease;
+      //transition: ;
+      background: 0.2s ease;
 
       &:hover {
-        background: #e9ecef;
+        background:#15233A;;
       }
 
       i {
@@ -641,8 +646,8 @@
   }
 
    .add-btn {
-      border: 1px solid #4b2ec3;
-      color: #4b2ec3;
+      border: 1px solid #1A2A44;
+      color: #1A2A44;
       background: transparent;
       border-radius: 4px;
       padding: 8px 16px;
@@ -654,7 +659,7 @@
      margin-left: 60%;
 
       &:hover {
-        background: #4b2ec3;
+        background: #1A2A44;
         color: #fff;
       }
     }
@@ -674,7 +679,7 @@
       outline: none;
 
       &:focus {
-        border-color: #4b2ec3;
+        border-color: #1A2A44;
       }
     }
 
@@ -685,7 +690,8 @@
       border-radius: 0 4px 4px 0;
       background: #f8f9fa;
       cursor: pointer;
-      transition: background 0.2s ease;
+     // transition: ;
+      background: 0.2s ease;
 
       &:hover {
         background: #e9ecef;

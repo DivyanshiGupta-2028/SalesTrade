@@ -238,9 +238,9 @@
 
 .invoice-wrapper {
   padding: 20px;
-  background: #fff;
+  background-color: #ebeaea;
   border-radius: 8px;
-
+margin-top: 30px;
   .tabs {
     display: flex;
     gap: 30px;
@@ -254,8 +254,8 @@
       transition: all 0.2s ease;
 
       &.active {
-        color: #4b2ec3;
-        border-bottom: 2px solid #4b2ec3;
+        color: #D4AF37; 
+          border-bottom: 2px solid #D4AF37;
         padding-bottom: 6px;
       }
     }
@@ -277,7 +277,7 @@
       outline: none;
 
       &:focus {
-        border-color: #4b2ec3;
+        border-color:#1A2A44;
       }
     }
 
@@ -300,7 +300,7 @@
     }
   }
 
-  // Table wrapper for responsive scrolling
+
   .table-wrapper {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -330,7 +330,7 @@
     th {
       background-color: #fafafa;
       font-weight: 700;
-      color: #000000;
+      color: #800020;
       position: sticky;
       top: 0;
       z-index: 10;
@@ -367,8 +367,8 @@
     .tag-pill {
       padding: 5px 12px;
       border-radius: 20px;
-      border: 1px solid #4b2ec3;
-      color: #4b2ec3;
+      border: 1px solid #1A2A44;
+      color: #1A2A44;
       font-size: 14px;
       font-weight: 500;
       background: #f0f2ff;
@@ -383,7 +383,7 @@
   }
 }
 
-// Tablet and Mobile responsiveness
+
 @media (max-width: 768px) {
   .invoice-wrapper {
     padding: 16px;
@@ -409,7 +409,7 @@
 
       &.active {
         color: #4b2ec3;
-        border-bottom: 2px solid #4b2ec3;
+        border-bottom: 2px solid #1A2A44;
         padding-bottom: 6px;
       }
     }
@@ -447,7 +447,7 @@
       outline: none;
 
       &:focus {
-        border-color: #4b2ec3;
+        border-color: #1A2A44;
       }
     }
 
@@ -527,7 +527,7 @@
 
       &.active {
         color: #4b2ec3;
-        border-bottom: 2px solid #4b2ec3;
+        border-bottom: 2px solid #1A2A44;
         padding-bottom: 6px;
       }
     }
@@ -597,7 +597,7 @@
   }
 }
 
-// Extra small screens
+
 @media (max-width: 360px) {
   .invoice-wrapper {
     padding: 8px;
@@ -611,8 +611,8 @@
       transition: all 0.2s ease;
 
       &.active {
-        color: #4b2ec3;
-        border-bottom: 2px solid #4b2ec3;
+        color: #1A2A44;
+        border-bottom: 2px solid #1A2A44;
         padding-bottom: 6px;
       }
     }
