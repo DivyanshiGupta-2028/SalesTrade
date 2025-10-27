@@ -16,12 +16,13 @@ export class Profile {
   user$: Observable<UserProfile | undefined>;
   errors$: Observable<string[]> | undefined;
   userId: string = '';
-
+  email: string | null = '';
   constructor(
     private licenseService: LicenseService,
     private route: ActivatedRoute,
     private router: Router
   ) {
+    this.email = this.route.snapshot.paramMap.get('email');
     this.user$ = this.route.queryParams.pipe(
       switchMap(params => {
         const userId = params['userId'] as string;

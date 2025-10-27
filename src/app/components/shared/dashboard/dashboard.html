@@ -2,13 +2,13 @@
   <!-- Month dropdown -->
   <div class="month-selector">
     <label for="month">Month</label>
-   <select id="month" [(ngModel)]="selectedMonth">
+   <select id="month" [(ngModel)]="selectedMonth" (ngModelChange)="fetchData()">
   <option *ngFor="let month of ['January', 'February', 'March', 'April','May','June','July', 'August', 'September', 'October', 'November','December' ]">{{ month }}</option>
 </select>
 
 <div class="year-selector">
     <label for="year">Year</label>
-   <select id="year" [(ngModel)]="selectedYear">
+   <select id="year" [(ngModel)]="selectedYear" (ngModelChange)="fetchData()">
   <option *ngFor="let year of ['2013', '2014', '2015', '2016','2017','2018','2019', '2020', '2021', '2022', '2023','2024', '2025' ]">{{ year }}</option>
 </select>
 
@@ -20,12 +20,38 @@
 
   <!-- Summary Cards -->
   <div class="summary-cards">
-    <div class="card green">
-      <h2>₹ 222,222</h2>
+    <!-- <div class="card green">
+        <tr *ngFor="let record of total_Credits">
+      <h2>{{record.total_Credits}}</h2> 
+      </tr>
+      <p>Total Credits</p>
+    </div>
+    <div class="card red">  -->
+      <!-- <tr *ngFor="let expense of dashboardExpenses"> -->
+      <!-- <h2>{{totalExpenses }}</h2> -->
+      <!-- </tr> -->
+      <!-- <p>Total Expenses</p> -->
+    <!-- </div> -->
+
+    <!-- <div class="card green">
+  <h2> {{ this.total_Credits  }}</h2>
+  <h2>N/A</h2>
+  <p>Total Credits</p>
+</div> -->
+
+<!-- <div class="card red"> -->
+  <!-- <h2 >{{ this.total_Expenses }}</h2> -->
+  <!-- <h2>N/A</h2>
+  <p>Total Expenses</p>
+</div> -->
+
+
+<div class="card green">
+      <h2>{{ total_Credits !== null && total_Credits !== undefined ? total_Credits : 'N/A' }}</h2>
       <p>Total Credits</p>
     </div>
     <div class="card red">
-      <h2>₹ 0</h2>
+      <h2>{{ total_Expenses !== null && total_Expenses !== undefined ? total_Expenses : 'N/A' }}</h2>
       <p>Total Expenses</p>
     </div>
     <div class="card blue">

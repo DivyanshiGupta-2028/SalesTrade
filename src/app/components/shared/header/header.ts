@@ -6,6 +6,7 @@ import { AuthService } from '../../../services/auth.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CommonModule } from '@angular/common';
 import { LicenseService } from 'src/app/services/Licenses/licenseservice.service';
+import { map, Observable } from 'rxjs';
 
 
 @Component({
@@ -22,6 +23,8 @@ export class Header implements OnInit {
    lastName: string = '';
    email: string = '';
    showAddUserButton = false;
+   roles: string = '';
+   logoLink$: Observable<string> | null = null;
   constructor(
     private popupService: PopupService,
     private router: Router,
@@ -44,6 +47,9 @@ export class Header implements OnInit {
   // if (parsedUser &&  parsedUser?.id) {
   //   this.email = parsedUser?.email || '';
   // }
+  this.logoLink$ = this.authService.hasRoleObservable('SuperAdmin').pipe(
+      map(isSuperAdmin => isSuperAdmin ? '/license-dashboard' : '/dashboard')
+    );
      this.route.queryParams.subscribe(params => {
     this. userId =  params['userId'];
     console.log('UserId from query params:', this.userId);
@@ -72,6 +78,7 @@ private loadUserFromSession(): void {
       const parsedUser = JSON.parse(user);
       if (parsedUser && parsedUser.id) {
         this.email = parsedUser.email || '';
+        this.roles = parsedUser.roles || '';
         console.log('User loaded from session:', this.email); 
       }
     } catch (error) {
@@ -79,7 +86,9 @@ private loadUserFromSession(): void {
     }
   }
 }
-
+navigateToProfile() {
+this.router.navigate(['/profile']);
+  }
 
 toggleMenu() {
   this.menuOpen = !this.menuOpen;

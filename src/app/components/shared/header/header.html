@@ -1,7 +1,16 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light px-3 shadow-sm">
-    <a class="navbar-brand d-flex align-items-center" href="./license-dashboard">
+    <!-- <a class="navbar-brand d-flex align-items-center" 
+    href="./license-dashboard" > -->
+
+    <a
+      class="navbar-brand d-flex align-items-center"
+      [routerLink]="(logoLink$ | async) || '/dashboard'"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
       <img src="logo.png" alt="Logo" class="logo me-2">
     </a>
+
     
 <button class="navbar-toggler" type="button" (click)="toggleMenu()">
   <span class="navbar-toggler-icon"></span>
@@ -75,12 +84,13 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle d-flex align-items-center"  (click)="toggleDropdown()" tabindex="0" (blur)="closeDropdown()" role="button"  aria-expanded="false">
             <i class="fa-solid fa-user-circle user-icon me-2"></i>
-            <span>{{ firstName }} {{ lastName }}</span>
+            <!-- <span>{{ firstName }} {{ lastName }}</span> -->
             <span>{{ email }}</span>
           </a>
           <ul class="dropdown-menu dropdown-menu-end" [class.show]="showDropdown">
              <li>
-  <a class="dropdown-item" [routerLink]="['/profile']" [queryParams]="{ userId: userId }">
+  <a class="dropdown-item" [routerLink]="['/profile', email]" >
+    <!-- [queryParams]="{ email: email }" -->
     <i class="fa-solid fa-user me-2"></i>Profile
   </a>
 </li>

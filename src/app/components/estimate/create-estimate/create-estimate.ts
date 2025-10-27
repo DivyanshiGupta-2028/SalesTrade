@@ -20,8 +20,8 @@ import { SelectFormat } from '../../Invoice/select-format/select-format';
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
-    NgIf,       // ✅ For *ngIf
-    NgFor       // ✅ For *ngFor (if you use it)
+    NgIf,      
+    NgFor       
   ],
   templateUrl: './create-estimate.html',
   styleUrl: './create-estimate.scss'
