@@ -98,6 +98,8 @@ fetchData(): void {
       console.error('API Error:', err);
     }
   });
+  // this.dashboardService.getAllExpenses();
+  // this.dashboardService.getAllRecordPayments();
 }
 }
 

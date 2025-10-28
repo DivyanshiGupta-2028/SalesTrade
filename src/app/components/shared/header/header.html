@@ -89,7 +89,7 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-end" [class.show]="showDropdown">
              <li>
-  <a class="dropdown-item" [routerLink]="['/profile', email]" >
+  <a class="dropdown-item" [routerLink]="['/profile']"[state]="{ email: email }" >
     <!-- [queryParams]="{ email: email }" -->
     <i class="fa-solid fa-user me-2"></i>Profile
   </a>

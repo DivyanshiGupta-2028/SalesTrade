@@ -19,5 +19,9 @@ getAllBanks(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/AccountsAdmin/get-banks`);
   }
 
+   deleteEstimate(id: number) {
+  return this.http.delete(`${this.apiUrl}/AccountsAdmin/delete-estimate/${id}`);
+}
+
 
 }

@@ -1,90 +1,23 @@
-<!-- <div class="invoice-wrapper"> -->
-  <!-- Tabs -->
-  <!-- <div class="tabs">
-    <span [class.active]="activeTab === 'all'" (click)="switchTab('all')">All invoices</span>
-    <span [class.active]="activeTab === 'gst'" (click)="switchTab('gst')">GST Invoices</span>
-    <span [class.active]="activeTab === 'intl'" (click)="switchTab('intl')">International Invoices</span>
-  </div> -->
-
-  <!-- Search -->
-  <!-- <div class="search-bar">
-    <input type="text" [(ngModel)]="searchText" placeholder="Search invoice..." />
-    <button><i class="fas fa-search"></i></button>
-  </div> -->
-
-  <!-- Table -->
-  <!-- <div class="table-container">
-   <table class="invoice-table"> -->
-
-    <!-- <div class="row">
-    <div class="col-12"> -->
-<!-- <div class="table-wrapper"> -->
-  <!-- <table class=" table  table-striped w-100">
-    <thead>
-      <tr>
-        <th>Invoice No.</th>
-        <th>Amount</th>
-        <th>Client Name</th>
-        <th>TDS Deducted</th>
-        <th>Date</th>
-        <th>₹ Received</th>
-        <th>Tag</th>
-        <th>...</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let record of filteredPayments">
-        <td>
-          {{ record.id }}
-          <span *ngIf="record.type === 'GST'" class="label">GST</span>
-        </td>
-        <td>{{ record.estimate_Amount }}</td>
-        <td>{{ record.name }}</td>
-        <td>{{ record.tds }}</td>
-        <td>{{ record.date  }}</td>
-        <td>{{ record.amount }}</td>
-        <td><span class="tag-pill">{{ record.categoryTitle }}</span></td>
-        <td>⋮</td>
-      </tr>
-    </tbody>
-   </table>
-</div>
-</div> -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="invoice-wrapper">
-  <!-- Tabs -->
+
   <div class="tabs">
     <span [class.active]="activeTab === 'all'" (click)="switchTab('all')">All invoices</span>
     <span [class.active]="activeTab === 'gst'" (click)="switchTab('gst')">GST Invoices</span>
     <span [class.active]="activeTab === 'intl'" (click)="switchTab('intl')">International Invoices</span>
   </div>
 
-  <!-- Search -->
+
   <div class="search-bar">
-    <input type="text" [(ngModel)]="searchText" placeholder="Search invoice..." />
+    <input 
+    type="text" 
+    placeholder="Search..." 
+    [(ngModel)]="searchTerm"
+    (ngModelChange)="search()"
+    class="form-control" />
+    <!-- <input type="text" [(ngModel)]="searchText" placeholder="Search invoice..." /> -->
     <button><i class="fas fa-search"></i></button>
   </div>
 
-  <!-- Table - Add table-wrapper -->
   <div class="table-wrapper">
     <table class="table table-striped w-100">
       <thead>
@@ -100,10 +33,13 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let record of filteredPayments">
+        <!-- <tr *ngFor="let record of filteredInvoices"> -->
+          <tr *ngFor="let record of filteredInvoices; trackBy: trackById" 
+    [id]="'invoice-row-' + record.id"
+    class="invoice-row">
           <td>
             {{ record.id }}
-            <span *ngIf="record.type === 'GST'" class="label">GST</span>
+            <!-- <span *ngIf="record.type === 'GST'" class="label">GST</span> -->
           </td>
           <td>{{ record.estimate_Amount }}</td>
           <td>{{ record.name }}</td>
@@ -111,8 +47,54 @@
           <td>{{ record.date }}</td>
           <td>{{ record.amount }}</td>
           <td><span class="tag-pill">{{ record.categoryTitle }}</span></td>
-          <td>⋮</td>
-        </tr>
+          <td class="action-cell">
+    <div class="dropdown d-inline-block">
+      <button class="btn btn-link p-0 text-muted"
+              type="button"
+             
+              data-bs-toggle="dropdown"
+              aria-expanded="false">
+        ⋮
+      </button>
+
+      <ul class="dropdown-menu dropdown-menu-end" >
+                <li>
+          <a class="dropdown-item d-flex align-items-center "
+             href="javascript:void(0)">
+            <i class="fas fa-eye me-2"></i> View Invoice
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item d-flex align-items-center" (click)="exportPdf(record)"> 
+                    <i class="fas fa-download me-2"></i> Download Invoice
+                  </a>
+        </li>
+        <li>
+          <a class="dropdown-item d-flex align-items-center"
+             href="javascript:void(0)"
+             (click)="edit(record)">
+            <i class="fas fa-edit me-2"></i> Edit
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item d-flex align-items-center "
+             href="javascript:void(0)">
+            <i class="fas fa-times me-2"></i> Cancel Invoice
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item d-flex align-items-center text-danger"
+             href="javascript:void(0)"
+             (click)="delete(record)">
+            <i class="fas fa-trash-alt me-2"></i> Delete
+          </a>
+        </li>
+        
+
+      </ul>
+    </div>
+  </td>
+</tr>
       </tbody>
     </table>
   </div>

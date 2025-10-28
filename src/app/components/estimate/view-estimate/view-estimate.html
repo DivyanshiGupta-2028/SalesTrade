@@ -72,8 +72,29 @@
 
     <div class="actions">
       <button class="btn export-btn">Export Report</button>
-      <button class="btn icon-btn"><i class="fas fa-search"></i></button>
+      <!-- <button class="btn icon-btn"><i class="fas fa-search"></i></button> -->
+       <button 
+        class="btn icon-btn" 
+        (click)="toggleSearch()"
+        [class.active]="showSearchBar">
+        <i class="fas fa-search"></i>
+      </button>
       <button class="btn icon-btn"><i class="fas fa-filter"></i> Filter</button>
+    </div>
+  </div>
+  <div 
+    class="search-dropdown shadow-sm border w-25 rounded-3 p-2 bg-white"
+    *ngIf="showSearchBar">
+    
+    <div class="input-group input-group-sm ">
+      <input 
+        #searchInput
+        type="text" 
+        class="form-control form-control-sm border-0"
+        placeholder="Search ..."
+        [(ngModel)]="searchTerm"
+        (keyup.enter)="search()" />
+
     </div>
   </div>
 
@@ -92,23 +113,66 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let est of filteredEstimates">
-          <td>{{ est.id }}</td>
-          <td>{{ est.client_Name }}</td>
-          <td>{{ est.estimate_Amount }}</td>
-          <td>{{ est.member_Name }}</td>
-          <td>{{ est.invoiceDate }}</td>
+        <tr *ngFor="let estimate of filteredEstimates; trackBy: trackById" 
+    [id]="'estimate-row-' + estimate.id"
+    class="estimate-row">
+          <td>{{ estimate.id }}</td>
+          <td>{{ estimate.client_Name }}</td>
+          <td>{{ estimate.estimate_Amount }}</td>
+          <td>{{ estimate.member_Name }}</td>
+          <td>{{ estimate.invoiceDate }}</td>
           <td>
             <span [ngClass]="{
               'status-pill': true,
-              'pending': normalizeStatus(est?.payment_Status) === 'PENDING',
-              'done': normalizeStatus(est?.payment_Status) === 'PAYMENT DONE'
+              'pending': normalizeStatus(estimate?.payment_Status) === 'PENDING',
+              'done': normalizeStatus(estimate?.payment_Status) === 'PAYMENT DONE'
             }"
-            title="Raw: '{{est?.payment_Status}}' | Normalized: '{{normalizeStatus(est?.payment_Status)}}'">
-              {{normalizeStatus(est?.payment_Status)}}
+            title="Raw: '{{estimate?.payment_Status}}' | Normalized: '{{normalizeStatus(estimate?.payment_Status)}}'">
+              {{normalizeStatus(estimate?.payment_Status)}}
             </span>
           </td>
-          <td>⋮</td>
+           <td class="action-cell">
+    <div class="dropdown d-inline-block">
+      <button class="btn btn-link p-0 text-muted"
+              type="button"
+             
+              data-bs-toggle="dropdown"
+              aria-expanded="false">
+               <!-- id="dropdownMenu{{i}}" -->
+        ⋮
+      </button>
+
+      <ul class="dropdown-menu dropdown-menu-end" >
+        <li>
+          <a class="dropdown-item d-flex align-items-center" (click)="exportPdf(estimate)"> 
+                    <i class="fas fa-download me-2"></i> Download 
+                  </a>
+        </li>
+        <li>
+          <a class="dropdown-item d-flex align-items-center"
+             href="javascript:void(0)"
+             (click)="edit(estimate)">
+            <i class="fas fa-edit me-2"></i> Edit
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item d-flex align-items-center text-danger"
+             href="javascript:void(0)"
+             (click)="delete(estimate)">
+            <i class="fas fa-trash-alt me-2"></i> Delete
+          </a>
+        </li>
+
+        <li>
+          <a class="dropdown-item d-flex align-items-center"
+             href="javascript:void(0)"
+             (click)="edit(estimate)">
+            <i class="fas fa-paper-plane me-2"></i> Mark as Paid
+          </a>
+        </li>
+      </ul>
+    </div>
+  </td>
         </tr>
       </tbody>
     </table>
