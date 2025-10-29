@@ -9,6 +9,7 @@ import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { provideToastr } from 'ngx-toastr';
 import { authInterceptor } from './services/auth.interceptor';
 import { AuthService } from './services/auth.service';
+import { ConfirmBoxConfigModule, NgxAwesomePopupModule } from '@costlydeveloper/ngx-awesome-popup';
 
 
 

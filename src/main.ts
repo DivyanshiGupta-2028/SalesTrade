@@ -12,6 +12,8 @@ import { APP_INITIALIZER } from '@angular/core';
 import { environment } from './app/environments/environment.development';
 import { authInterceptor } from './app/services/auth.interceptor';
 import { AuthService } from './app/services/auth.service';
+import { NgModule } from '@angular/core';
+
 
 
 export function initApp(roleService: RoleService, http: HttpClient) {

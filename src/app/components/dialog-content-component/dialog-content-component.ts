@@ -1,10 +1,15 @@
 import { Component, Inject, Injector } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { InjectionToken, Provider } from '@angular/core';
 import { BidiModule } from '@angular/cdk/bidi';
 import { NgIf, NgComponentOutlet } from '@angular/common';
 
-
+export interface DialogData {
+  title: string;
+  message: string;
+  confirmText: string;
+  cancelText: string;
+}
 @Component({
   selector: 'app-dialog-content-component',
    standalone: true,
@@ -14,25 +19,16 @@ import { NgIf, NgComponentOutlet } from '@angular/common';
   styleUrl: './dialog-content-component.scss'
 })
 export class DialogContentComponent {
- componentInjector: Injector;
+ constructor(
+    public dialogRef: MatDialogRef<DialogData>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData
+  ) {}
 
-    constructor(
-    private dialog: MatDialog,
-    private injector: Injector,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) {
-    if (data?.extraData) {
-      const providers: Provider[] = Object.entries(data.extraData).map(([key, value]) => ({
-        provide: key,
-        useValue: value
-      }));
-      this.componentInjector = Injector.create({
-        providers,
-        parent: this.injector
-      });
-    } else {
-      this.componentInjector = this.injector;
-    }
+  onConfirm(): void {
+    this.dialogRef.close(true);
+  }
+
+  onCancel(): void {
+    this.dialogRef.close(false);
   }
 }
-

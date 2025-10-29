@@ -79,9 +79,23 @@
         [class.active]="showSearchBar">
         <i class="fas fa-search"></i>
       </button>
-      <button class="btn icon-btn"><i class="fas fa-filter"></i> Filter</button>
+      <button class="btn icon-btn"  (click)="filterPopover.open()"><i class="fas fa-filter"></i> Filter</button>
     </div>
   </div>
+  <mat-form-field class="d-none">
+  <mat-date-range-picker #filterPopover 
+                         (closed)="applyDateFilter()">
+    <mat-date-range-input [rangePicker]="filterPopover">
+      <input matStartDate [(ngModel)]="dateRange.start" placeholder="Start date">
+      <input matEndDate   [(ngModel)]="dateRange.end"   placeholder="End date">
+    </mat-date-range-input>
+    <mat-datepicker-toggle matIconSuffix [for]="filterPopover"></mat-datepicker-toggle>
+    <mat-date-range-picker-actions>
+      <button mat-button matDateRangePickerCancel>Cancel</button>
+      <button mat-button color="primary" matDateRangePickerApply>Apply</button>
+    </mat-date-range-picker-actions>
+  </mat-date-range-picker>
+</mat-form-field>
   <div 
     class="search-dropdown shadow-sm border w-25 rounded-3 p-2 bg-white"
     *ngIf="showSearchBar">
@@ -125,7 +139,7 @@
             <span [ngClass]="{
               'status-pill': true,
               'pending': normalizeStatus(estimate?.payment_Status) === 'PENDING',
-              'done': normalizeStatus(estimate?.payment_Status) === 'PAYMENT DONE'
+              'paid': normalizeStatus(estimate?.payment_Status) === 'PAYMENT DONE'
             }"
             title="Raw: '{{estimate?.payment_Status}}' | Normalized: '{{normalizeStatus(estimate?.payment_Status)}}'">
               {{normalizeStatus(estimate?.payment_Status)}}
@@ -163,13 +177,21 @@
           </a>
         </li>
 
-        <li>
+        <!-- <li>
           <a class="dropdown-item d-flex align-items-center"
              href="javascript:void(0)"
-             (click)="edit(estimate)">
+             (click)="confirmBox(estimate)" >
             <i class="fas fa-paper-plane me-2"></i> Mark as Paid
           </a>
-        </li>
+        </li> -->
+        <li>
+  <a class="dropdown-item d-flex align-items-center"
+     href="javascript:void(0)"
+     (click)="handlePaymentAction(estimate)">
+    <i class="fas fa-paper-plane me-2"></i>
+    {{ getPaymentActionText(estimate?.payment_Status) }}
+  </a>
+</li>
       </ul>
     </div>
   </td>

@@ -2,3 +2,89 @@
   padding: 0;
   overflow: visible;
 }
+
+$primary-blue:    #1e40af;
+$confirm-green:   #10b981;
+$cancel-gray:     #64748b;
+$bg-light:        #f8fafc;
+$text-dark:       #1e293b;
+$warning:         #f59e0b;
+$danger:          #f50b0b;
+// Apply to body
+body {
+  background-color: $bg-light;
+  color: $text-dark;
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+// Add this in src/styles.scss or a dedicated _dialog.scss
+
+.custom-dialog {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.dialog-title {
+  background: linear-gradient(135deg, $warning, #f59e0b);
+  color: white !important;
+  margin: 0;
+  padding: 1.5rem 1.2rem;
+  font-weight: 500;
+  font-size: 1.3rem;
+  border-radius: 12px 12px 0 0;
+  margin-top: -25px;
+}
+
+.dialog-content {
+  padding: 1.5rem;
+  background-color: #ffffff;
+}
+
+.dialog-message {
+  margin: 0;
+  color: $text-dark;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-top: 40px;
+}
+
+.dialog-actions {
+  padding: 1rem 1.5rem;
+  background-color: white;
+  gap: 0.75rem;
+}
+
+.cancel-btn {
+  background: linear-gradient(135deg, $danger, #f50b0b) !important;
+  color:  white!important;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #e2e8f0;
+    color: #475569 !important;
+  }
+}
+
+.confirm-btn {
+  background: linear-gradient(135deg, $confirm-green, #449d44) !important;
+  color: white !important;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}

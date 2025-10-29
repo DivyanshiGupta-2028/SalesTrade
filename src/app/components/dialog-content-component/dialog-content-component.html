@@ -1,7 +1,23 @@
 <!-- <h2 mat-dialog-title>{{ data.title }}</h2> -->
 
-<div mat-dialog-content>
-  <ng-container *ngIf="data.contentComponent">
-    <ng-container *ngComponentOutlet="data.contentComponent; injector: componentInjector"></ng-container>
-  </ng-container>
+<!-- dialog-content-component.html -->
+<div class="custom-dialog">
+
+  <h2 mat-dialog-title class="dialog-title">
+    {{ data.title }}
+  </h2>
+
+  <mat-dialog-content class="dialog-content">
+    <p class="dialog-message">{{ data.message }}</p>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end" class="dialog-actions">
+    <button mat-button class="cancel-btn" (click)="onCancel()">
+      {{ data.cancelText || 'Cancel' }}
+    </button>
+    <button mat-raised-button class="confirm-btn" (click)="onConfirm()">
+      {{ data.confirmText || 'Confirm' }}
+    </button>
+  </mat-dialog-actions>
+
 </div>
