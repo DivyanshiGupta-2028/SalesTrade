@@ -5,6 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { AddExpenses } from '../add-expenses/add-expenses';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -15,12 +17,16 @@ import html2canvas from 'html2canvas';
   styleUrl: './view-expenses.scss'
 })
 export class ViewExpenses implements OnInit {
+  showAlert = false;
+   alertMessage = 'This is a custom alert message!';
+  alertLicenseId?: number;
+  alertTitle = 'Renew License';
   expenses: any[] = [];
   filteredExpenses: any[] = []; 
   searchTerm: string = '';
 activeTab: string = 'all';
   private expensesService = inject(ExpensesService); 
-constructor(private router:Router,   private cdr: ChangeDetectorRef) {}
+constructor(private router:Router,  private dialog: MatDialog, private cdr: ChangeDetectorRef) {}
   ngOnInit(): void {
     this.expensesService.getAllExpenses().subscribe({
       // next: (data) => this.expenses = data,
@@ -134,4 +140,12 @@ exportPdf(expense: any): void {
 
     this.filteredExpenses = result;
   }
+openAddExpenseDialog(): void {
+  this.dialog.open(AddExpenses, {
+    width: '500px',
+    maxWidth: '100vw',
+    panelClass: 'modern-dialog',
+    data: { /* pass data if needed */ }
+  });
+}
 }

@@ -19,4 +19,7 @@ export class ExpensesService {
     deleteExpenses(id: number) {
   return this.http.delete(`${this.apiUrl}/AccountsAdmin/delete-expense/${id}`);
 }
+  getAllCategories(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/AccountsAdmin/get-categories`);
+  }
 }

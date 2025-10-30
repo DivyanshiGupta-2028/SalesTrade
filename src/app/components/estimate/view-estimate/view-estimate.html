@@ -1,101 +1,62 @@
-<!-- <div class="estimates-wrapper"> -->
-  <!-- Tabs -->
-  <!-- <div class="top-bar">
-    <div class="tabs">
-      <span [class.active]="activeTab === 'all'" (click)="switchTab('all')">All Estimates</span>
-      <span [class.active]="activeTab === 'due'" (click)="switchTab('due')">Payment Due</span>
-      <span [class.active]="activeTab === 'paid'" (click)="switchTab('paid')">Paid by Client</span>
-    </div>
-
-    <div class="actions">
-      <button class="btn export-btn">Export Report</button>
-      <button class="btn icon-btn"><i class="fas fa-search"></i></button>
-      <button class="btn icon-btn"><i class="fas fa-filter"></i> Filter</button>
-    </div>
-  </div> -->
-
-  <!-- Table -->
-   <!-- <div class="row">
-    <div class="col-12"> -->
-<!-- <div class="table-wrapper"> -->
-  <!-- <table class=" table  table-striped w-100">
-    <thead>
-      <tr>
-        <th>#No.</th>
-        <th>Client Name</th>
-        <th>Amount</th>
-        <th>BDE</th>
-        <th>Date</th>
-        <th>Status</th>
-        <th>...</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let est of filteredEstimates">
-        <td>{{ est.id }}</td>
-        <td>{{ est.client_Name }}</td>
-        <td>{{ est.estimate_Amount }}</td>
-        <td>{{ est.member_Name }}</td>
-        <td>{{ est.invoiceDate  }}</td>
-       <td> -->
-<!-- Debug version - यह add करें -->
-<!-- <span [ngClass]="{
-    'status-pill': true,
-    'pending': normalizeStatus(est?.payment_Status) === 'PENDING',
-    'done': normalizeStatus(est?.payment_Status) === 'PAYMENT DONE'
-  }"
-  title="Raw: '{{est?.payment_Status}}' | Normalized: '{{normalizeStatus(est?.payment_Status)}}'">
- {{normalizeStatus(est?.payment_Status)}}
-</span>
-</td>
-
-        <td>⋮</td>
-      </tr>
-    </tbody>
-  </table> -->
-<!-- </div> -->
-    <!-- </div>
-   </div>
-</div> -->
-
-
-
-
 <div class="estimates-wrapper">
-  <!-- Tabs -->
   <div class="top-bar">
     <div class="tabs">
       <span [class.active]="activeTab === 'all'" (click)="switchTab('all')">All Estimates</span>
-      <span [class.active]="activeTab === 'due'" (click)="switchTab('due')">Payment Due</span>
+      <span [class.active]="activeTab === 'pending'" (click)="switchTab('pending')">Payment Due</span>
       <span [class.active]="activeTab === 'paid'" (click)="switchTab('paid')">Paid by Client</span>
     </div>
+<div class="actions">
+  <button class="btn export-btn">Export Report</button>
 
-    <div class="actions">
-      <button class="btn export-btn">Export Report</button>
-      <!-- <button class="btn icon-btn"><i class="fas fa-search"></i></button> -->
-       <button 
-        class="btn icon-btn" 
-        (click)="toggleSearch()"
-        [class.active]="showSearchBar">
-        <i class="fas fa-search"></i>
-      </button>
-      <button class="btn icon-btn"  (click)="filterPopover.open()"><i class="fas fa-filter"></i> Filter</button>
-    </div>
-  </div>
-  <mat-form-field class="d-none">
-  <mat-date-range-picker #filterPopover 
-                         (closed)="applyDateFilter()">
+  <button class="btn icon-btn" (click)="toggleSearch()" [class.active]="showSearchBar">
+    <i class="fas fa-search"></i>
+  </button>
+  <button #filterBtn
+          type="button"
+          class="btn icon-btn"
+          (click)="openFilterPopover()">
+    <i class="fas fa-filter"></i> Filter
+   
+  </button>
+</div>
+
+  <mat-form-field appearance="fill" class="position-absolute " style="opacity: 0; pointer-events: none;  height: 0;  width: 0;">
+  <mat-date-range-picker 
+    #filterPopover
+
+
+>
+    
     <mat-date-range-input [rangePicker]="filterPopover">
-      <input matStartDate [(ngModel)]="dateRange.start" placeholder="Start date">
-      <input matEndDate   [(ngModel)]="dateRange.end"   placeholder="End date">
+      <input matStartDate 
+             [(ngModel)]="dateRange.start" 
+             placeholder="Start date"
+             readonly>
+      <input matEndDate 
+             [(ngModel)]="dateRange.end" 
+             placeholder="End date"
+             readonly>
     </mat-date-range-input>
+
     <mat-datepicker-toggle matIconSuffix [for]="filterPopover"></mat-datepicker-toggle>
+
     <mat-date-range-picker-actions>
-      <button mat-button matDateRangePickerCancel>Cancel</button>
-      <button mat-button color="primary" matDateRangePickerApply>Apply</button>
+      <button mat-button matDateRangePickerCancel (click)="clearDateFilter()">
+        Cancel
+      </button>
+      <button mat-button 
+              color="primary" 
+              matDateRangePickerApply>
+        Apply
+      </button>
     </mat-date-range-picker-actions>
   </mat-date-range-picker>
 </mat-form-field>
+
+
+
+
+</div>
   <div 
     class="search-dropdown shadow-sm border w-25 rounded-3 p-2 bg-white"
     *ngIf="showSearchBar">
@@ -106,13 +67,10 @@
         type="text" 
         class="form-control form-control-sm border-0"
         placeholder="Search ..."
-        [(ngModel)]="searchTerm"
-        (keyup.enter)="search()" />
+        [(ngModel)]="searchTerm"/>
 
     </div>
   </div>
-
-  <!-- Table - Add table-wrapper -->
   <div class="table-wrapper">
     <table class="table table-striped w-100">
       <thead>
@@ -149,12 +107,8 @@
     <div class="dropdown d-inline-block">
       <button class="btn btn-link p-0 text-muted"
               type="button"
-             
               data-bs-toggle="dropdown"
-              aria-expanded="false">
-               <!-- id="dropdownMenu{{i}}" -->
-        ⋮
-      </button>
+              aria-expanded="false"> ⋮ </button>
 
       <ul class="dropdown-menu dropdown-menu-end" >
         <li>
@@ -176,14 +130,6 @@
             <i class="fas fa-trash-alt me-2"></i> Delete
           </a>
         </li>
-
-        <!-- <li>
-          <a class="dropdown-item d-flex align-items-center"
-             href="javascript:void(0)"
-             (click)="confirmBox(estimate)" >
-            <i class="fas fa-paper-plane me-2"></i> Mark as Paid
-          </a>
-        </li> -->
         <li>
   <a class="dropdown-item d-flex align-items-center"
      href="javascript:void(0)"

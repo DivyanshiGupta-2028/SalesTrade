@@ -1,1 +1,144 @@
-<p>add-expenses works!</p>
+<div class="modern-dialog-container">
+  <h2 mat-dialog-title>
+    <mat-icon>receipt_long</mat-icon> Add Expense
+  </h2>
+
+  <mat-dialog-content class="mat-body-1">
+    <form [formGroup]="expenseForm" (ngSubmit)="onSubmit()">
+<br>
+      <!-- Name of Vendor -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Name of Vendor</mat-label>
+        <input matInput formControlName="vendorName" placeholder="e.g. Amazon India">
+        <mat-icon matSuffix>business</mat-icon>
+      </mat-form-field>
+
+      <!-- Purpose -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Purpose of Payment</mat-label>
+        <input matInput formControlName="purpose" placeholder="e.g. Software License">
+        <mat-icon matSuffix>description</mat-icon>
+      </mat-form-field>
+
+      <div class="row">
+        <div class="col-md-6">
+        <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Amount Paid</mat-label>
+        <span matPrefix>₹&nbsp;</span>
+        <input matInput type="number" formControlName="amountPaid" placeholder="5000">
+      </mat-form-field>
+      </div>
+      <div class="col-md-6">
+
+      <!-- Bill Amount -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Bill Amount</mat-label>
+        <span matPrefix> ₹&nbsp;</span>
+        <input matInput type="number" formControlName="billAmount" placeholder="5000">
+      </mat-form-field>
+      </div>
+      </div>
+      
+
+      <!-- TDS -->
+      <!-- -->
+<div class="row">
+        <div class="col-md-6">
+          
+  <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Date of Payment</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="paymentDate">
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      </div>
+<div class="col-md-6">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Payment Method</mat-label>
+        <mat-select formControlName="paymentMethod">
+          <mat-option value="Card">Card</mat-option>
+          <mat-option value="Cash">Cash</mat-option>
+          <mat-option value="NEFT">NEFT</mat-option>
+          <mat-option value="IMPS">IMPS</mat-option>
+          <mat-option value="Cheque">Cheque</mat-option>
+          <mat-option value="UPI">UPI</mat-option>
+        </mat-select>
+      </mat-form-field>
+      </div>
+      </div>
+
+
+      <!-- Paid By -->
+      
+
+      <!-- Category -->
+      <!-- <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Category</mat-label>
+        <mat-select formControlName="category">
+          <mat-option value="Software">Software</mat-option>
+          <mat-option value="Travel">Travel</mat-option>
+          <mat-option value="Office">Office</mat-option>
+        </mat-select>
+      </mat-form-field> -->
+
+      <mat-form-field appearance="outline" class="full-width">
+  <mat-label>Category</mat-label>
+  <mat-select formControlName="category">
+    
+    <!-- Dynamically Generated Options -->
+    <mat-option *ngFor="let cat of categories" [value]="cat.title">
+      {{ cat.title }}
+    </mat-option>
+
+    <!-- Optional: Loading State -->
+    <mat-option *ngIf="categories.length === 0" disabled>
+      Loading categories...
+    </mat-option>
+
+  </mat-select>
+</mat-form-field>
+
+      <!-- Date of Payment -->
+       <div class="row">
+        <div class="col-md-8">
+ <mat-form-field appearance="outline" *ngIf="expenseForm.get('paymentMethod')?.value === 'Cheque'"class="full-width">
+        <mat-label>Cheque Number (if any) </mat-label>
+        <input matInput type="number" formControlName="chequeNumber" placeholder="5000">
+      </mat-form-field>
+      </div>
+      </div>
+
+      <!-- GST Bill? -->
+      <div class="checkbox-group">
+        <mat-checkbox formControlName="isGstBill">Is this a GST Bill?</mat-checkbox>
+      </div>
+
+      <!-- TDS Applicable? -->
+      <div class="checkbox-group">
+        <mat-checkbox formControlName="tdsApplicable">TDS Applicable?</mat-checkbox>
+      </div>
+            <mat-form-field appearance="outline"*ngIf="expenseForm.get('tdsApplicable')?.value" class="full-width">
+        <mat-label>TDS Deducted (if any)</mat-label>
+        <input matInput type="number" formControlName="tds" placeholder="200">
+      </mat-form-field> 
+
+      <!-- Upload Bill -->
+      <div class="upload-section">
+        <input type="file" #fileInput hidden (change)="onFileSelected($event)" accept=".pdf,.jpg,.png">
+        <button mat-stroked-button color="primary" (click)="fileInput.click()" class="upload-btn">
+          <mat-icon>cloud_upload</mat-icon>
+          {{ selectedFile ? selectedFile.name : 'Upload Expense Bill' }}
+        </button>
+        <p *ngIf="selectedFile" class="file-info">Selected: {{ selectedFile.name }}</p>
+      </div>
+
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="expenseForm.invalid">
+      Save Expense
+    </button>
+  </mat-dialog-actions>
+</div>
