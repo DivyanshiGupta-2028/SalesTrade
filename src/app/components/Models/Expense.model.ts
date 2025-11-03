@@ -1,15 +1,17 @@
 export interface ExpenseModel {
   id?: number | null;
-  vendor_name: number |null;
-  clientAddressId?: number |null;
-  addressLine1?: string;
-  addressLine2?: string;
-  addressLine3?: string;
-  addressLine4?: string;
-  country?: number;
-  state?: string;
-  pincode?: string;
-  countryName?: string;
-  latitude?: string;
-  longitude?: string;
+  vendor_Name?: string |null;
+  Payment_Purpose?: string |null;
+  amount_Paid: number;
+  bill_Amount: number;
+  cheque_Number: number;
+  tds: number;
+  category_id: number;
+  payment_Method: string;
+  payment_Date: string;
+  gst_Bill?: boolean | null;
+  tds_Bill?: boolean |null;
+  //bill_File: File | null;
 }
+
+

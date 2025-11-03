@@ -81,21 +81,42 @@
         </mat-select>
       </mat-form-field> -->
 
-      <mat-form-field appearance="outline" class="full-width">
+      <!-- <mat-form-field appearance="outline" class="full-width">
   <mat-label>Category</mat-label>
   <mat-select formControlName="category">
-    
+     -->
     <!-- Dynamically Generated Options -->
-    <mat-option *ngFor="let cat of categories" [value]="cat.title">
+    <!-- <mat-option *ngFor="let cat of categories" [value]="cat.category_id">
+      {{ cat.title }}
+    </mat-option> -->
+
+    <!-- Optional: Loading State -->
+    <!-- <mat-option *ngIf="categories.length === 0" disabled>
+      Loading categories...
+    </mat-option>
+
+  </mat-select>
+</mat-form-field> -->
+<mat-form-field appearance="outline" class="full-width">
+  <mat-label>Category</mat-label>
+  <mat-select formControlName="category" placeholder="Select Category">
+    
+    <!-- Display title, send category_id as value -->
+    <mat-option 
+      *ngFor="let cat of categories" 
+      [value]="cat.category_Id">
       {{ cat.title }}
     </mat-option>
 
-    <!-- Optional: Loading State -->
+    <!-- Loading State -->
     <mat-option *ngIf="categories.length === 0" disabled>
       Loading categories...
     </mat-option>
 
   </mat-select>
+  <mat-error *ngIf="expenseForm.get('category')?.hasError('required')">
+    Category is required
+  </mat-error>
 </mat-form-field>
 
       <!-- Date of Payment -->
@@ -123,14 +144,14 @@
       </mat-form-field> 
 
       <!-- Upload Bill -->
-      <div class="upload-section">
+      <!-- <div class="upload-section">
         <input type="file" #fileInput hidden (change)="onFileSelected($event)" accept=".pdf,.jpg,.png">
         <button mat-stroked-button color="primary" (click)="fileInput.click()" class="upload-btn">
           <mat-icon>cloud_upload</mat-icon>
           {{ selectedFile ? selectedFile.name : 'Upload Expense Bill' }}
         </button>
         <p *ngIf="selectedFile" class="file-info">Selected: {{ selectedFile.name }}</p>
-      </div>
+      </div> -->
 
     </form>
   </mat-dialog-content>
