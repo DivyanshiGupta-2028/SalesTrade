@@ -44,6 +44,7 @@ import { ViewUser } from './components/profile/view-user/view-user';
 import { LicenseFlow } from './components/licenses/license-flow/license-flow';
 import { AdminLicenseList } from './components/Admin/license-list/license-list';
 import { UserLicenseSummary } from './components/Admin/license-summary/license-summary';
+import { PermissionGuard } from './guards/permissionguard';
 
 
 export const routes: Routes = [
@@ -69,7 +70,7 @@ export const routes: Routes = [
       { path: 'add-client', component: AddClient, canActivate: [RoleGuard], data: { role: 'SuperAdmin,Admin' }  },
       { path: 'view-client', component: ViewClient, canActivate: [RoleGuard], data: { role: 'SuperAdmin' }  },
       { path: 'view-team' , component:ViewTeam, canActivate: [RoleGuard], data: { role: 'SuperAdmin,Admin' } },
-      { path: 'view-expenses', component: ViewExpenses , canActivate: [RoleGuard], data: { role: 'SuperAdmin,Admin' } },
+      { path: 'view-expenses', component: ViewExpenses , canActivate: [RoleGuard,PermissionGuard], data: { role: 'Admin', permission: 'Expense.View' } },
       { path: 'invoice-summary', component: InvoiceSummary, canActivate: [RoleGuard], data: { role: 'SuperAdmin,Admin' } },
       { path: 'create-estimate', component: CreateEstimate, canActivate: [RoleGuard], data: { role: 'SuperAdmin,Admin' }  },
       { path: 'add-estimate/:id', component: AddEstimate, canActivate: [RoleGuard], data: { role: 'SuperAdmin,Admin' }  },
@@ -98,7 +99,7 @@ export const routes: Routes = [
       { path: 'license-summary', component:LicenseSummary, canActivate: [RoleGuard], data: { role:'SuperAdmin,Admin'}},
       { path: 'user-license-summary', component:UserLicenseSummary, canActivate: [RoleGuard], data: { role:'Admin'}},
       //{ path: 'add-exchange-flow', component:AddLFlow, canActivate: [RoleGuard], data: { role:'SuperAdmin'}},
-      { path: 'left-menu', component:LeftMenu, canActivate: [RoleGuard], data: { role:'SuperAdmin, Admin'}},
+      { path: 'left-menu', component:LeftMenu, canActivate: [RoleGuard], data: { role:'SuperAdmin, Admin'}, },
      // { path: 'blog', component:Blog, canActivate: [RoleGuard], data: { role:'SuperAdmin'}},
       //{
        //   path: 'option-settings', component:OptionSettings, canActivate: [RoleGuard], data: { role: 'SuperAdmin,Admin' }
