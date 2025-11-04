@@ -44,8 +44,11 @@ export class LicenseService {
     return this.http.get<License[]>(`${this.apiUrl}/License/list/user/${id}`);
   }
 
-    getUsers(): Observable<UserProfile[]> {
-    return this.http.get<UserProfile[]>(`${this.apiUrl}/License/user-list`);
+  //   getUsers(): Observable<UserProfile[]> {
+  //   return this.http.get<UserProfile[]>(`${this.apiUrl}/License/user-list`);
+  // }
+      getUsers(): Observable<UserProfile[]> {
+    return this.http.get<UserProfile[]>(`${this.apiUrl}/License/user-list-by-Role`);
   }
 getLicensesByStatus(param: string): Observable<License[]> {
   const params = new HttpParams().set('status', param);

@@ -65,6 +65,18 @@
     </a>
   </li>
 
+
+  <li class="nav-item" *ngIf="authService.hasRoleObservable('Admin') | async">
+    <a 
+      class="nav-link px-3 py-2 rounded text-center fw-semibold"
+      routerLink="/user-list"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <i class="fa-solid fa-users me-2"></i> Users
+    </a>
+  </li>
+
   <!-- Admin: Clients -->
   <!-- <li class="nav-item" *ngIf="authService.hasRoleObservable('Admin') | async">
     <a 
