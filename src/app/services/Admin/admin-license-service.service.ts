@@ -10,6 +10,7 @@ import { Country } from '../../components/Models/country.models';
 import { OptionSettingModel, UpdateOptionModel } from '../../components/Models/optionsetting.Models';
 import { UserProfile } from 'src/app/components/Models/Client.model';
 import { AuthService } from '../auth.service';
+import { RolesModel, UserDetail } from 'src/app/components/Models/Admin.model';
 
 
 @Injectable({
@@ -45,5 +46,20 @@ export class AdminLicenseService {
       })
     );
   }
+    addUserDetail(user: UserDetail): Observable<UserDetail> {
+    return this.baseService.post<UserDetail>(`${this.apiUrl}/License/add-license-flow`, user);
+  }
+
+  getRoles(): Observable<RolesModel[]> {
+    console.log(`Fetching roles`);
+    return this.http.get<RolesModel[]>(`${this.apiUrl}/AccountsAdmin/get-roles`).pipe(
+      catchError((error) => {
+        console.error('Error fetching roles:', error);
+        return throwError(() => new Error('Error fetching roles'));
+      })
+    );
+  }
+
+
 
 }

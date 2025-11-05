@@ -45,6 +45,7 @@ import { LicenseFlow } from './components/licenses/license-flow/license-flow';
 import { AdminLicenseList } from './components/Admin/license-list/license-list';
 import { UserLicenseSummary } from './components/Admin/license-summary/license-summary';
 import { PermissionGuard } from './guards/permissionguard';
+import { UserDetails } from './components/Admin/user-details/user-details';
 
 
 export const routes: Routes = [
@@ -85,6 +86,7 @@ export const routes: Routes = [
       // { path: 'license-client-view/:id', component:ExchangeClientView , canActivate: [RoleGuard], data: { role: 'SuperAdmin' } },
       //{ path: 'license-client-edit/:id', component:ExchangeClientEdit, canActivate: [RoleGuard], data: { role: 'SuperAdmin,Admin' } },
      // { path: 'manage-clients/:contactId', component: ManageClients, canActivate: [RoleGuard], data: { role: 'SuperAdmin,Admin' } },
+     { path: 'user-details', component:UserDetails, canActivate: [RoleGuard, PermissionGuard], data: {role: 'Admin'}},
      { path: 'manage-clients/:id', component: ManageClients, canActivate: [RoleGuard], data: { role: 'SuperAdmin'  } },
       { path: 'manage-clients', component: ManageClients , canActivate: [RoleGuard], data: { role: 'SuperAdmin' } },
       { path: 'has-permission', component: HasPermission , canActivate: [RoleGuard], data: { role: 'SuperAdmin' } },

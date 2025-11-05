@@ -115,7 +115,7 @@ getLangaugeSelectedItems(): Observable<Langauges[]> {
 
 getUserDetailByMail(email: string): Observable<UserProfile> {
     console.log(`Fetching user details for email: ${email}`);
-    return this.baseService.get<any>(`${this.apiUrl}/License/${email}/user-detail-by-mail`).pipe(
+    return this.baseService.get<UserProfile>(`${this.apiUrl}/License/${email}/user-detail-by-mail`).pipe(
       catchError((error) => {
         console.error('Error fetching license detail:', error);
         return throwError(() => new Error('Error fetching license detail'));
