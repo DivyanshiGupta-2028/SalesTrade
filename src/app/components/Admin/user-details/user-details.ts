@@ -45,7 +45,7 @@ export class UserDetails implements OnInit, OnDestroy {
   pageSubtitle = '';
   licenseName = '';
   showBackFlag = true;
-  showSubtitle = true;
+  showSubtitle = false;
   showLicenseName = true;
   selected = model<Date | null>(null);
   form!: FormGroup;
@@ -53,6 +53,7 @@ export class UserDetails implements OnInit, OnDestroy {
   userId: string = '';
   licenseId: number = 0;
   legalName?: string;
+  licenseClientID: number = 0;
   countries$!: Observable<Country[]>;
  roles$: Observable<RolesModel[]> = undefined!;
   parentLicenses$!: Observable<License[]>;
@@ -66,6 +67,7 @@ export class UserDetails implements OnInit, OnDestroy {
   firstName: string = '';
   lastName: string = '';
   email: string = '';
+  role: string = ';'
    user$: Observable<UserProfile | undefined> | undefined;
   countryOptions: { value: number, label: string }[] = [];
   stateOptions: { value: string, label: string }[] = [];
@@ -113,6 +115,12 @@ this.roles$ = this.adminService.getRoles();
   ngOnInit(): void {
     this.loadUserFromSession();
     console.log(this.email)
+     this.route.queryParamMap.subscribe(params => {
+      this.userId = params.get('userId')!;
+      if (this.userId) {
+       // this.loadUserDetails(this.userId);
+      }
+    });
     //  if (!this.email && window.history.state?.email) {
     //   this.email = window.history.state.email;
       
@@ -120,46 +128,73 @@ this.roles$ = this.adminService.getRoles();
     
 
     // If we have email, fetch user details
-    if (this.email) {
-      console.log('session get')
-      this.user$ = this.licenseService.getUserDetailByMail(this.email).pipe(
-      tap(  userProfile => {
-        this.firstName = userProfile.firstName;
-          this.lastName = userProfile.lastName;
-          this.email = userProfile.email ;
-          console.log(this.firstName, this.lastName, this.email)
-          console.log('session get')
-        }
-      ),
-          catchError(error => {
-          console.error('Error fetching user details:', error);
-          this.errors$ = of(['Error fetching user details']);
-          return of(undefined);
-        })
-      )
-    } else {
-      this.errors$ = of(['No email provided']);
-    }
-   //  this.roles$ = this.adminService.getRoles();
-    this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe(params => {
-      this.userId = params['userId'] || '';
-      // this.licenseId = params['licenseId'] || '';
-      // this.licenseService.getLicenseDetail(this.licenseId).subscribe(license => {
-      //   this.licenseName = `${license.companyName}`;
-      //   this.cdr.markForCheck();
-      // });
-      if (this.userId) {
-        this.licenseService.getUserDetail(this.userId).subscribe(userProfile => {
-          this.pageSubtitle = `${userProfile.firstName} ${userProfile.lastName}`;
-          this.firstName = userProfile.firstName;
-          this.lastName = userProfile.lastName;
-          this.email = userProfile.email;
-          this.cdr.markForCheck();
-          console.log(userProfile.firstName, userProfile.lastName, userProfile.email)
+    // if (this.email) {
+    //   console.log('session get', this.email)
+    //   this.user$ = this.licenseService.getUserDetailByMail(this.email).pipe(
+    //   tap(  userProfile => {
+    //     this.firstName = userProfile.firstName;
+    //       this.lastName = userProfile.lastName;
+    //       this.email = userProfile.email ;
+    //       console.log(this.firstName, this.lastName, this.email)
+    //       console.log('session get failed')
+    //     }
+        
+    //   ),
+    //       catchError(error => {
+    //       console.error('Error fetching user details:', error);
+    //       this.errors$ = of(['Error fetching user details']);
+    //       return of(undefined);
+          
+    //     })
+    //   )
+    // } else {
+    //   this.errors$ = of(['No email provided']);
+    // }
 
-        });
+
+if (this.email) {
+this.adminService.getUserDetail(this.userId)
+    .pipe(takeUntil(this.destroy$))
+    .subscribe({
+      next: (user) => {
+        this.pageSubtitle = `${user.firstName} ${user.lastName}`;
+        this.firstName = user.firstName;
+        this.lastName = user.lastName;
+        this.email = user.email;
+
+        console.log('User loaded:', user.firstName, user.lastName, user.email);
+        this.cdr.markForCheck();
+      },
+      error: (error: any) => {
+        console.error('Error fetching user details:', error);
+        this.errors$ = of(['Error fetching user details']);
+        this.cdr.markForCheck();
       }
     });
+}
+  
+  
+
+   //  this.roles$ = this.adminService.getRoles();
+    // this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe(params => {
+    //   this.email = params['email'] || '';
+    //   // this.licenseId = params['licenseId'] || '';
+    //   // this.licenseService.getLicenseDetail(this.licenseId).subscribe(license => {
+    //   //   this.licenseName = `${license.companyName}`;
+    //   //   this.cdr.markForCheck();
+    //   // });
+    //   if (this.email) {
+    //     this.licenseService.getUserDetail(this.email).subscribe(userProfile => {
+    //       this.pageSubtitle = `${userProfile.firstName} ${userProfile.lastName}`;
+    //       this.firstName = userProfile.firstName;
+    //       this.lastName = userProfile.lastName;
+    //       this.email = userProfile.email;
+    //       this.cdr.markForCheck();
+    //       console.log(userProfile.firstName, userProfile.lastName, userProfile.email)
+
+    //     });
+    //   }
+    // });
     this.countries$ = this.licenseService.getCountrySelectedItems();
     // this.languages$ = this.licenseService.getLangaugeSelectedItems();
     // this.currencies$ = this.licenseService.getCurrencySelectedItems();
@@ -171,17 +206,21 @@ this.roles$ = this.adminService.getRoles();
     this.route.queryParamMap.subscribe(params => {
       this.licenseId = +params.get('licenseId')!;
 
-      if (this.licenseId) {
-        this.loadLicenseAddressDetails(this.licenseId);
+      if (this.userId) {
+        this.loadLicenseAddressDetails(this.userId);
       }
-      if (this.licenseId) {
-        this.loadLicenseContactDetails(this.licenseId);
+      if (this.userId) {
+        this.loadLicenseContactDetails(this.userId);
       }
-      if (this.licenseId) {
-        this.licenseService.getLicenseDetail(this.licenseId).subscribe(license => {
-          this.licenseName = `${license.companyName}`;
-        });
+       if (this.userId) {
+        this.loadRoleFromUser(this.userId);
       }
+      
+      // if (this.licenseId) {
+      //   this.licenseService.getLicenseDetail(this.licenseId).subscribe(license => {
+      //     this.licenseName = `${license.companyName}`;
+      //   });
+      // }
     });
 
     this.form.get('step1.country')?.valueChanges.subscribe(countryIdRaw => {
@@ -212,6 +251,7 @@ this.roles$ = this.adminService.getRoles();
       const parsedUser = JSON.parse(user);
       if (parsedUser && parsedUser.id) {
         this.email = parsedUser.email || '';
+        this.licenseClientID = parsedUser.licenseClientID || 0;
         console.log('User loaded from session:', this.email); 
       }
     } catch (error) {
@@ -219,6 +259,22 @@ this.roles$ = this.adminService.getRoles();
     }
   }
 }
+// private loadUserDetails(userId: string) {
+//   this.adminService.getUserDetail(this.userId)
+//     .pipe(takeUntil(this.destroy$))
+//     .subscribe({
+//       next: (user) => {
+//       //  this.pageSubtitle = `${userProfile.firstName} ${userProfile.lastName}`;
+//         this.firstName = user.firstName;
+//         this.lastName = user.lastName;
+//         this.email = user.email;
+
+//         console.log('User loaded:', user.firstName, user.lastName, user.email);
+//         this.cdr.markForCheck();
+//       },
+//     })
+
+// }
 
   initializeForm(): void {
     const todayT = new Date().toISOString().substring(0, 10);
@@ -249,8 +305,8 @@ this.roles$ = this.adminService.getRoles();
   }
 
 
-  loadLicenseAddressDetails(id: number): void {
-    this.licenseService.getLicenseAddressDetail(id).subscribe(data => {
+  loadLicenseAddressDetails(id: string): void {
+    this.licenseService.getUserAddressDetail(id).subscribe(data => {
       if (data) {
 
         this.form.get('step1')?.patchValue({
@@ -275,11 +331,11 @@ this.roles$ = this.adminService.getRoles();
   }
 
 
-  loadLicenseContactDetails(id: number): void {
-    this.licenseService.getLicenseContactDetail(id).subscribe(data => {
+  loadLicenseContactDetails(userId: string): void {
+    this.licenseService.getUserContactDetail(userId).subscribe(data => {
       if (data) {
 
-        this.form.get('step3')?.patchValue({
+        this.form.get('step2')?.patchValue({
 
           mobile: data.mobile || '',
 
@@ -290,6 +346,19 @@ this.roles$ = this.adminService.getRoles();
     }, error => {
       this.errorMessage = 'Error fetching User details.';
     });
+  }
+
+  loadRoleFromUser(userId:string): void {
+    this.adminService.getRoleFromUser(userId).subscribe(data => {
+      if(data) {
+        this.form.get('step2')?.patchValue({
+          role: data.roleId || '',
+          
+        })
+         console.log(this.role)
+      }
+     
+    })
   }
 
   nextStep(): void {
@@ -355,51 +424,52 @@ this.roles$ = this.adminService.getRoles();
   }
 
 
-  saveUserDetails(): void {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      console.log('Form Invalid:', this.form.errors, this.form.controls);
-      this.cdr.markForCheck();
-      return;
-    }
+//   saveUserDetails(): void {
+//     if (this.form.invalid) {
+//       this.form.markAllAsTouched();
+//       console.log('Form Invalid:', this.form.errors, this.form.controls);
+//       this.cdr.markForCheck();
+//       return;
+//     }
 
-    const step2 = this.form.value.step2;
+//     const step2 = this.form.value.step2;
    
   
 
-    const userDetailPayload = {
-      ...this.form.value.step1,
-      ...step2,
-      userId: this.userId,
-      firstName: this.firstName,
-      lastName: this.lastName,
-      email: this.email,
-      //pincode: String(step2.pincode),
-    };
+//     const userDetailPayload = {
+//       ...this.form.value.step1,
+//       ...step2,
+//       userId: this.userId,
+//       firstName: this.firstName,
+//       lastName: this.lastName,
+//       email: this.email,
+//       licenseClientID: this.licenseClientID
+//       //pincode: String(step2.pincode),
+//     };
 
-console.log('License Payload:', JSON.stringify(userDetailPayload, null, 2)); 
-this.isLoading = true;
-    this.errorMessage = '';
-    this.cdr.markForCheck();    
+// console.log('License Payload:', JSON.stringify(userDetailPayload, null, 2)); 
+// this.isLoading = true;
+//     this.errorMessage = '';
+//     this.cdr.markForCheck();    
 
-// if (this.licenseId) {
-//       userDetailPayload['licenseId'] = this.licenseId;
-//       this.licenseService.updateLicenseFlow(userDetailPayload).subscribe({
-//         next: (success: boolean) => {
-//           if (success) {
-//             this.currentStep = 5;
-//             this.isLoading = false;
-//             this.cdr.detectChanges();
-//           }
-//         },
-//         error: (err) => {
-//           this.errorMessage = 'Failed to update license: ' + (err.error?.title || 'Unknown error');
-//           this.isLoading = false;
-//           console.error('Error updating license:', err);
-//           this.cdr.detectChanges(); 
-//         }
-//       });
-//     } else {
+// // if (this.licenseId) {
+// //       userDetailPayload['licenseId'] = this.licenseId;
+// //       this.licenseService.updateLicenseFlow(userDetailPayload).subscribe({
+// //         next: (success: boolean) => {
+// //           if (success) {
+// //             this.currentStep = 5;
+// //             this.isLoading = false;
+// //             this.cdr.detectChanges();
+// //           }
+// //         },
+// //         error: (err) => {
+// //           this.errorMessage = 'Failed to update license: ' + (err.error?.title || 'Unknown error');
+// //           this.isLoading = false;
+// //           console.error('Error updating license:', err);
+// //           this.cdr.detectChanges(); 
+// //         }
+// //       });
+// //     } else {
 //       this.adminService.addUserDetail(userDetailPayload).subscribe({
 //         next: (response) => {
 //           const newUserId = response.userId;
@@ -414,8 +484,58 @@ this.isLoading = true;
 //           this.cdr.detectChanges(); 
 //         }
 //       });
-   // }
+//    // }
+//   }
+
+saveUserDetails(): void {
+  if (this.form.invalid) {
+    this.form.markAllAsTouched();
+    console.log('Form Invalid:', this.form.errors, this.form.controls);
+    this.cdr.markForCheck();
+    return;
   }
+
+  const { step1, step2 } = this.form.value;
+
+  const payload = {
+    ...step1,
+    ...step2,
+    userId: this.userId,
+    firstName: this.firstName,
+    lastName: this.lastName,
+    email: this.email,
+    licenseClientID: this.licenseClientID,
+  };
+
+  console.log('License Payload:', JSON.stringify(payload, null, 2));
+
+  this.isLoading = true;
+  this.errorMessage = '';
+  this.cdr.markForCheck();
+
+  // Explicitly type the observable to avoid union-type overload confusion
+  let serviceCall$: Observable<any>;
+
+  if (this.form.value) { //yha p pehle this.licenseId tha
+    serviceCall$ = this.licenseService.updateLicenseFlow({ ...payload });
+  } else {
+    serviceCall$ = this.adminService.addUserDetail(payload) as Observable<any>;
+  }
+
+  serviceCall$.subscribe({
+    next: (response: any) => {
+      this.isLoading = false;
+      this.currentStep = this.licenseId ? 5 : 3;
+      this.cdr.detectChanges();
+    },
+    error: (err: any) => {
+      this.isLoading = false;
+      this.errorMessage = `Failed to ${this.licenseId ? 'update' : 'add'} license: ${err.error?.title ?? 'Unknown error'}`;
+      console.error('API error:', err);
+      this.cdr.detectChanges();
+    },
+  });
+}
   goToUserList(): void {
   this.router.navigate(['/user-list'], {
     queryParams: { userId: this.userId }

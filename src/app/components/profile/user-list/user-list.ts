@@ -19,6 +19,7 @@ import { ToastrService } from 'ngx-toastr';
 export class UserList implements OnInit {
   id: string = '';
   userId:string = '';
+   currentRole: string = '';
   users$!: Observable<UserProfile[]>;
   showActions = false;
   pageTitle = 'User List';
@@ -43,6 +44,9 @@ searchText = '';
 
   constructor(private fb: FormBuilder,private licenseService: LicenseService, private router: Router, private authService: AuthService,private route: ActivatedRoute, private toastr:ToastrService) { }
   ngOnInit() {
+     setTimeout(() => {
+    this.loadUserFromSession();
+  }, 200);
     this.users$ = this.licenseService.getUsers();
 
      this.users$.subscribe(data => {
@@ -53,6 +57,23 @@ searchText = '';
   });
   }
 
+  hasRole(role: string): Observable<boolean> {
+    return this.authService.hasRoleObservable(role);
+  }
+private loadUserFromSession(): void {
+  const user = sessionStorage.getItem('userinfo');
+  if (user) {
+    try {
+      const parsedUser = JSON.parse(user);
+      if (parsedUser && parsedUser.id) {
+        this.currentRole = parsedUser.roles || '';
+        console.log('User loaded from session:', this.currentRole); 
+      }
+    } catch (error) {
+      console.error('Error parsing session user:', error);
+    }
+  }
+}
 
   onSearch(searchText: string) {
     const lowerText = searchText.toLowerCase();
@@ -80,6 +101,15 @@ cancelSearch() {
     }
   }
 
+
+    viewUserDetails(id: string | undefined) {
+    if (id !== undefined) {
+      this.router.navigate(['/user-details'], { queryParams: { userId: id } }
+      );
+    } else {
+      console.error('User Details is undefined');
+    }
+  }
   navigateToAddUser() {
     this.router.navigate(['/add-profile']);
   }
@@ -88,6 +118,13 @@ cancelSearch() {
   navigateToAddLicense(id: string | undefined) {
      if (id !== undefined) {
     this.router.navigate(['/license-add'], {queryParams: { userId: id }
+});
+  }
+}
+
+navigateToAddUserDetails(id: string | undefined) {
+     if (id !== undefined) {
+    this.router.navigate(['/user-details'], {queryParams: { userId: id }
 });
   }
 }

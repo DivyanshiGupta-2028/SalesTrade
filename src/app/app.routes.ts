@@ -86,7 +86,7 @@ export const routes: Routes = [
       // { path: 'license-client-view/:id', component:ExchangeClientView , canActivate: [RoleGuard], data: { role: 'SuperAdmin' } },
       //{ path: 'license-client-edit/:id', component:ExchangeClientEdit, canActivate: [RoleGuard], data: { role: 'SuperAdmin,Admin' } },
      // { path: 'manage-clients/:contactId', component: ManageClients, canActivate: [RoleGuard], data: { role: 'SuperAdmin,Admin' } },
-     { path: 'user-details', component:UserDetails, canActivate: [RoleGuard, PermissionGuard], data: {role: 'Admin'}},
+     { path: 'user-details', component:UserDetails, canActivate: [RoleGuard], data: {role: 'Admin'}},
      { path: 'manage-clients/:id', component: ManageClients, canActivate: [RoleGuard], data: { role: 'SuperAdmin'  } },
       { path: 'manage-clients', component: ManageClients , canActivate: [RoleGuard], data: { role: 'SuperAdmin' } },
       { path: 'has-permission', component: HasPermission , canActivate: [RoleGuard], data: { role: 'SuperAdmin' } },

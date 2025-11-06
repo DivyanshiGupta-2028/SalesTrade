@@ -89,14 +89,29 @@
                   Actions
                 </button>
                 <ul class="dropdown-menu">
-                  <li>
+                 
+                  <li  *ngIf="hasRole('SuperAdmin') | async">
                     <button 
                       class="dropdown-item text-primary" 
                       (click)="viewDetails(user.id)">
                       View Licenses
                     </button>
                   </li>
-                  <li>
+                  <li  *ngIf="hasRole('Admin') | async">
+                    <button 
+                      class="dropdown-item text-primary" 
+                       (click)="navigateToAddUserDetails(user.id)">
+                      Add User Details
+                    </button>
+                  </li>
+                  <li  *ngIf="hasRole('Admin') | async">
+                    <button 
+                      class="dropdown-item text-primary" 
+                       (click)="viewUserDetails(user.id)">
+                      View User Details
+                    </button>
+                  </li>
+                  <li  *ngIf="hasRole('SuperAdmin') | async">
                     <button 
                       class="dropdown-item text-primary" 
                        (click)="navigateToAddLicense(user.id)">

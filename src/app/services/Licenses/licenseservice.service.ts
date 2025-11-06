@@ -102,6 +102,15 @@ getLangaugeSelectedItems(): Observable<Langauges[]> {
       })
     );
   }
+     getUserAddressDetail(id: string): Observable<License> {
+    console.log(`Fetching license details for id: ${id}`);
+    return this.baseService.get<any>(`${this.apiUrl}/License/${id}/user-address-detail`).pipe(
+      catchError((error) => {
+        console.error('Error fetching license detail:', error);
+        return throwError(() => new Error('Error fetching license detail'));
+      })
+    );
+  }
 
   getUserDetail(userId: string): Observable<UserProfile> {
     console.log(`Fetching user details for userId: ${userId}`);
@@ -133,6 +142,16 @@ getUserDetailByMail(email: string): Observable<UserProfile> {
   );
 }
 
+
+getUserContactDetail(userId: string): Observable<License> {
+  console.log(`Fetching contact details for id: ${userId}`);
+  return this.baseService.get<any>(`${this.apiUrl}/AccountsAdmin/get-user-client-contacts-by-id?userId=${userId}`).pipe(
+    catchError((error) => {
+      console.error('Error fetching license detail:', error);
+      return throwError(() => new Error('Error fetching license detail'));
+    })
+  );
+}
 
    updateLicense(license: License): Observable<boolean> {  
      return this.baseService.put<boolean>(`${this.apiUrl}/License/modify-license`, license);

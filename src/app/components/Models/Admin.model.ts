@@ -23,4 +23,8 @@ export interface UserDetail {
   pincode: string;
   mobile?: string;
   role?: number
+  firstName?: string
+  lastName?:string;
+  email?: string
+  licenseClientID?: number
 }

@@ -1,12 +1,12 @@
-<!-- <br>
+<br>
 <nav class="navbar navbar-expand-lg navbar-light bg-light px-3 shadow-sm w-100">
   <div class="d-flex justify-content-between align-items-center w-100">
     <app-user-bar-control [title]="pageTitle" [subtitle]="pageSubtitle" [license]="licenseName"
-      [showBackButton]="showBackFlag" [showSubtitle]="true" [showLicenseName]="true">
+      [showBackButton]="showBackFlag" [showSubtitle]="true" [showLicenseName]="false">
     </app-user-bar-control>
   </div>
 </nav>
-<br> -->
+<br>
 
 
 <div class="card shadow-sm border p-4">
@@ -312,7 +312,7 @@
       <h5 class="mb-2" style="color: grey;">Role Assigned</h5>
       <div class="row">
         <div class="col-md-3 mb-1">
-          <label for="role" class="form-label">Currency</label>
+          <label for="role" class="form-label">Role </label>
           <select id="role" class="form-select" formControlName="role">
             <option value="">Select</option>
             <option *ngFor="let role of (roles$ | async)" [value]="role.id">
@@ -567,8 +567,8 @@
     </h5>
     <p>User Details has been saved successfully.</p>
     <div class="d-flex justify-content-center gap-2">
-      <button type="button" class="btn btn-primary btn-sm" >Go To User List</button>
-      <!-- (click)="goToUserList()" -->
+      <button type="button" class="btn btn-primary btn-sm" (click)="goToUserList()" >Go To User List</button>
+      <!--  -->
     </div>
   </div>
 </div>

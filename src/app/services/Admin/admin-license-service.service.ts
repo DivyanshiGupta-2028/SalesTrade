@@ -11,6 +11,7 @@ import { OptionSettingModel, UpdateOptionModel } from '../../components/Models/o
 import { UserProfile } from 'src/app/components/Models/Client.model';
 import { AuthService } from '../auth.service';
 import { RolesModel, UserDetail } from 'src/app/components/Models/Admin.model';
+import { UserRole } from 'src/app/components/Models/role.model';
 
 
 @Injectable({
@@ -46,8 +47,32 @@ export class AdminLicenseService {
       })
     );
   }
-    addUserDetail(user: UserDetail): Observable<UserDetail> {
-    return this.baseService.post<UserDetail>(`${this.apiUrl}/License/add-license-flow`, user);
+
+
+    getRoleFromUser(userId: string): Observable<UserRole> {
+    console.log(`Fetching user details for userId: ${userId}`);
+    return this.baseService.get<UserRole>(`${this.apiUrl}/AccountsAdmin/${userId}/role-from-user`).pipe(
+      catchError((error) => {
+        console.error('Error fetching license detail:', error);
+        return throwError(() => new Error('Error fetching license detail'));
+      })
+    );
+  }
+
+  //   addUserDetail(user: UserDetail): Observable<UserDetail> {
+  //   return this.baseService.post<UserDetail>(`${this.apiUrl}/AccountsAdmin/add-user-detail`, user);
+  // }
+addUserDetail(user: UserDetail): Observable<UserDetail> {
+  return this.baseService.post<UserDetail>(`${this.apiUrl}/AccountsAdmin/add-user-detail`, user);
+}
+  getUserDetailByMail(email: string): Observable<UserProfile> {
+    console.log(`Fetching user details for email: ${email}`);
+    return this.baseService.get<UserProfile>(`${this.apiUrl}/License/${email}/user-detail-by-mail`).pipe(
+      catchError((error) => {
+        console.error('Error fetching license detail:', error);
+        return throwError(() => new Error('Error fetching license detail'));
+      })
+    );
   }
 
   getRoles(): Observable<RolesModel[]> {
