@@ -22,14 +22,14 @@ export class UserList implements OnInit {
    currentRole: string = '';
   users$!: Observable<UserProfile[]>;
   showActions = false;
-  pageTitle = 'User List';
+  pageTitle = 'Firm List';
   pageSubtitle = '';
   showBackFlag = false;
   showSubtitle = false;
   showAlert = false;
 showAddProfile = false; 
   alertMessage = 'This is a custom alert message!';
-  alertTitle = 'Add User ';
+  alertTitle = 'Add Firm ';
   shouldScroll = false;
 
 users: any[] = [];

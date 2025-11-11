@@ -14,7 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class AddProfile {
   guestForm!: FormGroup;
-  @Input() title = 'Add User';
+  @Input() title = 'Add Firm';
 showModal = false;
 isAddUserModalOpen = false;
 
