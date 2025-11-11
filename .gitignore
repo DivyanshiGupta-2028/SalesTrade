@@ -40,8 +40,11 @@ build/Release
 # Dependency directories
 node_modules/
 jspm_packages/
+<<<<<<< HEAD
 .angular/
 dist/
+=======
+>>>>>>> 694b9dfed86130b8f3a92097521f40fb3127df2b
 
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
@@ -55,11 +58,16 @@ web_modules/
 # Optional eslint cache
 .eslintcache
 
+<<<<<<< HEAD
 # Microbundle cache
 .rpt2_cache/
 .rts2_cache_cjs/
 .rts2_cache_es/
 .rts2_cache_umd/
+=======
+# Optional stylelint cache
+.stylelintcache
+>>>>>>> 694b9dfed86130b8f3a92097521f40fb3127df2b
 
 # Optional REPL history
 .node_repl_history
@@ -70,9 +78,16 @@ web_modules/
 # Yarn Integrity file
 .yarn-integrity
 
+<<<<<<< HEAD
 # dotenv environment variables file
 .env
 .env.test
+=======
+# dotenv environment variable files
+.env
+.env.*
+!.env.example
+>>>>>>> 694b9dfed86130b8f3a92097521f40fb3127df2b
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -95,6 +110,25 @@ dist
 # vuepress build output
 .vuepress/dist
 
+<<<<<<< HEAD
+=======
+# vuepress v2.x temp and cache directory
+.temp
+.cache
+
+# Sveltekit cache directory
+.svelte-kit/
+
+# vitepress build output
+**/.vitepress/dist
+
+# vitepress cache directory
+**/.vitepress/cache
+
+# Docusaurus cache and generated files
+.docusaurus
+
+>>>>>>> 694b9dfed86130b8f3a92097521f40fb3127df2b
 # Serverless directories
 .serverless/
 
@@ -104,15 +138,36 @@ dist
 # DynamoDB Local files
 .dynamodb/
 
+<<<<<<< HEAD
+=======
+# Firebase cache directory
+.firebase/
+
+>>>>>>> 694b9dfed86130b8f3a92097521f40fb3127df2b
 # TernJS port file
 .tern-port
 
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
 
+<<<<<<< HEAD
 # yarn v2
 .yarn/cache
 .yarn/unplugged
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+=======
+# yarn v3
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# Vite logs files
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+>>>>>>> 694b9dfed86130b8f3a92097521f40fb3127df2b
